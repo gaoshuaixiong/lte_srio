@@ -14,6 +14,8 @@
 
 #include <linux/if_ether.h>
 #include <linux/string.h>
+#include <linux/fs.h>
+#include <linux/uaccess.h>
 #include "sriofsm.h"
 #include "../lte_system.h"
 #include "pkfmt.h"
@@ -21,39 +23,39 @@
 #include "rrc_type_IEs.h"
 
 
-//	����״̬���е�״̬
+//	¶¨Òå×´Ì¬»úÖÐµÄ×´Ì¬
 /**********20141013 mf modified ************************/
 #define ST_INIT	0
 #define ST_CFG		1
 #define	ST_IDLE	2
 #define ST_SEND	3
 #define ST_RECV	4
-//#define ST_TEST	4	//���Խ׶�����TEST״̬�����ڽ���MSG3����MSG4	modified by MF 20140715
+//#define ST_TEST	4	//²âÊÔ½×¶ÎÌí¼ÓTEST×´Ì¬£¬ÓÃÓÚ½ÓÊÕMSG3·¢ËÍMSG4	modified by MF 20140715
 /**********end modified ************************/
 
 
-//	������������㱾��������IOControl����
+//	¶¨ÒåÎïÀíÊÊÅä²ã±¾Éí²âÊÔÓÃIOControlÃüÁî
 #define IOCCMD_PSEND_RUN			0x01
 #define IOCCMD_PSEND_STOP			0x02
 #define IOCCMD_PSEND_INTERVAL	0x03 
 #define IOCCMD_SAY_HELLO			0x04
 
-//	����UE��MAC�������������IOControl����
-#define IOCCMD_MACtoPHY_RNTI_Indicate			0x24      //����MSG3֮ǰ MAC���֪�����RNTIֵ
+//	¶¨ÒåUE²àMAC²ã¶ÔÎïÀíÊÊÅä²ãµÄIOControlÃüÁî
+#define IOCCMD_MACtoPHY_RNTI_Indicate			0x24      //·¢ËÍMSG3Ö®Ç° MAC²ã¸æÖªÊÊÅä²ãRNTIÖµ
 #define IOCCMD_MACtoPHY_Preamble_Indicate		0x25      //MSG1
-#define IOCCMD_MACtoPHY_recv_sysinfo			0x26      //RRC��֪MAC MAC��֪����㿪ʼ����ϵͳ��Ϣ
-#define IOCCMD_MACtoPHY_stop_recv_sysinfo		0x27      //RRC��֪MAC MAC��֪�����ֹͣ����ϵͳ��Ϣ
-#define IOCCMD_MACtoPHY_recv_paging				0x46      //RRC��֪MAC MAC��֪����㿪ʼ����Ѱ����Ϣ
+#define IOCCMD_MACtoPHY_recv_sysinfo			0x26      //RRC¸æÖªMAC MAC¸æÖªÊÊÅä²ã¿ªÊ¼½ÓÊÕÏµÍ³ÏûÏ¢
+#define IOCCMD_MACtoPHY_stop_recv_sysinfo		0x27      //RRC¸æÖªMAC MAC¸æÖªÊÊÅä²ãÍ£Ö¹½ÓÊÕÏµÍ³ÏûÏ¢
+#define IOCCMD_MACtoPHY_recv_paging				0x46      //RRC¸æÖªMAC MAC¸æÖªÊÊÅä²ã¿ªÊ¼½ÓÊÕÑ°ºôÏûÏ¢
 /************20141013 mf modified**************/
 #define IOCCMD_PHYtoMAC_RA_Req				0x03		//With data format S_RAinfo
 #define IOCCMD_PHYtoMAC_TA					0x06
 
 /************end modify************************/
-//	����UE������������MAC���IOControl����
+//	¶¨ÒåUE²àÎïÀíÊÊÅä²ã¶ÔMAC²ãµÄIOControlÃüÁî
 #define IOCCMD_Harq_feedback					0x18   //when MAC received this command from PHYadapter,MAC 
-#define IOCCMD_PDCCHtoMAC_RandomAcc_Req		0x0C   //PDCCH�� ��֪MAC��ʼ�������
+#define IOCCMD_PDCCHtoMAC_RandomAcc_Req		0x0C   //PDCCHÉÏ ¸æÖªMAC¿ªÊ¼Ëæ»ú½ÓÈë
 #define IOCCMD_PDCCHtoMAC_ULGRANT			0x0D   //PHY send a DCI of ul_grant to MAC 
-#define IOCCMD_TEST_SEND_MSG3				0x51  //�յ�IOControl�󣬷���MSG3���������� modified by MF 20140715
+#define IOCCMD_TEST_SEND_MSG3				0x51  //ÊÕµ½IOControlºó£¬·¢ËÍMSG3£¬²âÊÔÃüÁî modified by MF 20140715
 /*******20141017 mf modified for test******/
 #define IOCCMD_TEST_SEND_TO_ETH				0x52
 
@@ -69,7 +71,7 @@
 #define MemoryStart				0xfc10000
 #define MemorySize					10240
 
-//	״̬�����ܺ�������
+//	×´Ì¬»ú¹¦ÄÜº¯ÊýÉùÃ÷
 static void init_enter(void);
 static void send_packet_period(void);
 static void srio_sv_init(void);	
@@ -88,7 +90,7 @@ static void cfg_ioctl_handler(void);
 
 
 
-//	���Ժ�������
+//	²âÊÔº¯ÊýÉùÃ÷
 static void send_msg4(void);
 static void msg4_add_MacCR_element(FSM_PKT *skb,int sdu_len);//20140715 mf
 static void createmachead7bit(MAC_SDU_subhead_7bit_s *macsubhead,u8 lcid,u8 sdu_len,u8 continueflag);//20140715 mf
@@ -115,7 +117,7 @@ static void test_send_sf(void);
 
 /********************************************************************************
 ** Function name: srio_main
-** Description: ����������״̬��������
+** Description: ÎïÀíÊÊÅä²ãµÄ×´Ì¬»úÖ÷º¯Êý
 ** Input:
 ** Output:
 ** Returns:
@@ -124,7 +126,7 @@ static void test_send_sf(void);
 ** ------------------------------------------------------------------------------
 ** Modified by: MF
 ** Modified Date: 20141013
-** Modefied Description: ����CFG̬���ڵȴ�RRC��Type1����
+** Modefied Description: Ìí¼ÓCFGÌ¬ÓÃÓÚµÈ´ýRRCµÄType1ÅäÖÃ
 ********************************************************************************/
 
 void srio_main(void)
@@ -156,14 +158,14 @@ void srio_main(void)
 				FSM_TEST_COND(SRIO_PK_FROM_UPPER)
 				FSM_TEST_COND(SRIO_CLOSE)
 				FSM_TEST_COND(PACKET_SEND_PERIOD)
-				//FSM_TEST_COND(MSG3_FROM_UPPER) //20140715 mf testconmand Žý¶š
+				//FSM_TEST_COND(MSG3_FROM_UPPER) //20140715 mf testconmand Å½Ã½Â¶Å¡
 			FSM_COND_TEST_OUT("IDLE")	
 			FSM_TRANSIT_SWITCH			
 			{	
-				FSM_CASE_TRANSIT(0, ST_RECV, , "IDLE -> RECV")	//œÓÊÜÏÂ²ãÐÅÏ¢			
-				FSM_CASE_TRANSIT(1, ST_SEND, , "IDLE -> SEND") //·¢ËÍÉÏ²ãÐÅÏ¢
-				FSM_CASE_TRANSIT(2, ST_INIT,idle_exit() , "IDLE -> INIT") //×ŽÌ¬»úÍË³ö
-				FSM_CASE_TRANSIT(3, ST_IDLE,send_packet_period(), "IDLE->IDLE")//¶šÊ±Æ÷ÖÜÆÚ·¢ËÍ
+				FSM_CASE_TRANSIT(0, ST_RECV, , "IDLE -> RECV")	//Å“Ã“ÃŠÃœÃÃ‚Â²Ã£ÃÃ…ÃÂ¢			
+				FSM_CASE_TRANSIT(1, ST_SEND, , "IDLE -> SEND") //Â·Â¢Ã‹ÃÃ‰ÃÂ²Ã£ÃÃ…ÃÂ¢
+				FSM_CASE_TRANSIT(2, ST_INIT,idle_exit() , "IDLE -> INIT") //Ã—Å½ÃŒÂ¬Â»ÃºÃÃ‹Â³Ã¶
+				FSM_CASE_TRANSIT(3, ST_IDLE,send_packet_period(), "IDLE->IDLE")//Â¶Å¡ÃŠÂ±Ã†Ã·Ã–ÃœÃ†ÃšÂ·Â¢Ã‹Ã
 				//FSM_CASE_TRANSIT(4, ST_TEST, print_tran_info("IDLE->TEST"), "IDLE->TEST")//20140715 mf 
 				FSM_CASE_DEFAULT(ST_IDLE,idle_ioctl_handler(), "IDLE->IDLE")	//iocontrol
 			}	
@@ -178,7 +180,7 @@ void srio_main(void)
 			FSM_TRANSIT_FORCE(ST_IDLE, , "default", "", "SEND -> IDLE");
 		}
 		/********************8ENBUE TEST******************************
-		FSM_STATE_UNFORCED(ST_TEST, "TEST", ioctldata(), )//20140715 mf ·¢ËÍmsg4
+		FSM_STATE_UNFORCED(ST_TEST, "TEST", ioctldata(), )//20140715 mf Â·Â¢Ã‹Ãmsg4
 		{
 			//FSM_TRANSIT_FORCE(ST_IDLE, , "default", "", "TEST -> IDLE");
 			FSM_COND_TEST_IN("TEST")						
@@ -186,7 +188,7 @@ void srio_main(void)
 			FSM_COND_TEST_OUT("TEST")	
 			FSM_TRANSIT_SWITCH			
 			{	
-				FSM_CASE_TRANSIT(0, ST_IDLE, test_send_msg4(), "TEST -> IDLE")	//œÓÊÜÏÂ²ãÐÅÏ¢			
+				FSM_CASE_TRANSIT(0, ST_IDLE, test_send_msg4(), "TEST -> IDLE")	//Å“Ã“ÃŠÃœÃÃ‚Â²Ã£ÃÃ…ÃÂ¢			
 				FSM_CASE_DEFAULT(ST_TEST,ioctl_handler(), "TEST -> TEST")	//iocontrol
 			}
 		}
@@ -197,7 +199,7 @@ void srio_main(void)
 
 /********************************************************************************
 ** Function name: init_enter
-** Description: ״̬����ʼ������
+** Description: ×´Ì¬»ú³õÊ¼»¯º¯Êý
 ** Input:
 ** Output:
 ** Returns:
@@ -219,7 +221,7 @@ static void init_enter(void)
 
 /********************************************************************************
 ** Function name: srio_sv_init
-** Description: ״̬��ȫ�ֱ�����ʼ������
+** Description: ×´Ì¬»úÈ«¾Ö±äÁ¿³õÊ¼»¯º¯Êý
 ** Input:
 ** Output:
 ** Returns:
@@ -231,6 +233,7 @@ static void init_enter(void)
 ********************************************************************************/
 static void srio_sv_init(void)
 {
+	
 	FIN(srio_sv_init());//
 	SV_PTR_GET(srio_sv);//
 	SV(packet_count) = 0;//
@@ -250,7 +253,7 @@ static void srio_sv_init(void)
 
 /********************************************************************************
 ** Function name: srio_close
-** Description: ״̬���رպ���
+** Description: ×´Ì¬»ú¹Ø±Õº¯Êý
 ** Input:
 ** Output:
 ** Returns:
@@ -277,7 +280,7 @@ static void srio_close(void)
 
 /********************************************************************************
 ** Function name: packet_send_to_eth
-** Description: �յ��ϲ㷢�����ݰ����·�����̫��(������)
+** Description: ÊÕµ½ÉÏ²ã·¢µÄÊý¾Ý°ü£¬ÏÂ·¢µ½ÒÔÌ«Íø(²âÊÔÓÃ)
 ** Input:
 ** Output:
 ** Returns:
@@ -286,7 +289,7 @@ static void srio_close(void)
 ** ------------------------------------------------------------------------------
 ** Modified by: MF
 ** Modified Date: 20140717
-** Modified Description: ֱ�����ٰ� �����ͳ�ȥ ������
+** Modified Description: Ö±½ÓÏú»Ù°ü ²»·¢ËÍ³öÈ¥ ²âÊÔÓÃ
 ********************************************************************************/
 /***** mf modified 20141017 for test**************/
 static void packet_send_to_eth(void)
@@ -392,7 +395,7 @@ static int compare_mac_addr(void* macaddr1,void* macaddr2,int count)
 
 /********************************************************************************
 ** Function name: packet_send_to_upperlayer
-** Description: �յ��²㷢�����ݰ������Ϸ��͵�MAC��(������)
+** Description: ÊÕµ½ÏÂ²ã·¢µÄÊý¾Ý°ü£¬ÏòÉÏ·¢ËÍµ½MAC²ã(²âÊÔÓÃ)
 ** Input:
 ** Output:
 ** Returns:
@@ -401,7 +404,7 @@ static int compare_mac_addr(void* macaddr1,void* macaddr2,int count)
 ** ------------------------------------------------------------------------------
 ** Modified by: MF
 ** Modified Date: 20140717
-** Modified Description: ֱ�����ٰ� �����ͳ�ȥ ������
+** Modified Description: Ö±½ÓÏú»Ù°ü ²»·¢ËÍ³öÈ¥ ²âÊÔÓÃ
 ********************************************************************************/
 static void packet_send_to_upperlayer(void)
 {
@@ -488,7 +491,7 @@ static void packet_send_to_upperlayer(void)
 
 /********************************************************************************
 ** Function name: idle_exit
-** Description: �ر�srioģ��
+** Description: ¹Ø±ÕsrioÄ£¿é
 ** Input:
 ** Output:
 ** Returns:
@@ -511,11 +514,11 @@ static void idle_exit(void)
 
 /********************************************************************************
 ** Function name: send_packet_period
-** Description: ��������̫������(������)
+** Description: ÖÜÆÚÏòÒÔÌ«Íø·¢°ü(²âÊÔÓÃ)
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ��־ǿ
+** Created by: ÕÅÖ¾Ç¿
 ** Created Date: 20140710
 ** ------------------------------------------------------------------------------
 ** Modified by: MF
@@ -560,11 +563,11 @@ static void send_packet_period(void)
 
 /********************************************************************************
 ** Function name: idle_ioctl_handler
-** Description: ����IDLE״̬�µ�IOControl
+** Description: ´¦ÀíIDLE×´Ì¬ÏÂµÄIOControl
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ��־ǿ
+** Created by: ÕÅÖ¾Ç¿
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: MF
@@ -575,6 +578,8 @@ static void idle_ioctl_handler(void)
 	char* rec_data_ptr;
 	u32 *interval_ptr;
 	void* ioctl_data;
+
+	
 	const char* data_ptr = "Hello MAC,I AM SRIO\n"; 
 	FIN(ioctl_handler());
 	SV_PTR_GET(srio_sv);
@@ -590,7 +595,27 @@ static void idle_ioctl_handler(void)
 			FOUT;
 			case IOCTL_GET_ENB_ADDR:
 				{
-
+					char buf[10] ="hello";
+					char buf1[10];
+					struct file *fp;
+				    mm_segment_t fs;
+				    loff_t pos;
+				    printk("hello enter/n");
+				    fp =filp_open("/home/alison/Desktop/lte_srio/ue_eth/srio.cfg",O_RDWR | O_CREAT,0644);
+				    if (IS_ERR(fp)){
+				        printk("create file error/n");
+				        return -1;
+				    }
+				    fs =get_fs();
+				    set_fs(KERNEL_DS);
+				    pos =0;
+				    vfs_write(fp,buf, sizeof(buf), &pos);
+				    pos =0;
+				    vfs_read(fp,buf1, sizeof(buf), &pos);
+				    printk("read: %s/n",buf1);
+				    filp_close(fp,NULL);
+				    set_fs(fs);
+					printk("IOCTL_GET_ENB_ADDR tobe fix \n");
 				}
 			case IOCCMD_PSEND_STOP:
 				if(SV(psend_handle))
@@ -627,7 +652,7 @@ static void idle_ioctl_handler(void)
 					SV(psend_handle) = fsm_schedule_self(0, _MSG3_FROM_UPPER);
 				}
 				FOUT;
-			case IOCCMD_MACtoPHY_recv_sysinfo: // 20140715 mf ŽýÍê³É
+			case IOCCMD_MACtoPHY_recv_sysinfo: // 20140715 mf Å½Ã½ÃÃªÂ³Ã‰
 				fsm_printf("SRIO:IOCCMD_MACtoPHY_recv_sysinfo.\n");
 				send_sysinfo();
 				FOUT;
@@ -694,7 +719,7 @@ static void test_send_msg1(void)
 	//fsm_octets_print(data,sizeof(RACH_ConfigDedicated));
 	fsm_printf("[UE SRIO] data->ra_PreambleIndex = %d\n",data->ra_PreambleIndex);
 
-	int *MessageType;//1��ʾΪ�������MSG1��Ϣ
+	int *MessageType;//1±íÊ¾ÎªËæ»ú½ÓÈëMSG1ÏûÏ¢
 	//*MessageType = 1;
 	pkptr = fsm_pkt_create(1028);
 	//Msg1 = (MSG1_Content*)fsm_mem_alloc(sizeof(MSG1_Content));
@@ -752,7 +777,7 @@ static void test_send_msg1(void)
 /**************end******************************************/
 /********************************************************************************
 ** Function name: cfg_ioctl_handler
-** Description: ����CFG״̬�µ�IOControl
+** Description: ´¦ÀíCFG×´Ì¬ÏÂµÄIOControl
 ** Input:
 ** Output:
 ** Returns:
@@ -795,7 +820,7 @@ static void send_type1(void){
 		type1->MemStart = MemoryStart;
 		type1->MemSize = MemorySize;
 
-		//д�뵽SRIO������
+		//Ð´Èëµ½SRIO·¢ËÍÇø
 	FOUT;
 }
 
@@ -803,11 +828,11 @@ static void send_type1(void){
 
 /********************************************************************************
 ** Function name: createmachead7bit
-** Description: ����MACͷ�� �����ô���
+** Description: Ìí¼ÓMACÍ·²¿ ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ����
+** Created by: ºÎçô
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -817,7 +842,7 @@ static void createmachead7bit(MAC_SDU_subhead_7bit_s *macsubhead,u8 lcid,u8 sdu_
 {
 	FIN(createmachead7bit());
 	if(1==continueflag)
-		macsubhead->m_lcid_e_r_r=lcid+0x20;//EÓòÖÃ1
+		macsubhead->m_lcid_e_r_r=lcid+0x20;//EÃ“Ã²Ã–Ãƒ1
 	if(0==continueflag)
 		macsubhead->m_lcid_e_r_r=lcid;
 	macsubhead->m_f_l=sdu_len;
@@ -826,18 +851,18 @@ static void createmachead7bit(MAC_SDU_subhead_7bit_s *macsubhead,u8 lcid,u8 sdu_
 
 /********************************************************************************
 ** Function name: msg4_add_MacCR_element
-** Description: ����MSG4��mac������� �����ô���
+** Description: Ìí¼ÓMSG4ÖÐmacÏà¹ØÄÚÈÝ ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ����
+** Created by: ºÎçô
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
 ** Modified Date: 
 ********************************************************************************/
 
-static void msg4_add_MacCR_element(FSM_PKT *skb,int sdu_len)//sdu_len±íÊŸmsg4SDUµÄ³€¶�?ŒŽRRCµÄsetupÏûÏ¢µÄÕûžö³€¶�?
+static void msg4_add_MacCR_element(FSM_PKT *skb,int sdu_len)//sdu_lenÂ±Ã­ÃŠÅ¸msg4SDUÂµÃ„Â³â‚¬Â¶Ã?Å’Å½RRCÂµÃ„setupÃÃ»ÃÂ¢ÂµÃ„Ã•Ã»Å¾Ã¶Â³â‚¬Â¶Ã?
 {
 	int i;
 	char *temp_ptr;
@@ -855,23 +880,23 @@ static void msg4_add_MacCR_element(FSM_PKT *skb,int sdu_len)//sdu_len±íÊŸmsg
 	//for (i = 0; i < 5; i ++)
 		//rrc_creq_info.ue_Identity.randomValue[i] = 1;
 	rrc_creq_info->establishmentCause = mt_Access;
-	createmachead7bit(&macsubhead,0,sdu_len,0);//msg4ÀïSDUÏàÓŠµÄMAC×ÓÍ· 
-	createmachead7bit(&macsubhead,28,6,1);//msg4ÀïCR¿ØÖÆµ¥ÔªÏàÓŠµÄMAC×ÓÍ· 
+	createmachead7bit(&macsubhead,0,sdu_len,0);//msg4Ã€Ã¯SDUÃÃ Ã“Å ÂµÃ„MACÃ—Ã“ÃÂ· 
+	createmachead7bit(&macsubhead,28,6,1);//msg4Ã€Ã¯CRÂ¿Ã˜Ã–Ã†ÂµÂ¥Ã”ÂªÃÃ Ã“Å ÂµÃ„MACÃ—Ã“ÃÂ· 
 	temp_ptr = (char *)rrc_creq_info;	
-    fsm_mem_cpy(skb->data,&macsubhead,2); //ÌíŒÓMACÐÅÏ¢µœsk_bufÖÐ
+    fsm_mem_cpy(skb->data,&macsubhead,2); //ÃŒÃ­Å’Ã“MACÃÃ…ÃÂ¢ÂµÅ“sk_bufÃ–Ã
    	fsm_mem_cpy(skb->data+2,&cr_subhead,2);
    	fsm_mem_cpy(skb->data+4,temp_ptr+1,6);
-   	fsm_mem_free(rrc_creq_info);//ÊÍ·ÅÄÚŽæ
+   	fsm_mem_free(rrc_creq_info);//ÃŠÃÂ·Ã…Ã„ÃšÅ½Ã¦
 	
 }
 
 /********************************************************************************
 ** Function name: msg4_add_RRC_data
-** Description: ����MSG4��RRC������� �����ô���
+** Description: Ìí¼ÓMSG4ÖÐRRCÏà¹ØÄÚÈÝ ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ��Ӧ��
+** Created by: ÁõÓ¦ÌÎ
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -913,11 +938,11 @@ static void msg4_add_RRC_data(FSM_PKT *pkptr,int offset)
 
 /********************************************************************************
 ** Function name: send_sysinfo
-** Description: ϵͳ��Ϣ���ͺ��� �����ô���
+** Description: ÏµÍ³ÐÅÏ¢·¢ËÍº¯Êý ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ��Ӧ��
+** Created by: ÁõÓ¦ÌÎ
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -931,7 +956,7 @@ static void send_sysinfo()
 
 	/*fsm_printf("SRIO:  send mib!\n");
 	pkptr = gen_mib();
-	fsm_skb_push(pkptr, sizeof(struct PHYadaptertoMAC_IciMsg));//·ÅphyadapterÍ·²¿
+	fsm_skb_push(pkptr, sizeof(struct PHYadaptertoMAC_IciMsg));//Â·Ã…phyadapterÃÂ·Â²Â¿
 	ici_to_mac = (struct PHYadaptertoMAC_IciMsg *)pkptr->head;
 	ici_to_mac->tcid=BCH;
 	ici_to_mac->MessageType =0; //messagetype
@@ -956,7 +981,7 @@ static void send_sysinfo()
 
 	/*fsm_printf("SRIO:  send sib1!\n");
 	pkptr = gen_sib1();
-	fsm_skb_push(pkptr, sizeof(struct PHYadaptertoMAC_IciMsg));//·ÅphyadapterÍ·²¿
+	fsm_skb_push(pkptr, sizeof(struct PHYadaptertoMAC_IciMsg));//Â·Ã…phyadapterÃÂ·Â²Â¿
 	ici_to_mac = (struct PHYadaptertoMAC_IciMsg *)pkptr->head;
 	ici_to_mac->tcid=BCH;
 	ici_to_mac->MessageType =0; //messagetype
@@ -980,7 +1005,7 @@ static void send_sysinfo()
 
 	/*fsm_printf("SRIO:  send si!\n");
 	pkptr = gen_si();
-	fsm_skb_push(pkptr, sizeof(struct PHYadaptertoMAC_IciMsg));//·ÅphyadapterÍ·²¿
+	fsm_skb_push(pkptr, sizeof(struct PHYadaptertoMAC_IciMsg));//Â·Ã…phyadapterÃÂ·Â²Â¿
 	ici_to_mac = (struct PHYadaptertoMAC_IciMsg *)pkptr->head;
 	ici_to_mac->tcid=BCH;
 	ici_to_mac->MessageType =0; //messagetype
@@ -1004,11 +1029,11 @@ static void send_sysinfo()
 
 /********************************************************************************
 ** Function name: send_paging
-** Description: Ѱ����Ϣ���ͺ��� �����ô���
+** Description: Ñ°ºôÐÅÏ¢·¢ËÍº¯Êý ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ��Ӧ��
+** Created by: ÁõÓ¦ÌÎ
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1021,7 +1046,7 @@ static void send_paging(void)
 	struct PHYadaptertoMAC_IciMsg * ici_to_mac;  //20140715 mf
 	fsm_printf("SRIO: send paging!\n");
 	pkptr = gen_paging();
-	fsm_skb_push(pkptr, sizeof(struct PHYadaptertoMAC_IciMsg));//·ÅphyadapterÍ·²¿
+	fsm_skb_push(pkptr, sizeof(struct PHYadaptertoMAC_IciMsg));//Â·Ã…phyadapterÃÂ·Â²Â¿
 	ici_to_mac = (struct PHYadaptertoMAC_IciMsg *)pkptr->head;
 	ici_to_mac->tcid=BCH;
 	ici_to_mac->MessageType =0; //messagetype
@@ -1047,11 +1072,11 @@ static void send_paging(void)
 
 /********************************************************************************
 ** Function name: send_rar
-** Description: RAR���ͺ��� �����ô���
+** Description: RAR·¢ËÍº¯Êý ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ����
+** Created by: ºÎçô
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1062,7 +1087,7 @@ static void send_rar(void)
 {
 	FSM_PKT* pkptr; 
 	void *data;
-	//����RA����
+	//²âÊÔRAÇëÇó
 	data=fsm_data_get();
 	fsm_printf("PHY RECV ra_PreambleIndex:%d\n",((RACH_ConfigDedicated *)data)->ra_PreambleIndex);
 	//pkptr = fsm_pkt_create(256);
@@ -1097,18 +1122,18 @@ static void send_msg4()
 	fsm_pkt_destroy(pkptr);
 	
 	pkptr = fsm_pkt_create(128);
-	fsm_skb_reserve(pkptr ,sizeof(PHYadaptertoMAC_IciMsg));//Ô€ÁôÍ·²¿µÄ¿ÕŒ�?·ÅICI
+	fsm_skb_reserve(pkptr ,sizeof(PHYadaptertoMAC_IciMsg));//Ã”â‚¬ÃÃ´ÃÂ·Â²Â¿ÂµÃ„Â¿Ã•Å’Ã?Â·Ã…ICI
 	ici_to_mac =(PHYadaptertoMAC_IciMsg *)fsm_mem_alloc(sizeof(PHYadaptertoMAC_IciMsg));
 	ici_to_mac->tcid=2;
 	ici_to_mac->MessageType =1; 
 	ici_to_mac->rnti=31; 
-	fsm_mem_cpy(pkptr->head,ici_to_mac,sizeof(PHYadaptertoMAC_IciMsg));//·ÅÈëÍ·²¿
+	fsm_mem_cpy(pkptr->head,ici_to_mac,sizeof(PHYadaptertoMAC_IciMsg));//Â·Ã…ÃˆÃ«ÃÂ·Â²Â¿
 	
 
-	fsm_skb_put(pkptr,2+2+6);//ÔöŒÓtailÖžÕë£¬À©ŽóÊýŸÝ¿ÕŒä£¬ÎªMACµÄÊýŸÝÁô³ö¿ÕŒä MACÌíŒÓµÄÊýŸÝ³€¶�?0byte;
-	fsm_skb_put(pkptr, int len);//ÔöŒÓtailÖžÕë ÎªRRCµÄÊýŸÝÁô³ö¿ÕŒä£¬ŒŽmsg4 SDU	
-	msg4_add_MacCR_element(pkptr,int sdu_len);//ÌíŒÓMACµÄÊýŸÝµœSK_BUFÖÐ
-	//ÌíŒÓRRC ÊýŸÝµœSK_BUFÖÐ  
+	fsm_skb_put(pkptr,2+2+6);//Ã”Ã¶Å’Ã“tailÃ–Å¾Ã•Ã«Â£Â¬Ã€Â©Å½Ã³ÃŠÃ½Å¸ÃÂ¿Ã•Å’Ã¤Â£Â¬ÃŽÂªMACÂµÃ„ÃŠÃ½Å¸ÃÃÃ´Â³Ã¶Â¿Ã•Å’Ã¤ MACÃŒÃ­Å’Ã“ÂµÃ„ÃŠÃ½Å¸ÃÂ³â‚¬Â¶Ã?0byte;
+	fsm_skb_put(pkptr, int len);//Ã”Ã¶Å’Ã“tailÃ–Å¾Ã•Ã« ÃŽÂªRRCÂµÃ„ÃŠÃ½Å¸ÃÃÃ´Â³Ã¶Â¿Ã•Å’Ã¤Â£Â¬Å’Å½msg4 SDU	
+	msg4_add_MacCR_element(pkptr,int sdu_len);//ÃŒÃ­Å’Ã“MACÂµÃ„ÃŠÃ½Å¸ÃÂµÅ“SK_BUFÃ–Ã
+	//ÃŒÃ­Å’Ã“RRC ÃŠÃ½Å¸ÃÂµÅ“SK_BUFÃ–Ã  
 
 
 }*/
@@ -1120,16 +1145,16 @@ static void send_msg4()
 	PHYadaptertoMAC_IciMsg * ici_to_mac;
 	FIN(send_msg4());
 	pkptr = fsm_pkt_create(2048);
-	fsm_skb_reserve(pkptr ,sizeof(PHYadaptertoMAC_IciMsg));//Ô€ÁôÍ·²¿µÄ¿ÕŒ�?·ÅICI
+	fsm_skb_reserve(pkptr ,sizeof(PHYadaptertoMAC_IciMsg));//Ã”â‚¬ÃÃ´ÃÂ·Â²Â¿ÂµÃ„Â¿Ã•Å’Ã?Â·Ã…ICI
 	ici_to_mac =(PHYadaptertoMAC_IciMsg *)fsm_mem_alloc(sizeof(PHYadaptertoMAC_IciMsg));
 	ici_to_mac->tcid=0;
 	ici_to_mac->MessageType =1; 
 	ici_to_mac->rnti=1; 
-	fsm_mem_cpy(pkptr->head,ici_to_mac,sizeof(PHYadaptertoMAC_IciMsg));//·ÅÈëÍ·²¿
+	fsm_mem_cpy(pkptr->head,ici_to_mac,sizeof(PHYadaptertoMAC_IciMsg));//Â·Ã…ÃˆÃ«ÃÂ·Â²Â¿
 	
 	len = sizeof(struct DL_CCCH_Message)+sizeof(struct lte_rrc_head);
-	fsm_skb_put(pkptr,2+2+6);//ÔöŒÓtailÖžÕë£¬À©ŽóÊýŸÝ¿ÕŒä£¬ÎªMACµÄÊýŸÝÁô³ö¿ÕŒä MACÌíŒÓµÄÊýŸÝ³€¶�?0byte;
-	fsm_skb_put(pkptr, len);//ÔöŒÓtailÖžÕë ÎªRRCµÄÊýŸÝÁô³ö¿ÕŒä£¬ŒŽmsg4 SDU	
+	fsm_skb_put(pkptr,2+2+6);//Ã”Ã¶Å’Ã“tailÃ–Å¾Ã•Ã«Â£Â¬Ã€Â©Å½Ã³ÃŠÃ½Å¸ÃÂ¿Ã•Å’Ã¤Â£Â¬ÃŽÂªMACÂµÃ„ÃŠÃ½Å¸ÃÃÃ´Â³Ã¶Â¿Ã•Å’Ã¤ MACÃŒÃ­Å’Ã“ÂµÃ„ÃŠÃ½Å¸ÃÂ³â‚¬Â¶Ã?0byte;
+	fsm_skb_put(pkptr, len);//Ã”Ã¶Å’Ã“tailÃ–Å¾Ã•Ã« ÃŽÂªRRCÂµÃ„ÃŠÃ½Å¸ÃÃÃ´Â³Ã¶Â¿Ã•Å’Ã¤Â£Â¬Å’Å½msg4 SDU	
 	msg4_add_MacCR_element(pkptr,sizeof(struct DL_CCCH_Message)+sizeof(struct lte_rrc_head));//
 	msg4_add_RRC_data(pkptr);
 	fsm_printf((char*)pkptr->data);
@@ -1140,11 +1165,11 @@ static void send_msg4()
 
 /********************************************************************************
 ** Function name: gen_dl_ccch_send_rrcsetup
-** Description: rrc�������ɺ��� �����ô���
+** Description: rrc²¿·ÖÉú³Éº¯Êý ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns: dl_ccch_rrcsetup
-** Created by: ��Ӧ��
+** Created by: ÁõÓ¦ÌÎ
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1286,7 +1311,7 @@ struct DL_CCCH_Message *gen_dl_ccch_send_rrcsetup(void)
 	};
 
 /****SPS-Config****/
-    struct C_RNTI c_rnti1={     //bitstring类型�?
+    struct C_RNTI c_rnti1={     //bitstringç±»åž‹çš?
 		.c_rnti = 4,
     };
     struct N1_PUCCH_AN_PersistentList n1_pucch_an_persistentlist1={       
@@ -1354,7 +1379,7 @@ struct DL_CCCH_Message *gen_dl_ccch_send_rrcsetup(void)
 
     struct UplinkPowerControlDedicated uplinkpowercontroldedicated1={              
     	.p0_UE_PUSCH = 2,          //INTEGER (-8..7)
-		.deltaMCS_Enabled = en1,    //en1 对应�?.25
+		.deltaMCS_Enabled = en1,    //en1 å¯¹åº”å€?.25
 		.accumulationEnabled = true,
 		.p0_uE_PUCCH = 2,         //INTEGER (-8..7)
 		.pSRS_Offset = 2,          //INTEGER (0..15)
@@ -1467,16 +1492,16 @@ struct DL_CCCH_Message *gen_dl_ccch_send_rrcsetup(void)
 	dl_ccch_rrcsetup->msg.rrcConnectionSetup = rrcConnectionSetupmsg1;
     return dl_ccch_rrcsetup;
 }
-/********20140715 mf ŒÓRRC****************************/
+/********20140715 mf Å’Ã“RRC****************************/
 /****functions for test****/
 
 /********************************************************************************
 ** Function name: gen_paging
-** Description: paging���ɺ��� �����ô���
+** Description: pagingÉú³Éº¯Êý ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns: pkptr
-** Created by: ��Ӧ��
+** Created by: ÁõÓ¦ÌÎ
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1513,14 +1538,14 @@ FSM_PKT* gen_paging()
 	int msg_len = sizeof(pcch_msg);
 	int message_type = 0;
 	
-	//²úÉú±šÎÄ
+	//Â²ÃºÃ‰ÃºÂ±Å¡ÃŽÃ„
 	
 	pkptr = fsm_pkt_create(msg_len + sizeof(struct lte_rrc_head)+sizeof(struct PHYadaptertoMAC_IciMsg));
 	fsm_skb_reserve(pkptr,sizeof(struct PHYadaptertoMAC_IciMsg));
 	fsm_skb_put(pkptr, sizeof(struct lte_rrc_head));
 	fsm_mem_cpy(pkptr->tail, msg, msg_len);
 
-	//Ìî³äÍ·²¿
+	//ÃŒÃ®Â³Ã¤ÃÂ·Â²Â¿
 	if(fsm_skb_headroom(pkptr) < sizeof(struct lte_rrc_head)){
 		pkptr = fsm_skb_realloc_headeroom(pkptr,sizeof(struct lte_rrc_head));
 		if(pkptr == NULL)
@@ -1533,11 +1558,11 @@ FSM_PKT* gen_paging()
 
 /********************************************************************************
 ** Function name: gen_si
-** Description: si���ɺ��� �����ô���
+** Description: siÉú³Éº¯Êý ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output: 
 ** Returns: pkptr
-** Created by: ��Ӧ��
+** Created by: ÁõÓ¦ÌÎ
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1572,13 +1597,13 @@ FSM_PKT* gen_si()
 	int msg_len=sizeof(bcch_dl_sch_message);
 	int message_type = 2;
 	
-	//²úÉú±šÎÄ
+	//Â²ÃºÃ‰ÃºÂ±Å¡ÃŽÃ„
 	
 	pkptr = fsm_pkt_create(msg_len + sizeof(struct lte_rrc_head)+sizeof(struct PHYadaptertoMAC_IciMsg));
 	fsm_skb_reserve(pkptr,sizeof(struct PHYadaptertoMAC_IciMsg));
 	fsm_skb_put(pkptr, sizeof(struct lte_rrc_head));
 	fsm_mem_cpy(pkptr->tail, msg, msg_len);
-	//Ìî³äÍ·²¿
+	//ÃŒÃ®Â³Ã¤ÃÂ·Â²Â¿
 
 	if(fsm_skb_headroom(pkptr) < sizeof(struct lte_rrc_head)){
 		pkptr= fsm_skb_realloc_headeroom(pkptr,sizeof(struct lte_rrc_head));
@@ -1593,11 +1618,11 @@ FSM_PKT* gen_si()
 
 /********************************************************************************
 ** Function name: gen_mib
-** Description: mib���ɺ��� �����ô���
+** Description: mibÉú³Éº¯Êý ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output: 
 ** Returns: pkptr
-** Created by: ��Ӧ��
+** Created by: ÁõÓ¦ÌÎ
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1620,14 +1645,14 @@ FSM_PKT* gen_mib()
 	int msg_len = sizeof(bcch_bch_msg);
 	int message_type = 1;
 
-	//²úÉú±šÎÄ
+	//Â²ÃºÃ‰ÃºÂ±Å¡ÃŽÃ„
 	
 	pkptr = fsm_pkt_create(msg_len + sizeof(struct lte_rrc_head)+sizeof(struct PHYadaptertoMAC_IciMsg));
 	fsm_skb_reserve(pkptr,sizeof(struct PHYadaptertoMAC_IciMsg));
 	fsm_skb_put(pkptr, sizeof(struct lte_rrc_head));
 	fsm_mem_cpy(pkptr->tail, msg, msg_len);
 
-	//Ìî³äÍ·²¿
+	//ÃŒÃ®Â³Ã¤ÃÂ·Â²Â¿
 	if(fsm_skb_headroom(pkptr) < sizeof(struct lte_rrc_head)){
 		pkptr = fsm_skb_realloc_headeroom(pkptr,sizeof(struct lte_rrc_head));
 		if(pkptr == NULL)
@@ -1650,14 +1675,14 @@ FSM_PKT* gen_sib1()
 	int msg_len=sizeof(bcch_dl_sch_message);
 	
 	
-	//²úÉú±šÎÄ
+	//Â²ÃºÃ‰ÃºÂ±Å¡ÃŽÃ„
 	FSM_PKT* pkptr;
 	struct lte_rrc_head* sh_ptr;
 	pkptr= fsm_pkt_create(msg_len + sizeof(struct lte_rrc_head));  
 	fsm_skb_put(pkptr, msg_len);
 	fsm_mem_cpy(pkptr->data, msg, msg_len);
 	
-	//Ìî³äÍ·²¿
+	//ÃŒÃ®Â³Ã¤ÃÂ·Â²Â¿
 	if(fsm_skb_headroom(pkptr) < sizeof(struct lte_rrc_head)){
 		pkptr= fsm_skb_realloc_headeroom(pkptr,sizeof(struct lte_rrc_head));
 		if(pkptr== NULL)
@@ -1672,11 +1697,11 @@ FSM_PKT* gen_sib1()
 
 /********************************************************************************
 ** Function name: gen_sib1
-** Description: sib1���ɺ��� �����ô���
+** Description: sib1Éú³Éº¯Êý ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output: 
 ** Returns: pkptr
-** Created by: ��Ӧ��
+** Created by: ÁõÓ¦ÌÎ
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1699,14 +1724,14 @@ FSM_PKT* gen_sib1()
 	int msg_len=sizeof(bcch_dl_sch_message);
 	
 	
-	//²úÉú±šÎÄ
+	//Â²ÃºÃ‰ÃºÂ±Å¡ÃŽÃ„
 	
 	pkptr = fsm_pkt_create(msg_len + sizeof(struct lte_rrc_head)+sizeof(struct PHYadaptertoMAC_IciMsg));
 	fsm_skb_reserve(pkptr,sizeof(struct PHYadaptertoMAC_IciMsg));
 	fsm_skb_put(pkptr, sizeof(struct lte_rrc_head));
 	fsm_mem_cpy(pkptr->tail, msg, msg_len);
 	
-	//Ìî³äÍ·²¿
+	//ÃŒÃ®Â³Ã¤ÃÂ·Â²Â¿
 	if(fsm_skb_headroom(pkptr) < sizeof(struct lte_rrc_head)){
 		pkptr= fsm_skb_realloc_headeroom(pkptr,sizeof(struct lte_rrc_head));
 		if(pkptr== NULL)
@@ -1719,14 +1744,14 @@ FSM_PKT* gen_sib1()
 
 /********************************************************************************
 ** Function name: createPhyToMacIci
-** Description: phytomac ici ���ɺ��� �����ñ�д ����������ʹ��
+** Description: phytomac ici Éú³Éº¯Êý ²âÊÔÓÃ±àÐ´ ºóÓÃÓÚÕý³£Ê¹ÓÃ
 ** Input: FSM_PKT *skb,int rnti,int tcid
 ** Output:
 ** Returns:
-** Created by: ����
+** Created by: ºÎçô
 ** Created Date: 
 ** ------------------------------------------------------------------------------
-** Modified by: ����
+** Modified by: Âí·¼
 ** Modified Date: 
 ********************************************************************************/
 static void createPhyToMacIci(FSM_PKT *skb,int rnti,int tcid){
@@ -1744,11 +1769,11 @@ static void createPhyToMacIci(FSM_PKT *skb,int rnti,int tcid){
 
 /********************************************************************************
 ** Function name: createRARPdu
-** Description: RAR���ɺ��� �����ô��� �ֲ���
+** Description: RARÉú³Éº¯Êý ²âÊÔÓÃ´úÂë ÏÖ²»ÓÃ
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ����
+** Created by: ºÎçô
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1759,13 +1784,13 @@ static void createPhyToMacIci(FSM_PKT *skb,int rnti,int tcid){
 static int createRARPdu(FSM_PKT *skb,int number,unsigned int data){
 	int len=0,from_len=0,i;
 	char typ=1;
-	MAC_RAR_subhead_withbi *bi_subhead=(MAC_RAR_subhead_withbi*)fsm_mem_alloc(sizeof(MAC_RAR_subhead_withbi));	//20140430žÄ
-	MAC_RAR_subhead *rar_subhead=(MAC_RAR_subhead*)fsm_mem_alloc(sizeof(MAC_RAR_subhead));	//20140430žÄ
-	MAC_RAR_sdu *rar_sdu=(MAC_RAR_sdu*)fsm_mem_alloc(sizeof(MAC_RAR_sdu));	//20140430žÄ
+	MAC_RAR_subhead_withbi *bi_subhead=(MAC_RAR_subhead_withbi*)fsm_mem_alloc(sizeof(MAC_RAR_subhead_withbi));	//20140430Å¾Ã„
+	MAC_RAR_subhead *rar_subhead=(MAC_RAR_subhead*)fsm_mem_alloc(sizeof(MAC_RAR_subhead));	//20140430Å¾Ã„
+	MAC_RAR_sdu *rar_sdu=(MAC_RAR_sdu*)fsm_mem_alloc(sizeof(MAC_RAR_sdu));	//20140430Å¾Ã„
 
-	fsm_mem_set(bi_subhead,0,sizeof(MAC_RAR_subhead_withbi));	//20140430žÄ
-	fsm_mem_set(rar_subhead,0,sizeof(MAC_RAR_subhead));	//20140430žÄ
-	fsm_mem_set(rar_sdu,0,sizeof(MAC_RAR_sdu));	//20140430žÄ
+	fsm_mem_set(bi_subhead,0,sizeof(MAC_RAR_subhead_withbi));	//20140430Å¾Ã„
+	fsm_mem_set(rar_subhead,0,sizeof(MAC_RAR_subhead));	//20140430Å¾Ã„
+	fsm_mem_set(rar_sdu,0,sizeof(MAC_RAR_sdu));	//20140430Å¾Ã„
 
 	createPhyToMacIci(skb,31,2);
 
@@ -1808,11 +1833,11 @@ static int createRARPdu(FSM_PKT *skb,int number,unsigned int data){
 	
 /********************************************************************************
 ** Function name: my_createRARPdu
-** Description: RAR���ɺ��� �����ô��� ����ʹ��
+** Description: RARÉú³Éº¯Êý ²âÊÔÓÃ´úÂë ÕýÔÚÊ¹ÓÃ
 ** Input: FSM_PKT *skb,int number,unsigned int rapid 
 ** Output: 
-** Returns: from_len RARpdu����
-** Created by: ����
+** Returns: from_len RARpdu³¤¶È
+** Created by: ºÎçô
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1821,9 +1846,9 @@ static int createRARPdu(FSM_PKT *skb,int number,unsigned int data){
 static int my_createRARPdu(FSM_PKT *skb,int number,unsigned int rapid ){
 	int len=0,from_len=0,i;
 	char type =1;
-	MAC_RAR_subhead_withbi *bi_subhead=(MAC_RAR_subhead_withbi*)fsm_mem_alloc(sizeof(MAC_RAR_subhead_withbi));	//20140430��
-	MAC_RAR_subhead *rar_subhead=(MAC_RAR_subhead*)fsm_mem_alloc(sizeof(MAC_RAR_subhead));	//20140430��
-	MAC_RAR_sdu *rar_sdu=(MAC_RAR_sdu*)fsm_mem_alloc(sizeof(MAC_RAR_sdu));	//20140430��
+	MAC_RAR_subhead_withbi *bi_subhead=(MAC_RAR_subhead_withbi*)fsm_mem_alloc(sizeof(MAC_RAR_subhead_withbi));	//20140430¸Ä
+	MAC_RAR_subhead *rar_subhead=(MAC_RAR_subhead*)fsm_mem_alloc(sizeof(MAC_RAR_subhead));	//20140430¸Ä
+	MAC_RAR_sdu *rar_sdu=(MAC_RAR_sdu*)fsm_mem_alloc(sizeof(MAC_RAR_sdu));	//20140430¸Ä
 	PHYadaptertoMAC_IciMsg *m_phy_ici=(PHYadaptertoMAC_IciMsg*)fsm_mem_alloc(sizeof(PHYadaptertoMAC_IciMsg));
 	m_phy_ici->tcid=2;
 	m_phy_ici->rnti=0;
@@ -1831,16 +1856,16 @@ static int my_createRARPdu(FSM_PKT *skb,int number,unsigned int rapid ){
 	len=sizeof(PHYadaptertoMAC_IciMsg);
 	fsm_mem_cpy(skb->head,m_phy_ici,len);
 
-	fsm_mem_set(bi_subhead,0,sizeof(MAC_RAR_subhead_withbi));	//20140430��
-	fsm_mem_set(rar_subhead,0,sizeof(MAC_RAR_subhead));	//20140430��
-	fsm_mem_set(rar_sdu,0,sizeof(MAC_RAR_sdu));	//20140430��
+	fsm_mem_set(bi_subhead,0,sizeof(MAC_RAR_subhead_withbi));	//20140430¸Ä
+	fsm_mem_set(rar_subhead,0,sizeof(MAC_RAR_subhead));	//20140430¸Ä
+	fsm_mem_set(rar_sdu,0,sizeof(MAC_RAR_sdu));	//20140430¸Ä
 	fsm_mem_cpy(skb->data+from_len,&type,1);
 	from_len += 1;
-	bi_subhead->m_e_t_r_r_bi=129;//���ɺ���BI����ͷ
+	bi_subhead->m_e_t_r_r_bi=129;//Éú³Éº¬ÓÐBIµÄ×ÓÍ·
 	len=sizeof(MAC_RAR_subhead_withbi);
 	fsm_mem_cpy(skb->data+from_len,bi_subhead,len);
 	from_len+=len;
-	for(i=0;i<number-1;i++){ // ���ɺ���RAPID����ͷ  
+	for(i=0;i<number-1;i++){ // Éú³Éº¬ÓÐRAPIDµÄ×ÓÍ·  
 		rar_subhead->m_e_t_rapid = rapid+192;
 		len=sizeof(MAC_RAR_subhead);
 		fsm_mem_cpy(skb->data+from_len,rar_subhead,len);
@@ -1870,15 +1895,15 @@ static int my_createRARPdu(FSM_PKT *skb,int number,unsigned int rapid ){
 }
 	
 	
-/***��������***/
+/***ºÎçô²âÊÔ***/
 
 /********************************************************************************
 ** Function name: my_createContentionResolution
-** Description: ���������Ԫ���ɺ��� �����ô���
+** Description: ¾ºÕù½â¾öµ¥ÔªÉú³Éº¯Êý ²âÊÔÓÃ´úÂë
 ** Input: FSM_PKT *skb,int offset
 ** Output: 
-** Returns: os ƫ�Ƴ���
-** Created by: ����
+** Returns: os Æ«ÒÆ³¤¶È
+** Created by: ºÎçô
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1910,11 +1935,11 @@ static int my_createContentionResolution(FSM_PKT *skb,int offset){
 
 /********************************************************************************
 ** Function name: my_msg4_add_MacCR_element
-** Description: msg4mac��ص�Ԫ���ɺ��� �����ô���
+** Description: msg4macÏà¹Øµ¥ÔªÉú³Éº¯Êý ²âÊÔÓÃ´úÂë
 ** Input: FSM_PKT *skb,int sdu_len
 ** Output: 
-** Returns: len �������ֵĳ���
-** Created by: ����
+** Returns: len ²úÉú²¿·ÖµÄ³¤¶È
+** Created by: ºÎçô
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1950,11 +1975,11 @@ static int my_msg4_add_MacCR_element(FSM_PKT *skb,int sdu_len){
 
 /********************************************************************************
 ** Function name: test_send_msg4
-** Description: msg4���ͺ��� �����ô���
+** Description: msg4·¢ËÍº¯Êý ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ����
+** Created by: ºÎçô
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -1976,26 +2001,26 @@ static void test_send_msg4()
 	fsm_pkt_destroy(pkptr);
 
 	pkptr = fsm_pkt_create(2048);
-	fsm_skb_reserve(pkptr ,2*sizeof(PHYadaptertoMAC_IciMsg));//Ԥ��ͷ���Ŀռ� ��ICI
+	fsm_skb_reserve(pkptr ,2*sizeof(PHYadaptertoMAC_IciMsg));//Ô¤ÁôÍ·²¿µÄ¿Õ¼ä ·ÅICI
 	ici_to_mac =(PHYadaptertoMAC_IciMsg *)fsm_mem_alloc(sizeof(PHYadaptertoMAC_IciMsg));
 	ici_to_mac->tcid= 2;
 	//ici_to_mac->MessageType =1; 
 	ici_to_mac->rnti= 31; 
-	fsm_mem_cpy(pkptr->head,ici_to_mac,sizeof(PHYadaptertoMAC_IciMsg));//����ͷ��
+	fsm_mem_cpy(pkptr->head,ici_to_mac,sizeof(PHYadaptertoMAC_IciMsg));//·ÅÈëÍ·²¿
 
-	fsm_skb_put(pkptr,1+2+2+6);//����tailָ�룬�������ݿռ䣬ΪMAC�����������ռ� MAC���ӵ����ݳ���10byte;
-	fsm_skb_put(pkptr, 12);//����tailָ�� ΪRRC�����������ռ䣬��msg4 SDU	
+	fsm_skb_put(pkptr,1+2+2+6);//Ôö¼ÓtailÖ¸Õë£¬À©´óÊý¾Ý¿Õ¼ä£¬ÎªMACµÄÊý¾ÝÁô³ö¿Õ¼ä MACÌí¼ÓµÄÊý¾Ý³¤¶È10byte;
+	fsm_skb_put(pkptr, 12);//Ôö¼ÓtailÖ¸Õë ÎªRRCµÄÊý¾ÝÁô³ö¿Õ¼ä£¬¼´msg4 SDU	
 
 	fsm_skb_put(pkptr, 10);
 	
-	//msg4_add_MacCR_element(pkptr,12);//����MAC�����ݵ�SK_BUF��
-	from_len=my_msg4_add_MacCR_element(pkptr,12);//����MAC�����ݵ�SK_BUF��
+	//msg4_add_MacCR_element(pkptr,12);//Ìí¼ÓMACµÄÊý¾Ýµ½SK_BUFÖÐ
+	from_len=my_msg4_add_MacCR_element(pkptr,12);//Ìí¼ÓMACµÄÊý¾Ýµ½SK_BUFÖÐ
     //fsm_mem_cpy(pkptr->data+from_len,sdu_data,12);
 
 
-	//����RRC ���ݵ�SK_BUF��  
+	//Ìí¼ÓRRC Êý¾Ýµ½SK_BUFÖÐ  
 	sdu_data_len = sizeof(sdu_data);
-    //fsm_mem_free(ici_to_mac);//�ͷ��ڴ�
+    //fsm_mem_free(ici_to_mac);//ÊÍ·ÅÄÚ´æ
         len = sizeof(struct DL_CCCH_Message)+sizeof(struct lte_rrc_head);
 	fsm_printf("from_len=%d,sdu_data_len=%d,len=%d\n",from_len,sdu_data_len,len);
 	fsm_skb_put(pkptr, len);
@@ -2010,11 +2035,11 @@ static void test_send_msg4()
 
 /********************************************************************************
 ** Function name: print_tran_info
-** Description: ��ӡ��ǰ״̬
-** Input: const char *str ���ӡ������
+** Description: ´òÓ¡µ±Ç°×´Ì¬
+** Input: const char *str Ðè´òÓ¡µÄÄÚÈÝ
 ** Output:
 ** Returns:
-** Created by: ����
+** Created by: Âí·¼
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
@@ -2034,11 +2059,11 @@ FOUT;
 
 /********************************************************************************
 ** Function name: ioctldata
-** Description: get��destroyioctl��data �����ô���
+** Description: get²¢destroyioctlµÄdata ²âÊÔÓÃ´úÂë
 ** Input:
 ** Output:
 ** Returns:
-** Created by: ����
+** Created by: Âí·¼
 ** Created Date: 
 ** ------------------------------------------------------------------------------
 ** Modified by: 
