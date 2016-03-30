@@ -421,7 +421,7 @@ int fsm_mem_cmp(const void* dst_ptr, const void* src_ptr, size_t size)
 /* Print */
 size_t fsm_printf(const char* fmt,...)
 {
-	return;
+	//return;
 	int print_len;
 	va_list args;
 	va_start(args,fmt);

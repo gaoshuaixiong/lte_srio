@@ -13,6 +13,8 @@
 
 
 #include <linux/if_ether.h>
+#include <linux/fs.h>
+#include <linux/uaccess.h>
 #include "sriofsm.h"
 #include "../lte_system.h"
 #include "pkfmt.h"
@@ -283,6 +285,50 @@ static void init_enter(void)
 	FOUT;
 }
 
+
+char atohex(char s)
+{
+	char n = s;
+	
+	if( n >= 'a' && n <= 'z') 
+		n = n + 'A' - 'a';
+
+	if(n > 0x39) //alpha
+	    return (n - 0x37);
+	else  //number
+		return (n - 0x30);
+}
+
+char chartohex(char *str)
+{
+    char code[3], temp;
+	fsm_mem_set(code, 0, 3);
+	fsm_mem_cpy(code, str, 2);
+
+	temp = atohex(code[0]);
+	printk("the templower is %x\n", temp);
+	temp = (temp << 4) & 0xF0;
+	printk("the temphigher is %x\n", temp);
+	temp |= atohex(code[1]); 
+	printk("the code is %s\n", code);
+	
+	//printbinary(temp);
+	printk("the temp is %x, the sizeof(temp) is %d\n", temp, sizeof(temp));
+	return (char)temp;
+}
+
+int getstringtomac(char *macaddr,char *str)
+{
+	int i;
+	char temp;
+	for(i=0;i<6;i++)
+	{
+		temp = chartohex(str);
+		str = str+2;
+		fsm_mem_cpy(macaddr+i,&temp,1);
+	}
+}
+
 /********************************************************************************
 ** Function name: srio_sv_init
 ** Description: 状态机全局变量初始化函数
@@ -300,6 +346,37 @@ static void srio_sv_init(void)
 	FIN(srio_sv_init());//
 	u32 i;
 	//PHY_TO_MAC_frame *Sf_info = (PHY_TO_MAC_frame *)fsm_mem_alloc(sizeof(PHY_TO_MAC_frame));
+	char temp[6]= {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	char enb[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	char ue1[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	char ue2[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	char ue3[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	char ue4[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	char ue5[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+	struct file *fp;
+    mm_segment_t fs;
+    loff_t pos;
+    int block_count = 6;
+    int block_size = 12;
+    printk("hello enter\n");
+    fp =filp_open("/home/alison/Desktop/lte_srio/enb_eth/srio.cfg", O_RDONLY, 0);
+    if (IS_ERR(fp)){
+        printk("create file error\n");
+        return -1;
+    }
+    fs =get_fs();
+    set_fs(KERNEL_DS);
+    pos =4;
+    printk("\n\n\n\nbefore vfs_read\n");
+    fsm_octets_print(enb,6);
+    //read(fp,enb,6,&pos);
+    vfs_read(fp,temp,12, &pos);
+    getstringtomac(enb,temp);
+    printk("\n\n\n\nafter vfs_read\n");
+    fsm_octets_print(enb,6);
+    filp_close(fp,NULL);
+    set_fs(fs);
+	printk("IOCTL_GET_ENB_ADDR tobe fix \n");
 	SV_PTR_GET(srio_sv);//
 
 	SV(packet_count) = 0;//
@@ -813,6 +890,30 @@ static void idle_ioctl_handler(void)
 					SV(psend_handle) = fsm_schedule_self(SV(interval), _PACKET_SEND_PERIOD);
 				}
 			FOUT;
+			case IOCTL_GET_ENB_ADDR:
+				{
+					char buf[10] ="hello";
+					char buf1[10];
+					struct file *fp;
+				    mm_segment_t fs;
+				    loff_t pos;
+				    printk("hello enter/n");
+				    fp =filp_open("/home/alison/Desktop/lte_srio/enb_eth/srio.cfg",O_RDWR | O_CREAT,0644);
+				    if (IS_ERR(fp)){
+				        printk("create file error/n");
+				        return -1;
+				    }
+				    fs =get_fs();
+				    set_fs(KERNEL_DS);
+				    pos =0;
+				    vfs_write(fp,buf, sizeof(buf), &pos);
+				    pos =0;
+				    vfs_read(fp,buf1, sizeof(buf), &pos);
+				    printk("read: %s/n",buf1);
+				    filp_close(fp,NULL);
+				    set_fs(fs);
+					printk("IOCTL_GET_ENB_ADDR tobe fix \n");
+				}
 			case IOCCMD_PSEND_STOP:
 				if(SV(psend_handle))
 				{

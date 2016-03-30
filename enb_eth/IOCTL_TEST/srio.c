@@ -42,6 +42,16 @@ int main(int argc, char *argv[])
 				ioctl(sock, USERIOCCMD, &ifr);
 			}	
 		}
+		else if(strcmp(argv[1], "-get_enb_addr") == 0)
+		{	
+			if(argc == 3)
+			{
+				strcpy(ifr.ifr_ifrn.ifrn_name, argv[2]);
+				get_enb_addr(&kifr);
+				ifr.ifr_ifru.ifru_data = (void*)&kifr;
+				ioctl(sock, USERIOCCMD, &ifr);
+			}
+		}
 		else if(strcmp(argv[1], "-r") == 0)
 		{	
 			if(argc == 3)
@@ -86,6 +96,13 @@ void periodical_send_stop(struct kifreq* ifr_ptr)
 void send_sf(struct kifreq* ifr_ptr)
 {
 	ifr_ptr->cmd = SEND_SF;
+	ifr_ptr->size = 0;
+	ifr_ptr->data_ptr = NULL;
+}
+
+void get_enb_addr(struct kifreq* ifr_ptr)
+{
+	ifr_ptr->cmd = GET_ENB_ADDR;
 	ifr_ptr->size = 0;
 	ifr_ptr->data_ptr = NULL;
 }

@@ -4,6 +4,7 @@
 #define PSEND_STOP 	0x02
 #define PSEND_INTERVAL	0x03
 #define SEND_SF	0x77
+#define GET_ENB_ADDR 0x78
 
 struct kifreq
 {
@@ -16,4 +17,5 @@ void periodical_send_stop(struct kifreq* ifr_ptr);
 void periodical_send_run(struct kifreq* ifr_ptr);
 void periodical_send_interval(struct kifreq* ifr_ptr, float interval);
 void send_sf(struct kifreq* ifr_ptr);
+void get_enb_addr(struct kifreq* ifr_ptr);
 void usage(void);		
