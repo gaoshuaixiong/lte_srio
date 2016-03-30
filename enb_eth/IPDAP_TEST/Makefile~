@@ -1,0 +1,6 @@
+COMPILE = /home/fedora/QorIQ-SDK-V1.3.2-20130325-yocto/amc718/tmp/sysroots/i686-linux/usr/bin/ppce500mc-fsl-linux/powerpc-fsl-linux-gcc
+sriotest:
+	 $(COMPILE) -o sriotest -g srio.c
+clean:
+	rm sriotest
+

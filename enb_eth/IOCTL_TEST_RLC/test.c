@@ -1,0 +1,157 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
+
+#include "./test.h"
+
+//test -c LTE_RRC0 mode n   	//重配置
+//test -r LTE_RRC0 n       		//重启
+//test -b LTE_RRC0 mode n		//建立
+//test -d LTE_RRC0 n			//撤销
+//test -s LTE_RRC0 n			//挂起
+//test -tr LTE_RRC0 n			//从RRC发送数据到RLC
+
+//test -tm  LTE_MAC0 u/a/as n  //从mac发送数据到RLC
+
+//test -tp LTE_PDCP0 n			//从PDCP发送数据到RLC
+
+int main(int argc, char *argv[])
+{
+    int sock;
+    struct ifreq ifr;
+    struct kifreq kifr;
+    struct config conf;
+    //float interval;
+    unsigned char id;
+    sock = socket(AF_INET, SOCK_DGRAM, 0);
+    kifr.data_ptr = NULL;
+    //conf.cmd = NULL;
+    if(argc > 2)
+    {
+
+        if((strcmp(argv[1], "-c") == 0)||(strcmp(argv[1], "-b") == 0)||(strcmp(argv[1], "-tm") == 0))
+        {
+            if(argc == 5)
+            {
+                conf.mode = atoi(argv[3]);
+                conf.rbid = (unsigned char)argv[4][0] -48;
+                //printf("conf.rbid is %d\n", (unsigned char)conf.rbid );
+                strcpy(ifr.ifr_ifrn.ifrn_name, argv[2]);
+                periodical_config(&kifr, &conf,argv[1]);
+                ifr.ifr_ifru.ifru_data = (void*)&kifr;
+                if((ioctl(sock, USERIOCCMD, &ifr))<0) printf("%s is not set or has setted umproperly",argv[2]);
+            }
+        }
+        else if((strcmp(argv[1], "-r") == 0)||(strcmp(argv[1], "-d") == 0)||\
+                (strcmp(argv[1], "-s") == 0)||(strcmp(argv[1], "-tr") == 0)||(strcmp(argv[1], "-tp") == 0))
+        {
+            if(argc == 4)
+            {
+                conf.rbid = (unsigned char)argv[3][0] - 48;
+                strcpy(ifr.ifr_ifrn.ifrn_name, argv[2]);
+                periodical_config(&kifr,&conf,argv[1]);
+                ifr.ifr_ifru.ifru_data = (void*)&kifr;
+                if((ioctl(sock, USERIOCCMD, &ifr))<0) printf("%s is not set or has setted umproperly",argv[2]);
+            }
+        }
+        else if((strcmp(argv[1], "-p") == 0))
+        {
+        	strcpy(ifr.ifr_ifrn.ifrn_name, argv[2]);
+            periodical_config(&kifr,&conf,argv[1]);
+            ifr.ifr_ifru.ifru_data = (void*)&kifr;
+            if((ioctl(sock, USERIOCCMD, &ifr))<0) printf("%s is not set or has setted umproperly",argv[2]);
+        }
+        if(kifr.data_ptr != NULL)
+            free(kifr.data_ptr);
+    }
+    else
+        usage();
+    return 1;
+}
+/*
+void periodical_send_stop(struct kifreq* ifr_ptr)
+{
+	ifr_ptr->cmd = PSEND_STOP;
+	ifr_ptr->size = 0;
+	ifr_ptr->data_ptr = NULL;
+}
+
+
+
+void periodical_send_run(struct kifreq* ifr_ptr)
+{
+	ifr_ptr->cmd = PSEND_RUN;
+	//ifr_ptr->size = 0;
+	//ifr_ptr->data_ptr = NULL;
+	char *ptr =(char*) malloc(8);
+	strncpy(ptr, "char.",6);
+//	ifr_ptr->cmd = PSEND_INTERVAL;
+	ifr_ptr->size =8;
+//	ptr = ;
+	ifr_ptr->data_ptr = ptr;
+}
+
+void periodical_send_interval(struct kifreq* ifr_ptr, float interval)
+{
+	unsigned int *ptr;
+	ifr_ptr->cmd = PSEND_INTERVAL;
+	ifr_ptr->size = sizeof(unsigned int);
+	ptr = (unsigned int*) malloc(sizeof(unsigned int));
+	*ptr = (unsigned int)(interval*100000);
+	ifr_ptr->data_ptr = ptr;
+}
+*/
+void usage(void)
+{
+    const char* info_ptr = "test -c LTE_RRC0 mode n \n\
+test -r LTE_RRC0 n\n\
+test -b LTE_RRC0 mode n\n\
+test -d LTE_RRC0 n\n\
+test -s LTE_RRC0 n\n\
+test -tr LTE_RRC0\n\
+test -tm  LTE_MAC0 u/a/as\n\
+test -tp LTE_PDCP0\n";
+    printf("%s",info_ptr);
+}
+
+//void periodical_suspend(struct kifreq* ifr_ptr,unsigned char rbid);
+void periodical_config(struct kifreq* ifr_ptr, struct config*conf, char*cmd)
+{
+    struct config *con;
+    con = (struct config*)malloc(sizeof(struct config));
+    printf("has been config(con->rbid is %d)\n",conf->rbid);
+//	con->cmd = (char*)malloc(4);
+//	strncpy(con->cmd, conf->cmd,4);
+    con->mode = conf->mode;
+    con->rbid = conf->rbid;
+    if(strcmp(cmd, "-r") == 0)
+        ifr_ptr->cmd = RESUME;
+    if(strcmp(cmd, "-c") == 0)
+        ifr_ptr->cmd = RECONFIG;
+    if(strcmp(cmd, "-b") == 0)
+    {
+        ifr_ptr->cmd = BUILD;
+        printf("BULID command\n");
+    }
+    if(strcmp(cmd, "-d") == 0)
+        ifr_ptr->cmd = DEACT;
+    if(strcmp(cmd, "-s") == 0)
+        ifr_ptr->cmd = SUSPEND;
+    if(strcmp(cmd, "-tr") == 0)
+        ifr_ptr->cmd = SENDRRC;
+    if(strcmp(cmd, "-tp") == 0)
+        ifr_ptr->cmd = SENDPDCP;
+    if(strcmp(cmd, "-tm") == 0)
+        ifr_ptr->cmd = SENDMAC;
+    if(strcmp(cmd, "-p") == 0)
+    	ifr_ptr->cmd = PRINTRLC;
+    ifr_ptr->size = sizeof(struct config);
+    ifr_ptr->data_ptr = NULL;
+    //printf("has been config(con->rbid is %d)\n",con->rbid);
+}
+
+
+

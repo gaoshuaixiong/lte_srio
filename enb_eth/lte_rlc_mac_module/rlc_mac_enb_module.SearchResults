@@ -1,0 +1,5 @@
+---- export_subframeNo Matches (5 in 3 files) ----
+Lte_rlc_mac_module.mod.c:	{ 0x41837d18, "export_subframeNo" },
+Mac_scheduler.c:    p_ul_ici_dci->s_ul_dci.m_riv		=Do_UlDci_RIV(export_subframeNo,UL_CQI, ue_number, ue_index);
+Rlc_macfsm.c:extern int export_subframeNo;	//add in 20151230
+Rlc_macfsm.c:		if(export_subframeNo == 3 || export_subframeNo == 8)

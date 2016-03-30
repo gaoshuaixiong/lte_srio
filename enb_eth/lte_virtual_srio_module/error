@@ -1,0 +1,73 @@
+In file included from /mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.h:2:0,
+                 from /mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:2:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/macpkfmt.h:206:2: 警告： 函数声明不是一个原型 [-Wstrict-prototypes]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/macpkfmt.h:214:1: 警告： 函数声明不是一个原型 [-Wstrict-prototypes]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/macpkfmt.h:215:1: 警告： 函数声明不是一个原型 [-Wstrict-prototypes]
+In file included from /mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:5:0:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/rrc_type.h:302:1: 警告： 空声明中指定存储类无用 [默认启用]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/rrc_type.h:306:1: 警告： 空声明中指定存储类无用 [默认启用]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/rrc_type.h:316:1: 警告： 空声明中指定存储类无用 [默认启用]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/rrc_type.h:330:1: 警告： 空声明中指定存储类无用 [默认启用]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/rrc_type.h:340:1: 警告： 空声明中指定存储类无用 [默认启用]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/rrc_type.h:350:1: 警告： 空声明中指定存储类无用 [默认启用]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/rrc_type.h:364:1: 警告： 空声明中指定存储类无用 [默认启用]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘init_enter’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:106:2: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘srio_sv_init’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:116:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:115:2: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘srio_close’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:126:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:125:2: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘packet_send_to_eth’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:179:1: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:178:1: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘packet_send_to_upperlayer’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:236:1: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘idle_exit’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:270:1: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘send_packet_period’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:331:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:330:2: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:326:34: 警告： 未使用的变量‘ici_to_mac’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘ioctl_handler’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:378:1: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:377:1: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘createmachead7bit’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:448:4: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘msg4_add_MacCR_element’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:459:6: 警告： 未使用的变量‘i’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在文件作用域：
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:599:2: 警告： “/*”出现在注释中 [-Wcomment]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘send_msg4’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:631:2: 警告： 未使用的变量‘_fsm_fstack_static_info’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘gen_dl_ccch_send_rrcsetup’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:868:23: 警告： 未使用的变量‘subbandcqi1’ [-Wunused-variable]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘gen_paging’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:989:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:991:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1006:4: 警告： 在有返回值的的函数中，‘return’不带返回值 [-Wreturn-type]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘gen_si’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1031:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1034:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1048:4: 警告： 在有返回值的的函数中，‘return’不带返回值 [-Wreturn-type]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘gen_mib’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1062:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1064:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1079:4: 警告： 在有返回值的的函数中，‘return’不带返回值 [-Wreturn-type]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘gen_sib1’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1091:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1094:2: 警告： ISO C90 不允许混合使用声明和代码 [-Wdeclaration-after-statement]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:1109:4: 警告： 在有返回值的的函数中，‘return’不带返回值 [-Wreturn-type]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在文件作用域：
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:104:13: 警告： ‘init_enter’定义后未使用 [-Wunused-function]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c: 在函数‘gen_dl_ccch_send_rrcsetup’中:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.c:966:1: 警告： 栈帧有 3940 字节，超过了 1024 字节 [-Wframe-larger-than=]
+In file included from /mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/sriofsm.h:2:0,
+                 from /mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/virtual_srio.h:19,
+                 from /mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/virtual_srio.c:34:
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/macpkfmt.h:206:2: 警告： 函数声明不是一个原型 [-Wstrict-prototypes]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/macpkfmt.h:214:1: 警告： 函数声明不是一个原型 [-Wstrict-prototypes]
+/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/macpkfmt.h:215:1: 警告： 函数声明不是一个原型 [-Wstrict-prototypes]
+make[2]: *** 警告：文件“/mnt/hgfs/VMshare/combine/UEMAC_0721LHL_combine/lte_virtual_srio_module/lte_virtual_srio_module.o”的修改时间在将来22
+make[2]: 警告：检测到时钟错误。您的创建可能是不完整的。

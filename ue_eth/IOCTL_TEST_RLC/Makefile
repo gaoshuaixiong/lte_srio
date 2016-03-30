@@ -1,0 +1,6 @@
+COMPILE = /opt/freescale/usr/local/gcc-4.5.55-eglibc-2.11.55/powerpc-linux-gnu/bin/powerpc-linux-gnu-
+test:
+	$(COMPILE)gcc -o test -g test.c
+clean:
+	rm test
+

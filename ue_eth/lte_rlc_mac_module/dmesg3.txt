@@ -1,0 +1,1656 @@
+[    0.490981] pci 0000:00:18.4: PCI bridge to [bus 1f-1f]
+[    0.491028] pci 0000:00:18.4:   bridge window [mem 0xfc100000-0xfc1fffff]
+[    0.491073] pci 0000:00:18.4:   bridge window [mem 0xe6700000-0xe67fffff 64bit pref]
+[    0.491572] pci 0000:00:18.5: PCI bridge to [bus 20-20]
+[    0.491617] pci 0000:00:18.5:   bridge window [mem 0xfbd00000-0xfbdfffff]
+[    0.491663] pci 0000:00:18.5:   bridge window [mem 0xe6300000-0xe63fffff 64bit pref]
+[    0.492153] pci 0000:00:18.6: PCI bridge to [bus 21-21]
+[    0.492198] pci 0000:00:18.6:   bridge window [mem 0xfb900000-0xfb9fffff]
+[    0.492244] pci 0000:00:18.6:   bridge window [mem 0xe5f00000-0xe5ffffff 64bit pref]
+[    0.492734] pci 0000:00:18.7: PCI bridge to [bus 22-22]
+[    0.492779] pci 0000:00:18.7:   bridge window [mem 0xfb500000-0xfb5fffff]
+[    0.492824] pci 0000:00:18.7:   bridge window [mem 0xe5b00000-0xe5bfffff 64bit pref]
+[    0.495519] pci_bus 0000:00: on NUMA node 0
+[    0.495528] ACPI: PCI Interrupt Routing Table [\_SB_.PCI0._PRT]
+[    0.496434]  pci0000:00: Requesting ACPI _OSC control (0x1d)
+[    0.496748]  pci0000:00: ACPI _OSC control (0x15) granted
+[    0.599447] ACPI: PCI Interrupt Link [LNKA] (IRQs 3 4 5 6 7 *9 10 11 14 15)
+[    0.599526] ACPI: PCI Interrupt Link [LNKB] (IRQs 3 4 5 6 7 9 10 *11 14 15)
+[    0.599610] ACPI: PCI Interrupt Link [LNKC] (IRQs 3 4 5 6 7 9 *10 11 14 15)
+[    0.599683] ACPI: PCI Interrupt Link [LNKD] (IRQs 3 4 *5 6 7 9 10 11 14 15)
+[    0.599844] vgaarb: device added: PCI:0000:00:0f.0,decodes=io+mem,owns=io+mem,locks=none
+[    0.599855] vgaarb: loaded
+[    0.599856] vgaarb: bridge control possible 0000:00:0f.0
+[    0.600084] SCSI subsystem initialized
+[    0.600132] libata version 3.00 loaded.
+[    0.600157] ACPI: bus type usb registered
+[    0.600178] usbcore: registered new interface driver usbfs
+[    0.600187] usbcore: registered new interface driver hub
+[    0.600213] usbcore: registered new device driver usb
+[    0.600287] PCI: Using ACPI for IRQ routing
+[    0.632210] PCI: pci_cache_line_size set to 64 bytes
+[    0.633299] e820: reserve RAM buffer [mem 0x0009f400-0x0009ffff]
+[    0.633301] e820: reserve RAM buffer [mem 0x3fee0000-0x3fffffff]
+[    0.633434] NetLabel: Initializing
+[    0.633438] NetLabel:  domain hash size = 128
+[    0.633439] NetLabel:  protocols = UNLABELED CIPSOv4
+[    0.633467] NetLabel:  unlabeled traffic allowed by default
+[    0.633693] HPET: 16 timers in total, 0 timers will be used for per-cpu timer
+[    0.633774] hpet0: at MMIO 0xfed00000, IRQs 2, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+[    0.633782] hpet0: 16 comparators, 64-bit 14.318180 MHz counter
+[    0.642117] Switching to clocksource hpet
+[    0.649121] AppArmor: AppArmor Filesystem Enabled
+[    0.649155] pnp: PnP ACPI init
+[    0.649172] ACPI: bus type pnp registered
+[    0.650322] pnp 00:00: [bus 00-7f]
+[    0.650326] pnp 00:00: [mem 0x000a0000-0x000bffff window]
+[    0.650328] pnp 00:00: [mem 0x000c0000-0x000c3fff window]
+[    0.650330] pnp 00:00: [mem 0x000c4000-0x000c7fff window]
+[    0.650332] pnp 00:00: [mem 0x000c8000-0x000cbfff window]
+[    0.650333] pnp 00:00: [mem 0x000cc000-0x000cffff window]
+[    0.650335] pnp 00:00: [mem 0x000d0000-0x000d3fff window]
+[    0.650337] pnp 00:00: [mem 0x000d4000-0x000d7fff window]
+[    0.650339] pnp 00:00: [mem 0x000d8000-0x000dbfff window]
+[    0.650340] pnp 00:00: [mem 0x000dc000-0x000dffff window]
+[    0.650342] pnp 00:00: [mem 0x000e0000-0x000e3fff window]
+[    0.650344] pnp 00:00: [mem 0x000e4000-0x000e7fff window]
+[    0.650346] pnp 00:00: [mem 0x000e8000-0x000ebfff window]
+[    0.650347] pnp 00:00: [mem 0x000ec000-0x000effff window]
+[    0.650349] pnp 00:00: [mem 0xc0000000-0xfebfffff window]
+[    0.650351] pnp 00:00: [io  0x0cf8-0x0cff]
+[    0.650353] pnp 00:00: [io  0x0000-0x0cf7 window]
+[    0.650355] pnp 00:00: [io  0x0d00-0xfeff window]
+[    0.650409] pnp 00:00: Plug and Play ACPI device, IDs PNP0a03 PNP0a08 (active)
+[    0.650505] pnp 00:01: [io  0x0010-0x001f]
+[    0.650507] pnp 00:01: [io  0x0024-0x0025]
+[    0.650509] pnp 00:01: [io  0x0028-0x0029]
+[    0.650511] pnp 00:01: [io  0x002c-0x002d]
+[    0.650512] pnp 00:01: [io  0x002e-0x002f]
+[    0.650514] pnp 00:01: [io  0x0030-0x0031]
+[    0.650515] pnp 00:01: [io  0x0034-0x0035]
+[    0.650517] pnp 00:01: [io  0x0038-0x0039]
+[    0.650518] pnp 00:01: [io  0x003c-0x003d]
+[    0.650520] pnp 00:01: [io  0x0050-0x0053]
+[    0.650522] pnp 00:01: [io  0x0072-0x0077]
+[    0.650535] pnp 00:01: [io  0x0080]
+[    0.650537] pnp 00:01: [io  0x0090-0x009f]
+[    0.650539] pnp 00:01: [io  0x00a4-0x00a5]
+[    0.650541] pnp 00:01: [io  0x00a8-0x00a9]
+[    0.650542] pnp 00:01: [io  0x00ac-0x00ad]
+[    0.650544] pnp 00:01: [io  0x00b0-0x00b5]
+[    0.650545] pnp 00:01: [io  0x00b8-0x00b9]
+[    0.650547] pnp 00:01: [io  0x00bc-0x00bd]
+[    0.650548] pnp 00:01: [io  0x1000-0x103f]
+[    0.650550] pnp 00:01: [io  0x1040-0x104f]
+[    0.650552] pnp 00:01: [io  0x0cf0-0x0cf1]
+[    0.650621] system 00:01: [io  0x1000-0x103f] has been reserved
+[    0.650623] system 00:01: [io  0x1040-0x104f] has been reserved
+[    0.650626] system 00:01: [io  0x0cf0-0x0cf1] has been reserved
+[    0.650628] system 00:01: Plug and Play ACPI device, IDs PNP0c02 (active)
+[    0.650636] pnp 00:02: [io  0x0000-0x000f]
+[    0.650638] pnp 00:02: [io  0x0081-0x008f]
+[    0.650639] pnp 00:02: [io  0x00c0-0x00df]
+[    0.650647] pnp 00:02: [dma 4]
+[    0.650664] pnp 00:02: Plug and Play ACPI device, IDs PNP0200 (active)
+[    0.650671] pnp 00:03: [io  0x0020-0x0021]
+[    0.650673] pnp 00:03: [io  0x00a0-0x00a1]
+[    0.650675] pnp 00:03: [io  0x04d0-0x04d1]
+[    0.650677] pnp 00:03: [irq 2 disabled]
+[    0.650692] pnp 00:03: Plug and Play ACPI device, IDs PNP0001 (active)
+[    0.650700] pnp 00:04: [io  0x0070-0x0071]
+[    0.650717] pnp 00:04: [irq 8]
+[    0.650734] pnp 00:04: Plug and Play ACPI device, IDs PNP0b00 (active)
+[    0.650746] pnp 00:05: [io  0x0061]
+[    0.650763] pnp 00:05: Plug and Play ACPI device, IDs PNP0800 (active)
+[    0.650770] pnp 00:06: [io  0x0060]
+[    0.650772] pnp 00:06: [io  0x0064]
+[    0.650781] pnp 00:06: [irq 1]
+[    0.650798] pnp 00:06: Plug and Play ACPI device, IDs PNP0303 (active)
+[    0.650811] pnp 00:07: [irq 12]
+[    0.650829] pnp 00:07: Plug and Play ACPI device, IDs PNP0f13 (active)
+[    0.651013] pnp 00:08: [mem 0xfed00000-0xfed003ff]
+[    0.651056] system 00:08: [mem 0xfed00000-0xfed003ff] has been reserved
+[    0.651059] system 00:08: Plug and Play ACPI device, IDs PNP0103 PNP0c01 (active)
+[    0.652567] pnp 00:09: [io  0x0378-0x037b]
+[    0.652579] pnp 00:09: [irq 7]
+[    0.653097] pnp 00:09: Plug and Play ACPI device, IDs PNP0400 (active)
+[    0.653275] pnp 00:0a: [io  0x03f8-0x03ff]
+[    0.653287] pnp 00:0a: [irq 4]
+[    0.653367] pnp 00:0a: Plug and Play ACPI device, IDs PNP0501 (active)
+[    0.653526] pnp 00:0b: [io  0x02f8-0x02ff]
+[    0.653536] pnp 00:0b: [irq 3]
+[    0.653742] pnp 00:0b: Plug and Play ACPI device, IDs PNP0501 (active)
+[    0.654338] pnp 00:0c: [io  0x03f0-0x03f5]
+[    0.654355] pnp 00:0c: [io  0x03f7]
+[    0.654440] pnp 00:0c: [irq 6]
+[    0.654443] pnp 00:0c: [dma 2]
+[    0.654524] pnp 00:0c: Plug and Play ACPI device, IDs PNP0700 (active)
+[    0.654722] pnp 00:0d: [mem 0xf0000000-0xf7ffffff]
+[    0.654725] pnp 00:0d: [io  0xfce0-0xfcff]
+[    0.654727] pnp 00:0d: [mem 0xfe800000-0xfe9fffff]
+[    0.654779] system 00:0d: [io  0xfce0-0xfcff] has been reserved
+[    0.654782] system 00:0d: [mem 0xf0000000-0xf7ffffff] has been reserved
+[    0.654785] system 00:0d: [mem 0xfe800000-0xfe9fffff] has been reserved
+[    0.654787] system 00:0d: Plug and Play ACPI device, IDs PNP0c02 (active)
+[    0.660347] pnp 00:0e: [mem 0x10000000-0x3fffffff window]
+[    0.660378] pnp 00:0e: Plug and Play ACPI device, IDs PNP0c80 (active)
+[    0.661119] pnp: PnP ACPI: found 15 devices
+[    0.661120] ACPI: ACPI bus type pnp unregistered
+[    0.661127] PnPBIOS: Disabled by ACPI PNP
+[    0.697652] pci 0000:00:15.3: bridge window [io  0x1000-0x0fff] to [bus 06-06] add_size 1000
+[    0.697724] pci 0000:00:15.4: bridge window [io  0x1000-0x0fff] to [bus 07-07] add_size 1000
+[    0.697980] pci 0000:00:15.5: bridge window [io  0x1000-0x0fff] to [bus 08-08] add_size 1000
+[    0.698055] pci 0000:00:15.6: bridge window [io  0x1000-0x0fff] to [bus 09-09] add_size 1000
+[    0.698125] pci 0000:00:15.7: bridge window [io  0x1000-0x0fff] to [bus 0a-0a] add_size 1000
+[    0.698388] pci 0000:00:16.3: bridge window [io  0x1000-0x0fff] to [bus 0e-0e] add_size 1000
+[    0.698458] pci 0000:00:16.4: bridge window [io  0x1000-0x0fff] to [bus 0f-0f] add_size 1000
+[    0.698527] pci 0000:00:16.5: bridge window [io  0x1000-0x0fff] to [bus 10-10] add_size 1000
+[    0.698597] pci 0000:00:16.6: bridge window [io  0x1000-0x0fff] to [bus 11-11] add_size 1000
+[    0.698667] pci 0000:00:16.7: bridge window [io  0x1000-0x0fff] to [bus 12-12] add_size 1000
+[    0.698929] pci 0000:00:17.3: bridge window [io  0x1000-0x0fff] to [bus 16-16] add_size 1000
+[    0.698999] pci 0000:00:17.4: bridge window [io  0x1000-0x0fff] to [bus 17-17] add_size 1000
+[    0.699068] pci 0000:00:17.5: bridge window [io  0x1000-0x0fff] to [bus 18-18] add_size 1000
+[    0.699137] pci 0000:00:17.6: bridge window [io  0x1000-0x0fff] to [bus 19-19] add_size 1000
+[    0.699207] pci 0000:00:17.7: bridge window [io  0x1000-0x0fff] to [bus 1a-1a] add_size 1000
+[    0.699405] pci 0000:00:18.2: bridge window [io  0x1000-0x0fff] to [bus 1d-1d] add_size 1000
+[    0.699474] pci 0000:00:18.3: bridge window [io  0x1000-0x0fff] to [bus 1e-1e] add_size 1000
+[    0.699544] pci 0000:00:18.4: bridge window [io  0x1000-0x0fff] to [bus 1f-1f] add_size 1000
+[    0.699613] pci 0000:00:18.5: bridge window [io  0x1000-0x0fff] to [bus 20-20] add_size 1000
+[    0.699695] pci 0000:00:18.6: bridge window [io  0x1000-0x0fff] to [bus 21-21] add_size 1000
+[    0.699766] pci 0000:00:18.7: bridge window [io  0x1000-0x0fff] to [bus 22-22] add_size 1000
+[    0.699794] pci 0000:00:15.3: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699797] pci 0000:00:15.4: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699800] pci 0000:00:15.5: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699803] pci 0000:00:15.6: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699806] pci 0000:00:15.7: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699809] pci 0000:00:16.3: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699812] pci 0000:00:16.4: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699815] pci 0000:00:16.5: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699818] pci 0000:00:16.6: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699821] pci 0000:00:16.7: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699824] pci 0000:00:17.3: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699827] pci 0000:00:17.4: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699830] pci 0000:00:17.5: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699833] pci 0000:00:17.6: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699836] pci 0000:00:17.7: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699839] pci 0000:00:18.2: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699842] pci 0000:00:18.3: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699845] pci 0000:00:18.4: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699848] pci 0000:00:18.5: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699851] pci 0000:00:18.6: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699854] pci 0000:00:18.7: res[13]=[io  0x1000-0x0fff] get_res_add_size add_size 1000
+[    0.699861] pci 0000:00:0f.0: BAR 6: assigned [mem 0xc0000000-0xc0007fff pref]
+[    0.699866] pci 0000:00:10.0: BAR 6: assigned [mem 0xc0008000-0xc000bfff pref]
+[    0.699872] pci 0000:00:15.3: BAR 13: can't assign io (size 0x1000)
+[    0.699876] pci 0000:00:15.4: BAR 13: can't assign io (size 0x1000)
+[    0.699880] pci 0000:00:15.5: BAR 13: can't assign io (size 0x1000)
+[    0.699884] pci 0000:00:15.6: BAR 13: can't assign io (size 0x1000)
+[    0.699888] pci 0000:00:15.7: BAR 13: can't assign io (size 0x1000)
+[    0.699892] pci 0000:00:16.3: BAR 13: can't assign io (size 0x1000)
+[    0.699896] pci 0000:00:16.4: BAR 13: can't assign io (size 0x1000)
+[    0.699910] pci 0000:00:16.5: BAR 13: can't assign io (size 0x1000)
+[    0.699914] pci 0000:00:16.6: BAR 13: can't assign io (size 0x1000)
+[    0.699918] pci 0000:00:16.7: BAR 13: can't assign io (size 0x1000)
+[    0.699922] pci 0000:00:17.3: BAR 13: can't assign io (size 0x1000)
+[    0.699926] pci 0000:00:17.4: BAR 13: can't assign io (size 0x1000)
+[    0.699931] pci 0000:00:17.5: BAR 13: can't assign io (size 0x1000)
+[    0.699935] pci 0000:00:17.6: BAR 13: can't assign io (size 0x1000)
+[    0.699939] pci 0000:00:17.7: BAR 13: can't assign io (size 0x1000)
+[    0.699943] pci 0000:00:18.2: BAR 13: can't assign io (size 0x1000)
+[    0.699947] pci 0000:00:18.3: BAR 13: can't assign io (size 0x1000)
+[    0.699951] pci 0000:00:18.4: BAR 13: can't assign io (size 0x1000)
+[    0.699955] pci 0000:00:18.5: BAR 13: can't assign io (size 0x1000)
+[    0.699959] pci 0000:00:18.6: BAR 13: can't assign io (size 0x1000)
+[    0.699963] pci 0000:00:18.7: BAR 13: can't assign io (size 0x1000)
+[    0.699968] pci 0000:00:01.0: PCI bridge to [bus 01-01]
+[    0.700072] pci 0000:02:01.0: BAR 6: assigned [mem 0xe7b00000-0xe7b0ffff pref]
+[    0.700076] pci 0000:02:05.0: BAR 6: assigned [mem 0xe7b10000-0xe7b1ffff pref]
+[    0.700079] pci 0000:00:11.0: PCI bridge to [bus 02-02]
+[    0.700095] pci 0000:00:11.0:   bridge window [io  0x2000-0x3fff]
+[    0.700131] pci 0000:00:11.0:   bridge window [mem 0xfd500000-0xfdffffff]
+[    0.700157] pci 0000:00:11.0:   bridge window [mem 0xe7b00000-0xe7ffffff 64bit pref]
+[    0.700204] pci 0000:00:15.0: PCI bridge to [bus 03-03]
+[    0.700219] pci 0000:00:15.0:   bridge window [io  0x4000-0x4fff]
+[    0.700255] pci 0000:00:15.0:   bridge window [mem 0xfd400000-0xfd4fffff]
+[    0.700281] pci 0000:00:15.0:   bridge window [mem 0xe7a00000-0xe7afffff 64bit pref]
+[    0.700381] pci 0000:00:15.1: PCI bridge to [bus 04-04]
+[    0.700397] pci 0000:00:15.1:   bridge window [io  0x8000-0x8fff]
+[    0.700434] pci 0000:00:15.1:   bridge window [mem 0xfd000000-0xfd0fffff]
+[    0.700459] pci 0000:00:15.1:   bridge window [mem 0xe7600000-0xe76fffff 64bit pref]
+[    0.700524] pci 0000:00:15.2: PCI bridge to [bus 05-05]
+[    0.700540] pci 0000:00:15.2:   bridge window [io  0xc000-0xcfff]
+[    0.700577] pci 0000:00:15.2:   bridge window [mem 0xfcc00000-0xfccfffff]
+[    0.700602] pci 0000:00:15.2:   bridge window [mem 0xe7200000-0xe72fffff 64bit pref]
+[    0.700666] pci 0000:00:15.3: PCI bridge to [bus 06-06]
+[    0.700703] pci 0000:00:15.3:   bridge window [mem 0xfc800000-0xfc8fffff]
+[    0.700728] pci 0000:00:15.3:   bridge window [mem 0xe6e00000-0xe6efffff 64bit pref]
+[    0.700792] pci 0000:00:15.4: PCI bridge to [bus 07-07]
+[    0.700834] pci 0000:00:15.4:   bridge window [mem 0xfc400000-0xfc4fffff]
+[    0.700860] pci 0000:00:15.4:   bridge window [mem 0xe6a00000-0xe6afffff 64bit pref]
+[    0.700924] pci 0000:00:15.5: PCI bridge to [bus 08-08]
+[    0.700961] pci 0000:00:15.5:   bridge window [mem 0xfc000000-0xfc0fffff]
+[    0.700987] pci 0000:00:15.5:   bridge window [mem 0xe6600000-0xe66fffff 64bit pref]
+[    0.701050] pci 0000:00:15.6: PCI bridge to [bus 09-09]
+[    0.701087] pci 0000:00:15.6:   bridge window [mem 0xfbc00000-0xfbcfffff]
+[    0.701112] pci 0000:00:15.6:   bridge window [mem 0xe6200000-0xe62fffff 64bit pref]
+[    0.701175] pci 0000:00:15.7: PCI bridge to [bus 0a-0a]
+[    0.701212] pci 0000:00:15.7:   bridge window [mem 0xfb800000-0xfb8fffff]
+[    0.701238] pci 0000:00:15.7:   bridge window [mem 0xe5e00000-0xe5efffff 64bit pref]
+[    0.701301] pci 0000:00:16.0: PCI bridge to [bus 0b-0b]
+[    0.701317] pci 0000:00:16.0:   bridge window [io  0x5000-0x5fff]
+[    0.701353] pci 0000:00:16.0:   bridge window [mem 0xfd300000-0xfd3fffff]
+[    0.701379] pci 0000:00:16.0:   bridge window [mem 0xe7900000-0xe79fffff 64bit pref]
+[    0.701443] pci 0000:00:16.1: PCI bridge to [bus 0c-0c]
+[    0.701459] pci 0000:00:16.1:   bridge window [io  0x9000-0x9fff]
+[    0.701495] pci 0000:00:16.1:   bridge window [mem 0xfcf00000-0xfcffffff]
+[    0.701521] pci 0000:00:16.1:   bridge window [mem 0xe7500000-0xe75fffff 64bit pref]
+[    0.701590] pci 0000:00:16.2: PCI bridge to [bus 0d-0d]
+[    0.701641] pci 0000:00:16.2:   bridge window [io  0xd000-0xdfff]
+[    0.701678] pci 0000:00:16.2:   bridge window [mem 0xfcb00000-0xfcbfffff]
+[    0.701704] pci 0000:00:16.2:   bridge window [mem 0xe7100000-0xe71fffff 64bit pref]
+[    0.701771] pci 0000:00:16.3: PCI bridge to [bus 0e-0e]
+[    0.701808] pci 0000:00:16.3:   bridge window [mem 0xfc700000-0xfc7fffff]
+[    0.701834] pci 0000:00:16.3:   bridge window [mem 0xe6d00000-0xe6dfffff 64bit pref]
+[    0.701897] pci 0000:00:16.4: PCI bridge to [bus 0f-0f]
+[    0.701934] pci 0000:00:16.4:   bridge window [mem 0xfc300000-0xfc3fffff]
+[    0.701964] pci 0000:00:16.4:   bridge window [mem 0xe6900000-0xe69fffff 64bit pref]
+[    0.702029] pci 0000:00:16.5: PCI bridge to [bus 10-10]
+[    0.702066] pci 0000:00:16.5:   bridge window [mem 0xfbf00000-0xfbffffff]
+[    0.702092] pci 0000:00:16.5:   bridge window [mem 0xe6500000-0xe65fffff 64bit pref]
+[    0.702155] pci 0000:00:16.6: PCI bridge to [bus 11-11]
+[    0.702192] pci 0000:00:16.6:   bridge window [mem 0xfbb00000-0xfbbfffff]
+[    0.702217] pci 0000:00:16.6:   bridge window [mem 0xe6100000-0xe61fffff 64bit pref]
+[    0.702281] pci 0000:00:16.7: PCI bridge to [bus 12-12]
+[    0.702323] pci 0000:00:16.7:   bridge window [mem 0xfb700000-0xfb7fffff]
+[    0.702349] pci 0000:00:16.7:   bridge window [mem 0xe5d00000-0xe5dfffff 64bit pref]
+[    0.702413] pci 0000:00:17.0: PCI bridge to [bus 13-13]
+[    0.702429] pci 0000:00:17.0:   bridge window [io  0x6000-0x6fff]
+[    0.702465] pci 0000:00:17.0:   bridge window [mem 0xfd200000-0xfd2fffff]
+[    0.702491] pci 0000:00:17.0:   bridge window [mem 0xe7800000-0xe78fffff 64bit pref]
+[    0.702554] pci 0000:00:17.1: PCI bridge to [bus 14-14]
+[    0.702570] pci 0000:00:17.1:   bridge window [io  0xa000-0xafff]
+[    0.702607] pci 0000:00:17.1:   bridge window [mem 0xfce00000-0xfcefffff]
+[    0.702632] pci 0000:00:17.1:   bridge window [mem 0xe7400000-0xe74fffff 64bit pref]
+[    0.702696] pci 0000:00:17.2: PCI bridge to [bus 15-15]
+[    0.702711] pci 0000:00:17.2:   bridge window [io  0xe000-0xefff]
+[    0.702748] pci 0000:00:17.2:   bridge window [mem 0xfca00000-0xfcafffff]
+[    0.702773] pci 0000:00:17.2:   bridge window [mem 0xe7000000-0xe70fffff 64bit pref]
+[    0.702836] pci 0000:00:17.3: PCI bridge to [bus 16-16]
+[    0.702873] pci 0000:00:17.3:   bridge window [mem 0xfc600000-0xfc6fffff]
+[    0.702898] pci 0000:00:17.3:   bridge window [mem 0xe6c00000-0xe6cfffff 64bit pref]
+[    0.702961] pci 0000:00:17.4: PCI bridge to [bus 17-17]
+[    0.702998] pci 0000:00:17.4:   bridge window [mem 0xfc200000-0xfc2fffff]
+[    0.703024] pci 0000:00:17.4:   bridge window [mem 0xe6800000-0xe68fffff 64bit pref]
+[    0.703087] pci 0000:00:17.5: PCI bridge to [bus 18-18]
+[    0.703123] pci 0000:00:17.5:   bridge window [mem 0xfbe00000-0xfbefffff]
+[    0.703149] pci 0000:00:17.5:   bridge window [mem 0xe6400000-0xe64fffff 64bit pref]
+[    0.703212] pci 0000:00:17.6: PCI bridge to [bus 19-19]
+[    0.703248] pci 0000:00:17.6:   bridge window [mem 0xfba00000-0xfbafffff]
+[    0.703274] pci 0000:00:17.6:   bridge window [mem 0xe6000000-0xe60fffff 64bit pref]
+[    0.703337] pci 0000:00:17.7: PCI bridge to [bus 1a-1a]
+[    0.703374] pci 0000:00:17.7:   bridge window [mem 0xfb600000-0xfb6fffff]
+[    0.703399] pci 0000:00:17.7:   bridge window [mem 0xe5c00000-0xe5cfffff 64bit pref]
+[    0.703462] pci 0000:00:18.0: PCI bridge to [bus 1b-1b]
+[    0.703478] pci 0000:00:18.0:   bridge window [io  0x7000-0x7fff]
+[    0.703514] pci 0000:00:18.0:   bridge window [mem 0xfd100000-0xfd1fffff]
+[    0.703549] pci 0000:00:18.0:   bridge window [mem 0xe7700000-0xe77fffff 64bit pref]
+[    0.703614] pci 0000:00:18.1: PCI bridge to [bus 1c-1c]
+[    0.703630] pci 0000:00:18.1:   bridge window [io  0xb000-0xbfff]
+[    0.703666] pci 0000:00:18.1:   bridge window [mem 0xfcd00000-0xfcdfffff]
+[    0.703697] pci 0000:00:18.1:   bridge window [mem 0xe7300000-0xe73fffff 64bit pref]
+[    0.703762] pci 0000:00:18.2: PCI bridge to [bus 1d-1d]
+[    0.703798] pci 0000:00:18.2:   bridge window [mem 0xfc900000-0xfc9fffff]
+[    0.703824] pci 0000:00:18.2:   bridge window [mem 0xe6f00000-0xe6ffffff 64bit pref]
+[    0.703887] pci 0000:00:18.3: PCI bridge to [bus 1e-1e]
+[    0.703924] pci 0000:00:18.3:   bridge window [mem 0xfc500000-0xfc5fffff]
+[    0.703949] pci 0000:00:18.3:   bridge window [mem 0xe6b00000-0xe6bfffff 64bit pref]
+[    0.704013] pci 0000:00:18.4: PCI bridge to [bus 1f-1f]
+[    0.704049] pci 0000:00:18.4:   bridge window [mem 0xfc100000-0xfc1fffff]
+[    0.704075] pci 0000:00:18.4:   bridge window [mem 0xe6700000-0xe67fffff 64bit pref]
+[    0.704138] pci 0000:00:18.5: PCI bridge to [bus 20-20]
+[    0.704175] pci 0000:00:18.5:   bridge window [mem 0xfbd00000-0xfbdfffff]
+[    0.704200] pci 0000:00:18.5:   bridge window [mem 0xe6300000-0xe63fffff 64bit pref]
+[    0.704263] pci 0000:00:18.6: PCI bridge to [bus 21-21]
+[    0.704300] pci 0000:00:18.6:   bridge window [mem 0xfb900000-0xfb9fffff]
+[    0.704325] pci 0000:00:18.6:   bridge window [mem 0xe5f00000-0xe5ffffff 64bit pref]
+[    0.704388] pci 0000:00:18.7: PCI bridge to [bus 22-22]
+[    0.704425] pci 0000:00:18.7:   bridge window [mem 0xfb500000-0xfb5fffff]
+[    0.704451] pci 0000:00:18.7:   bridge window [mem 0xe5b00000-0xe5bfffff 64bit pref]
+[    0.704567] pci 0000:00:01.0: setting latency timer to 64
+[    0.706065] pci_bus 0000:00: resource 4 [mem 0x000a0000-0x000bffff]
+[    0.706069] pci_bus 0000:00: resource 5 [mem 0x000cc000-0x000cffff]
+[    0.706072] pci_bus 0000:00: resource 6 [mem 0x000d0000-0x000d3fff]
+[    0.706074] pci_bus 0000:00: resource 7 [mem 0x000d4000-0x000d7fff]
+[    0.706077] pci_bus 0000:00: resource 8 [mem 0x000d8000-0x000dbfff]
+[    0.706080] pci_bus 0000:00: resource 9 [mem 0xc0000000-0xfebfffff]
+[    0.706083] pci_bus 0000:00: resource 10 [io  0x0000-0x0cf7]
+[    0.706086] pci_bus 0000:00: resource 11 [io  0x0d00-0xfeff]
+[    0.706089] pci_bus 0000:02: resource 0 [io  0x2000-0x3fff]
+[    0.706092] pci_bus 0000:02: resource 1 [mem 0xfd500000-0xfdffffff]
+[    0.706095] pci_bus 0000:02: resource 2 [mem 0xe7b00000-0xe7ffffff 64bit pref]
+[    0.706098] pci_bus 0000:02: resource 4 [mem 0x000a0000-0x000bffff]
+[    0.706101] pci_bus 0000:02: resource 5 [mem 0x000cc000-0x000cffff]
+[    0.706104] pci_bus 0000:02: resource 6 [mem 0x000d0000-0x000d3fff]
+[    0.706107] pci_bus 0000:02: resource 7 [mem 0x000d4000-0x000d7fff]
+[    0.706110] pci_bus 0000:02: resource 8 [mem 0x000d8000-0x000dbfff]
+[    0.706120] pci_bus 0000:02: resource 9 [mem 0xc0000000-0xfebfffff]
+[    0.706123] pci_bus 0000:02: resource 10 [io  0x0000-0x0cf7]
+[    0.706126] pci_bus 0000:02: resource 11 [io  0x0d00-0xfeff]
+[    0.706129] pci_bus 0000:03: resource 0 [io  0x4000-0x4fff]
+[    0.706132] pci_bus 0000:03: resource 1 [mem 0xfd400000-0xfd4fffff]
+[    0.706135] pci_bus 0000:03: resource 2 [mem 0xe7a00000-0xe7afffff 64bit pref]
+[    0.706138] pci_bus 0000:04: resource 0 [io  0x8000-0x8fff]
+[    0.706141] pci_bus 0000:04: resource 1 [mem 0xfd000000-0xfd0fffff]
+[    0.706144] pci_bus 0000:04: resource 2 [mem 0xe7600000-0xe76fffff 64bit pref]
+[    0.706147] pci_bus 0000:05: resource 0 [io  0xc000-0xcfff]
+[    0.706150] pci_bus 0000:05: resource 1 [mem 0xfcc00000-0xfccfffff]
+[    0.706153] pci_bus 0000:05: resource 2 [mem 0xe7200000-0xe72fffff 64bit pref]
+[    0.706156] pci_bus 0000:06: resource 1 [mem 0xfc800000-0xfc8fffff]
+[    0.706159] pci_bus 0000:06: resource 2 [mem 0xe6e00000-0xe6efffff 64bit pref]
+[    0.706162] pci_bus 0000:07: resource 1 [mem 0xfc400000-0xfc4fffff]
+[    0.706165] pci_bus 0000:07: resource 2 [mem 0xe6a00000-0xe6afffff 64bit pref]
+[    0.706168] pci_bus 0000:08: resource 1 [mem 0xfc000000-0xfc0fffff]
+[    0.706171] pci_bus 0000:08: resource 2 [mem 0xe6600000-0xe66fffff 64bit pref]
+[    0.706174] pci_bus 0000:09: resource 1 [mem 0xfbc00000-0xfbcfffff]
+[    0.706177] pci_bus 0000:09: resource 2 [mem 0xe6200000-0xe62fffff 64bit pref]
+[    0.706180] pci_bus 0000:0a: resource 1 [mem 0xfb800000-0xfb8fffff]
+[    0.706183] pci_bus 0000:0a: resource 2 [mem 0xe5e00000-0xe5efffff 64bit pref]
+[    0.706186] pci_bus 0000:0b: resource 0 [io  0x5000-0x5fff]
+[    0.706189] pci_bus 0000:0b: resource 1 [mem 0xfd300000-0xfd3fffff]
+[    0.706192] pci_bus 0000:0b: resource 2 [mem 0xe7900000-0xe79fffff 64bit pref]
+[    0.706195] pci_bus 0000:0c: resource 0 [io  0x9000-0x9fff]
+[    0.706198] pci_bus 0000:0c: resource 1 [mem 0xfcf00000-0xfcffffff]
+[    0.706200] pci_bus 0000:0c: resource 2 [mem 0xe7500000-0xe75fffff 64bit pref]
+[    0.706204] pci_bus 0000:0d: resource 0 [io  0xd000-0xdfff]
+[    0.706206] pci_bus 0000:0d: resource 1 [mem 0xfcb00000-0xfcbfffff]
+[    0.706209] pci_bus 0000:0d: resource 2 [mem 0xe7100000-0xe71fffff 64bit pref]
+[    0.706212] pci_bus 0000:0e: resource 1 [mem 0xfc700000-0xfc7fffff]
+[    0.706215] pci_bus 0000:0e: resource 2 [mem 0xe6d00000-0xe6dfffff 64bit pref]
+[    0.706218] pci_bus 0000:0f: resource 1 [mem 0xfc300000-0xfc3fffff]
+[    0.706221] pci_bus 0000:0f: resource 2 [mem 0xe6900000-0xe69fffff 64bit pref]
+[    0.706224] pci_bus 0000:10: resource 1 [mem 0xfbf00000-0xfbffffff]
+[    0.706231] pci_bus 0000:10: resource 2 [mem 0xe6500000-0xe65fffff 64bit pref]
+[    0.706235] pci_bus 0000:11: resource 1 [mem 0xfbb00000-0xfbbfffff]
+[    0.706238] pci_bus 0000:11: resource 2 [mem 0xe6100000-0xe61fffff 64bit pref]
+[    0.706241] pci_bus 0000:12: resource 1 [mem 0xfb700000-0xfb7fffff]
+[    0.706244] pci_bus 0000:12: resource 2 [mem 0xe5d00000-0xe5dfffff 64bit pref]
+[    0.706247] pci_bus 0000:13: resource 0 [io  0x6000-0x6fff]
+[    0.706250] pci_bus 0000:13: resource 1 [mem 0xfd200000-0xfd2fffff]
+[    0.706253] pci_bus 0000:13: resource 2 [mem 0xe7800000-0xe78fffff 64bit pref]
+[    0.706256] pci_bus 0000:14: resource 0 [io  0xa000-0xafff]
+[    0.706258] pci_bus 0000:14: resource 1 [mem 0xfce00000-0xfcefffff]
+[    0.706261] pci_bus 0000:14: resource 2 [mem 0xe7400000-0xe74fffff 64bit pref]
+[    0.706264] pci_bus 0000:15: resource 0 [io  0xe000-0xefff]
+[    0.706267] pci_bus 0000:15: resource 1 [mem 0xfca00000-0xfcafffff]
+[    0.706270] pci_bus 0000:15: resource 2 [mem 0xe7000000-0xe70fffff 64bit pref]
+[    0.706273] pci_bus 0000:16: resource 1 [mem 0xfc600000-0xfc6fffff]
+[    0.706276] pci_bus 0000:16: resource 2 [mem 0xe6c00000-0xe6cfffff 64bit pref]
+[    0.706279] pci_bus 0000:17: resource 1 [mem 0xfc200000-0xfc2fffff]
+[    0.706282] pci_bus 0000:17: resource 2 [mem 0xe6800000-0xe68fffff 64bit pref]
+[    0.706285] pci_bus 0000:18: resource 1 [mem 0xfbe00000-0xfbefffff]
+[    0.706288] pci_bus 0000:18: resource 2 [mem 0xe6400000-0xe64fffff 64bit pref]
+[    0.706291] pci_bus 0000:19: resource 1 [mem 0xfba00000-0xfbafffff]
+[    0.706294] pci_bus 0000:19: resource 2 [mem 0xe6000000-0xe60fffff 64bit pref]
+[    0.706297] pci_bus 0000:1a: resource 1 [mem 0xfb600000-0xfb6fffff]
+[    0.706300] pci_bus 0000:1a: resource 2 [mem 0xe5c00000-0xe5cfffff 64bit pref]
+[    0.706303] pci_bus 0000:1b: resource 0 [io  0x7000-0x7fff]
+[    0.706306] pci_bus 0000:1b: resource 1 [mem 0xfd100000-0xfd1fffff]
+[    0.706309] pci_bus 0000:1b: resource 2 [mem 0xe7700000-0xe77fffff 64bit pref]
+[    0.706312] pci_bus 0000:1c: resource 0 [io  0xb000-0xbfff]
+[    0.706315] pci_bus 0000:1c: resource 1 [mem 0xfcd00000-0xfcdfffff]
+[    0.706318] pci_bus 0000:1c: resource 2 [mem 0xe7300000-0xe73fffff 64bit pref]
+[    0.706320] pci_bus 0000:1d: resource 1 [mem 0xfc900000-0xfc9fffff]
+[    0.706323] pci_bus 0000:1d: resource 2 [mem 0xe6f00000-0xe6ffffff 64bit pref]
+[    0.706326] pci_bus 0000:1e: resource 1 [mem 0xfc500000-0xfc5fffff]
+[    0.706329] pci_bus 0000:1e: resource 2 [mem 0xe6b00000-0xe6bfffff 64bit pref]
+[    0.706332] pci_bus 0000:1f: resource 1 [mem 0xfc100000-0xfc1fffff]
+[    0.706340] pci_bus 0000:1f: resource 2 [mem 0xe6700000-0xe67fffff 64bit pref]
+[    0.706343] pci_bus 0000:20: resource 1 [mem 0xfbd00000-0xfbdfffff]
+[    0.706346] pci_bus 0000:20: resource 2 [mem 0xe6300000-0xe63fffff 64bit pref]
+[    0.706349] pci_bus 0000:21: resource 1 [mem 0xfb900000-0xfb9fffff]
+[    0.706352] pci_bus 0000:21: resource 2 [mem 0xe5f00000-0xe5ffffff 64bit pref]
+[    0.706355] pci_bus 0000:22: resource 1 [mem 0xfb500000-0xfb5fffff]
+[    0.706358] pci_bus 0000:22: resource 2 [mem 0xe5b00000-0xe5bfffff 64bit pref]
+[    0.706414] NET: Registered protocol family 2
+[    0.706476] IP route cache hash table entries: 32768 (order: 5, 131072 bytes)
+[    0.706659] TCP established hash table entries: 131072 (order: 8, 1048576 bytes)
+[    0.707364] TCP bind hash table entries: 65536 (order: 7, 524288 bytes)
+[    0.707740] TCP: Hash tables configured (established 131072 bind 65536)
+[    0.707743] TCP: reno registered
+[    0.707746] UDP hash table entries: 512 (order: 2, 16384 bytes)
+[    0.707760] UDP-Lite hash table entries: 512 (order: 2, 16384 bytes)
+[    0.707823] NET: Registered protocol family 1
+[    0.707835] pci 0000:00:00.0: Limiting direct PCI/PCI transfers
+[    0.707945] pci 0000:00:0f.0: Boot video device
+[    0.708864] PCI: CLS 32 bytes, default 64
+[    0.709122] Simple Boot Flag at 0x36 set to 0x1
+[    0.709144] Switching to clocksource tsc
+[    0.709491] audit: initializing netlink socket (disabled)
+[    0.709501] type=2000 audit(1445310256.579:1): initialized
+[    0.725470] Trying to unpack rootfs image as initramfs...
+[    0.746442] highmem bounce pool size: 64 pages
+[    0.746462] HugeTLB registered 2 MB page size, pre-allocated 0 pages
+[    0.752424] VFS: Disk quotas dquot_6.5.2
+[    0.752506] Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+[    0.757999] fuse init (API version 7.19)
+[    0.758085] msgmni has been set to 1709
+[    0.769890] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 252)
+[    0.773800] io scheduler noop registered
+[    0.773805] io scheduler deadline registered (default)
+[    0.773816] io scheduler cfq registered
+[    0.774633] pcieport 0000:00:15.0: irq 40 for MSI/MSI-X
+[    0.775741] pcieport 0000:00:15.1: irq 41 for MSI/MSI-X
+[    0.776800] pcieport 0000:00:15.2: irq 42 for MSI/MSI-X
+[    0.777861] pcieport 0000:00:15.3: irq 43 for MSI/MSI-X
+[    0.779344] pcieport 0000:00:15.4: irq 44 for MSI/MSI-X
+[    0.780494] pcieport 0000:00:15.5: irq 45 for MSI/MSI-X
+[    0.781551] pcieport 0000:00:15.6: irq 46 for MSI/MSI-X
+[    0.786536] pcieport 0000:00:15.7: irq 47 for MSI/MSI-X
+[    0.787625] pcieport 0000:00:16.0: irq 48 for MSI/MSI-X
+[    0.788660] pcieport 0000:00:16.1: irq 49 for MSI/MSI-X
+[    0.793756] pcieport 0000:00:16.2: irq 50 for MSI/MSI-X
+[    0.795158] pcieport 0000:00:16.3: irq 51 for MSI/MSI-X
+[    0.796197] pcieport 0000:00:16.4: irq 52 for MSI/MSI-X
+[    0.797233] pcieport 0000:00:16.5: irq 53 for MSI/MSI-X
+[    0.801816] pcieport 0000:00:16.6: irq 54 for MSI/MSI-X
+[    0.802879] pcieport 0000:00:16.7: irq 55 for MSI/MSI-X
+[    0.803923] pcieport 0000:00:17.0: irq 56 for MSI/MSI-X
+[    0.804970] pcieport 0000:00:17.1: irq 57 for MSI/MSI-X
+[    0.809790] pcieport 0000:00:17.2: irq 58 for MSI/MSI-X
+[    0.810866] pcieport 0000:00:17.3: irq 59 for MSI/MSI-X
+[    0.811954] pcieport 0000:00:17.4: irq 60 for MSI/MSI-X
+[    0.812993] pcieport 0000:00:17.5: irq 61 for MSI/MSI-X
+[    0.818683] pcieport 0000:00:17.6: irq 62 for MSI/MSI-X
+[    0.819749] pcieport 0000:00:17.7: irq 63 for MSI/MSI-X
+[    0.820790] pcieport 0000:00:18.0: irq 64 for MSI/MSI-X
+[    0.825736] pcieport 0000:00:18.1: irq 65 for MSI/MSI-X
+[    0.826853] pcieport 0000:00:18.2: irq 66 for MSI/MSI-X
+[    0.827946] pcieport 0000:00:18.3: irq 67 for MSI/MSI-X
+[    0.828985] pcieport 0000:00:18.4: irq 68 for MSI/MSI-X
+[    0.833727] pcieport 0000:00:18.5: irq 69 for MSI/MSI-X
+[    0.834795] pcieport 0000:00:18.6: irq 70 for MSI/MSI-X
+[    0.835864] pcieport 0000:00:18.7: irq 71 for MSI/MSI-X
+[    0.836450] pcieport 0000:00:15.0: Signaling PME through PCIe PME interrupt
+[    0.836478] pcie_pme 0000:00:15.0:pcie01: service driver pcie_pme loaded
+[    0.836601] pcieport 0000:00:15.1: Signaling PME through PCIe PME interrupt
+[    0.836628] pcie_pme 0000:00:15.1:pcie01: service driver pcie_pme loaded
+[    0.836752] pcieport 0000:00:15.2: Signaling PME through PCIe PME interrupt
+[    0.836779] pcie_pme 0000:00:15.2:pcie01: service driver pcie_pme loaded
+[    0.836902] pcieport 0000:00:15.3: Signaling PME through PCIe PME interrupt
+[    0.836929] pcie_pme 0000:00:15.3:pcie01: service driver pcie_pme loaded
+[    0.837053] pcieport 0000:00:15.4: Signaling PME through PCIe PME interrupt
+[    0.837080] pcie_pme 0000:00:15.4:pcie01: service driver pcie_pme loaded
+[    0.837211] pcieport 0000:00:15.5: Signaling PME through PCIe PME interrupt
+[    0.837238] pcie_pme 0000:00:15.5:pcie01: service driver pcie_pme loaded
+[    0.837361] pcieport 0000:00:15.6: Signaling PME through PCIe PME interrupt
+[    0.837388] pcie_pme 0000:00:15.6:pcie01: service driver pcie_pme loaded
+[    0.837516] pcieport 0000:00:15.7: Signaling PME through PCIe PME interrupt
+[    0.837543] pcie_pme 0000:00:15.7:pcie01: service driver pcie_pme loaded
+[    0.841679] pcieport 0000:00:16.0: Signaling PME through PCIe PME interrupt
+[    0.841708] pcie_pme 0000:00:16.0:pcie01: service driver pcie_pme loaded
+[    0.841834] pcieport 0000:00:16.1: Signaling PME through PCIe PME interrupt
+[    0.841872] pcie_pme 0000:00:16.1:pcie01: service driver pcie_pme loaded
+[    0.841996] pcieport 0000:00:16.2: Signaling PME through PCIe PME interrupt
+[    0.842023] pcie_pme 0000:00:16.2:pcie01: service driver pcie_pme loaded
+[    0.842146] pcieport 0000:00:16.3: Signaling PME through PCIe PME interrupt
+[    0.842173] pcie_pme 0000:00:16.3:pcie01: service driver pcie_pme loaded
+[    0.842296] pcieport 0000:00:16.4: Signaling PME through PCIe PME interrupt
+[    0.842323] pcie_pme 0000:00:16.4:pcie01: service driver pcie_pme loaded
+[    0.842446] pcieport 0000:00:16.5: Signaling PME through PCIe PME interrupt
+[    0.842473] pcie_pme 0000:00:16.5:pcie01: service driver pcie_pme loaded
+[    0.842597] pcieport 0000:00:16.6: Signaling PME through PCIe PME interrupt
+[    0.842623] pcie_pme 0000:00:16.6:pcie01: service driver pcie_pme loaded
+[    0.842751] pcieport 0000:00:16.7: Signaling PME through PCIe PME interrupt
+[    0.842779] pcie_pme 0000:00:16.7:pcie01: service driver pcie_pme loaded
+[    0.842906] pcieport 0000:00:17.0: Signaling PME through PCIe PME interrupt
+[    0.842933] pcie_pme 0000:00:17.0:pcie01: service driver pcie_pme loaded
+[    0.843057] pcieport 0000:00:17.1: Signaling PME through PCIe PME interrupt
+[    0.843084] pcie_pme 0000:00:17.1:pcie01: service driver pcie_pme loaded
+[    0.843214] pcieport 0000:00:17.2: Signaling PME through PCIe PME interrupt
+[    0.843241] pcie_pme 0000:00:17.2:pcie01: service driver pcie_pme loaded
+[    0.843364] pcieport 0000:00:17.3: Signaling PME through PCIe PME interrupt
+[    0.843391] pcie_pme 0000:00:17.3:pcie01: service driver pcie_pme loaded
+[    0.843514] pcieport 0000:00:17.4: Signaling PME through PCIe PME interrupt
+[    0.843541] pcie_pme 0000:00:17.4:pcie01: service driver pcie_pme loaded
+[    0.843664] pcieport 0000:00:17.5: Signaling PME through PCIe PME interrupt
+[    0.843691] pcie_pme 0000:00:17.5:pcie01: service driver pcie_pme loaded
+[    0.843813] pcieport 0000:00:17.6: Signaling PME through PCIe PME interrupt
+[    0.843840] pcie_pme 0000:00:17.6:pcie01: service driver pcie_pme loaded
+[    0.843963] pcieport 0000:00:17.7: Signaling PME through PCIe PME interrupt
+[    0.843990] pcie_pme 0000:00:17.7:pcie01: service driver pcie_pme loaded
+[    0.844113] pcieport 0000:00:18.0: Signaling PME through PCIe PME interrupt
+[    0.844140] pcie_pme 0000:00:18.0:pcie01: service driver pcie_pme loaded
+[    0.844273] pcieport 0000:00:18.1: Signaling PME through PCIe PME interrupt
+[    0.844301] pcie_pme 0000:00:18.1:pcie01: service driver pcie_pme loaded
+[    0.844428] pcieport 0000:00:18.2: Signaling PME through PCIe PME interrupt
+[    0.844456] pcie_pme 0000:00:18.2:pcie01: service driver pcie_pme loaded
+[    0.844582] pcieport 0000:00:18.3: Signaling PME through PCIe PME interrupt
+[    0.844609] pcie_pme 0000:00:18.3:pcie01: service driver pcie_pme loaded
+[    0.844734] pcieport 0000:00:18.4: Signaling PME through PCIe PME interrupt
+[    0.844761] pcie_pme 0000:00:18.4:pcie01: service driver pcie_pme loaded
+[    0.844883] pcieport 0000:00:18.5: Signaling PME through PCIe PME interrupt
+[    0.844910] pcie_pme 0000:00:18.5:pcie01: service driver pcie_pme loaded
+[    0.845033] pcieport 0000:00:18.6: Signaling PME through PCIe PME interrupt
+[    0.845060] pcie_pme 0000:00:18.6:pcie01: service driver pcie_pme loaded
+[    0.845182] pcieport 0000:00:18.7: Signaling PME through PCIe PME interrupt
+[    0.845209] pcie_pme 0000:00:18.7:pcie01: service driver pcie_pme loaded
+[    0.845229] pci_hotplug: PCI Hot Plug PCI Core version: 0.5
+[    0.850151] pciehp 0000:00:15.0:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.850237] pciehp 0000:00:15.0:pcie04: service driver pciehp loaded
+[    0.850312] pciehp 0000:00:15.1:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.850384] pciehp 0000:00:15.1:pcie04: service driver pciehp loaded
+[    0.850458] pciehp 0000:00:15.2:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.850530] pciehp 0000:00:15.2:pcie04: service driver pciehp loaded
+[    0.850604] pciehp 0000:00:15.3:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.850679] pciehp 0000:00:15.3:pcie04: service driver pciehp loaded
+[    0.850753] pciehp 0000:00:15.4:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.850824] pciehp 0000:00:15.4:pcie04: service driver pciehp loaded
+[    0.850925] pciehp 0000:00:15.5:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.850997] pciehp 0000:00:15.5:pcie04: service driver pciehp loaded
+[    0.851071] pciehp 0000:00:15.6:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.851142] pciehp 0000:00:15.6:pcie04: service driver pciehp loaded
+[    0.851216] pciehp 0000:00:15.7:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.851299] pciehp 0000:00:15.7:pcie04: service driver pciehp loaded
+[    0.851374] pciehp 0000:00:16.0:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.851456] pciehp 0000:00:16.0:pcie04: service driver pciehp loaded
+[    0.851530] pciehp 0000:00:16.1:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.851601] pciehp 0000:00:16.1:pcie04: service driver pciehp loaded
+[    0.851676] pciehp 0000:00:16.2:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.851747] pciehp 0000:00:16.2:pcie04: service driver pciehp loaded
+[    0.851820] pciehp 0000:00:16.3:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.851892] pciehp 0000:00:16.3:pcie04: service driver pciehp loaded
+[    0.851965] pciehp 0000:00:16.4:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.852037] pciehp 0000:00:16.4:pcie04: service driver pciehp loaded
+[    0.852111] pciehp 0000:00:16.5:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.852187] pciehp 0000:00:16.5:pcie04: service driver pciehp loaded
+[    0.852261] pciehp 0000:00:16.6:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.852337] pciehp 0000:00:16.6:pcie04: service driver pciehp loaded
+[    0.852411] pciehp 0000:00:16.7:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.852482] pciehp 0000:00:16.7:pcie04: service driver pciehp loaded
+[    0.852556] pciehp 0000:00:17.0:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.852627] pciehp 0000:00:17.0:pcie04: service driver pciehp loaded
+[    0.852701] pciehp 0000:00:17.1:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.852774] pciehp 0000:00:17.1:pcie04: service driver pciehp loaded
+[    0.852916] pciehp 0000:00:17.2:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.852988] pciehp 0000:00:17.2:pcie04: service driver pciehp loaded
+[    0.853062] pciehp 0000:00:17.3:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.853138] pciehp 0000:00:17.3:pcie04: service driver pciehp loaded
+[    0.853212] pciehp 0000:00:17.4:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.853283] pciehp 0000:00:17.4:pcie04: service driver pciehp loaded
+[    0.853357] pciehp 0000:00:17.5:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.853434] pciehp 0000:00:17.5:pcie04: service driver pciehp loaded
+[    0.853508] pciehp 0000:00:17.6:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.853587] pciehp 0000:00:17.6:pcie04: service driver pciehp loaded
+[    0.857628] pciehp 0000:00:17.7:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.857707] pciehp 0000:00:17.7:pcie04: service driver pciehp loaded
+[    0.857787] pciehp 0000:00:18.0:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.857864] pciehp 0000:00:18.0:pcie04: service driver pciehp loaded
+[    0.857938] pciehp 0000:00:18.1:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.858009] pciehp 0000:00:18.1:pcie04: service driver pciehp loaded
+[    0.858083] pciehp 0000:00:18.2:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.858155] pciehp 0000:00:18.2:pcie04: service driver pciehp loaded
+[    0.858228] pciehp 0000:00:18.3:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.858299] pciehp 0000:00:18.3:pcie04: service driver pciehp loaded
+[    0.858373] pciehp 0000:00:18.4:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.858449] pciehp 0000:00:18.4:pcie04: service driver pciehp loaded
+[    0.858522] pciehp 0000:00:18.5:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.858598] pciehp 0000:00:18.5:pcie04: service driver pciehp loaded
+[    0.858690] pciehp 0000:00:18.6:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.858762] pciehp 0000:00:18.6:pcie04: service driver pciehp loaded
+[    0.858881] pciehp 0000:00:18.7:pcie04: HPC vendor_id 15ad device_id 7a0 ss_vid 15ad ss_did 7a0
+[    0.858954] pciehp 0000:00:18.7:pcie04: service driver pciehp loaded
+[    0.858962] pciehp: PCI Express Hot Plug Controller Driver version: 0.4
+[    0.859049] intel_idle: does not run on family 6 model 23
+[    0.859309] ACPI: AC Adapter [ACAD] (on-line)
+[    0.865798] input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input0
+[    0.865805] ACPI: Power Button [PWRF]
+[    0.935264] GHES: HEST is not enabled!
+[    0.935420] Serial: 8250/16550 driver, 32 ports, IRQ sharing enabled
+[    0.957156] serial8250: ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A
+[    0.961302] isapnp: Scanning for PnP cards...
+[    1.056875] serial8250: ttyS1 at I/O 0x2f8 (irq = 3) is a 16550A
+[    1.104753] 00:0a: ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A
+[    1.196494] 00:0b: ttyS1 at I/O 0x2f8 (irq = 3) is a 16550A
+[    1.220924] Linux agpgart interface v0.103
+[    1.221124] agpgart-intel 0000:00:00.0: Intel 440BX Chipset
+[    1.265949] agpgart-intel 0000:00:00.0: AGP aperture is 256M @ 0x0
+[    1.267329] brd: module loaded
+[    1.268019] loop: module loaded
+[    1.268068] ata_piix 0000:00:07.1: version 2.13
+[    1.272431] scsi0 : ata_piix
+[    1.272519] scsi1 : ata_piix
+[    1.272556] ata1: PATA max UDMA/33 cmd 0x1f0 ctl 0x3f6 bmdma 0x1060 irq 14
+[    1.272559] ata2: PATA max UDMA/33 cmd 0x170 ctl 0x376 bmdma 0x1068 irq 15
+[    1.272617] Fixed MDIO Bus: probed
+[    1.272666] tun: Universal TUN/TAP device driver, 1.6
+[    1.272668] tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
+[    1.272740] PPP generic driver version 2.4.2
+[    1.272790] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[    1.272840] ehci_hcd 0000:02:03.0: EHCI Host Controller
+[    1.272848] ehci_hcd 0000:02:03.0: new USB bus registered, assigned bus number 1
+[    1.272897] ehci_hcd 0000:02:03.0: cache line size of 32 is not supported
+[    1.272931] ehci_hcd 0000:02:03.0: irq 17, io mem 0xfd5ff000
+[    1.284412] ehci_hcd 0000:02:03.0: USB 2.0 started, EHCI 1.00
+[    1.284459] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002
+[    1.284463] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.284466] usb usb1: Product: EHCI Host Controller
+[    1.284469] usb usb1: Manufacturer: Linux 3.5.0-52-generic ehci_hcd
+[    1.284472] usb usb1: SerialNumber: 0000:02:03.0
+[    1.284606] hub 1-0:1.0: USB hub found
+[    1.284612] hub 1-0:1.0: 6 ports detected
+[    1.284703] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+[    1.284727] uhci_hcd: USB Universal Host Controller Interface driver
+[    1.284776] uhci_hcd 0000:02:00.0: UHCI Host Controller
+[    1.284784] uhci_hcd 0000:02:00.0: new USB bus registered, assigned bus number 2
+[    1.284888] uhci_hcd 0000:02:00.0: irq 18, io base 0x00002440
+[    1.284937] usb usb2: New USB device found, idVendor=1d6b, idProduct=0001
+[    1.284941] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.284944] usb usb2: Product: UHCI Host Controller
+[    1.284947] usb usb2: Manufacturer: Linux 3.5.0-52-generic uhci_hcd
+[    1.284949] usb usb2: SerialNumber: 0000:02:00.0
+[    1.285026] hub 2-0:1.0: USB hub found
+[    1.285036] hub 2-0:1.0: 2 ports detected
+[    1.285135] usbcore: registered new interface driver libusual
+[    1.285185] i8042: PNP: PS/2 Controller [PNP0303:KBC,PNP0f13:MOUS] at 0x60,0x64 irq 1,12
+[    1.285637] serio: i8042 KBD port at 0x60,0x64 irq 1
+[    1.285646] serio: i8042 AUX port at 0x60,0x64 irq 12
+[    1.285750] mousedev: PS/2 mouse device common for all mice
+[    1.306067] rtc_cmos 00:04: rtc core: registered rtc_cmos as rtc0
+[    1.306251] rtc0: alarms up to one month, y3k, 114 bytes nvram, hpet irqs
+[    1.306300] device-mapper: uevent: version 1.0.3
+[    1.306368] device-mapper: ioctl: 4.22.0-ioctl (2011-10-19) initialised: dm-devel@redhat.com
+[    1.306389] EISA: Probing bus 0 at eisa.0
+[    1.306395] EISA: Cannot allocate resource for mainboard
+[    1.306398] Cannot allocate resource for EISA slot 1
+[    1.306400] Cannot allocate resource for EISA slot 2
+[    1.306402] Cannot allocate resource for EISA slot 3
+[    1.306405] Cannot allocate resource for EISA slot 4
+[    1.306407] Cannot allocate resource for EISA slot 5
+[    1.306409] Cannot allocate resource for EISA slot 6
+[    1.306420] Cannot allocate resource for EISA slot 7
+[    1.306422] Cannot allocate resource for EISA slot 8
+[    1.306424] EISA: Detected 0 cards.
+[    1.306435] cpuidle: using governor ladder
+[    1.306437] cpuidle: using governor menu
+[    1.306442] EFI Variables Facility v0.08 2004-May-17
+[    1.308383] ashmem: initialized
+[    1.308459] TCP: cubic registered
+[    1.308508] NET: Registered protocol family 10
+[    1.308558] NET: Registered protocol family 17
+[    1.308571] Key type dns_resolver registered
+[    1.308621] Using IPI No-Shortcut mode
+[    1.308692] PM: Hibernation image not present or could not be loaded.
+[    1.308704] registered taskstats version 1
+[    1.328332] input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input1
+[    1.480140] ata2.00: ATAPI: VMware Virtual IDE CDROM Drive, 00000001, max UDMA/33
+[    1.480456] ata2.00: configured for UDMA/33
+[    1.627443] isapnp: No Plug & Play device found
+[    1.627718] scsi 1:0:0:0: CD-ROM            NECVMWar VMware IDE CDR10 1.00 PQ: 0 ANSI: 5
+[    1.667436] sr0: scsi3-mmc drive: 48x/48x cd/rw xa/form2 cdda tray
+[    1.667445] cdrom: Uniform CD-ROM driver Revision: 3.20
+[    1.667561] sr 1:0:0:0: Attached scsi CD-ROM sr0
+[    1.667733] sr 1:0:0:0: Attached scsi generic sg0 type 5
+[    1.711207] usb 2-1: new full-speed USB device number 2 using uhci_hcd
+[    1.763086] Freeing initrd memory: 15172k freed
+[    1.771182] Key type trusted registered
+[    1.772616] Key type encrypted registered
+[    1.779164]   Magic number: 3:356:58
+[    1.779274] rtc_cmos 00:04: setting system clock to 2015-10-20 03:04:18 UTC (1445310258)
+[    1.779336] BIOS EDD facility v0.16 2004-Jun-25, 0 devices found
+[    1.779339] EDD information not available.
+[    1.779503] Freeing unused kernel memory: 764k freed
+[    1.779552] Write protecting the kernel text: 6068k
+[    1.779601] Write protecting the kernel read-only data: 2480k
+[    1.779604] NX-protecting the kernel data: 4172k
+[    1.805059] udevd[88]: starting version 175
+[    1.831161] VMware vmxnet3 virtual NIC driver - version 1.1.29.0-k-NAPI
+[    1.843001] VMware PVSCSI driver - version 1.0.2.0-k
+[    1.848226] usb 2-1: New USB device found, idVendor=0e0f, idProduct=0003
+[    1.848232] usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    1.848235] usb 2-1: Product: VMware Virtual USB Mouse
+[    1.848238] usb 2-1: Manufacturer: VMware
+[    1.920119] Fusion MPT base driver 3.04.20
+[    1.920126] Copyright (c) 1999-2008 LSI Corporation
+[    1.920410] Fusion MPT SPI Host driver 3.04.20
+[    1.930655] mptbase: ioc0: Initiating bringup
+[    1.962556] usb 2-2: new full-speed USB device number 3 using uhci_hcd
+[    1.985600] Floppy drive(s): fd0 is 1.44M
+[    1.987842] pcnet32: pcnet32.c:v1.35 21.Apr.2008 tsbogend@alpha.franken.de
+[    1.987910] pcnet32: PCnet/PCI II 79C970A at 0x2000, 00:0c:29:06:f0:8d assigned IRQ 19
+[    1.988046] pcnet32: eth0: registered as PCnet/PCI II 79C970A
+[    1.991394] pcnet32: PCnet/PCI II 79C970A at 0x2080, 00:0c:29:06:f0:97 assigned IRQ 19
+[    1.991530] pcnet32: eth1: registered as PCnet/PCI II 79C970A
+[    1.992307] pcnet32: 2 cards_found
+[    1.998748] FDC 0 is a post-1991 82077
+[    2.002439] ioc0: LSI53C1030 B0: Capabilities={Initiator}
+[    2.067095] usbcore: registered new interface driver usbhid
+[    2.067099] usbhid: USB HID core driver
+[    2.071224] input: VMware VMware Virtual USB Mouse as /devices/pci0000:00/0000:00:11.0/0000:02:00.0/usb2/2-1/2-1:1.0/input/input2
+[    2.071469] hid-generic 0003:0E0F:0003.0001: input,hidraw0: USB HID v1.10 Mouse [VMware VMware Virtual USB Mouse] on usb-0000:02:00.0-1/input0
+[    2.072135] input: VMware VMware Virtual USB Mouse as /devices/pci0000:00/0000:00:11.0/0000:02:00.0/usb2/2-1/2-1:1.1/input/input3
+[    2.072349] hid-generic 0003:0E0F:0003.0002: input,hidraw1: USB HID v1.10 Mouse [VMware VMware Virtual USB Mouse] on usb-0000:02:00.0-1/input1
+[    2.091410] usb 2-2: New USB device found, idVendor=0e0f, idProduct=0002
+[    2.091415] usb 2-2: New USB device strings: Mfr=0, Product=1, SerialNumber=0
+[    2.091418] usb 2-2: Product: VMware Virtual USB Hub
+[    2.092756] hub 2-2:1.0: USB hub found
+[    2.093330] hub 2-2:1.0: 7 ports detected
+[    2.162851] scsi2 : ioc0: LSI53C1030 B0, FwRev=01032920h, Ports=1, MaxQ=128, IRQ=17
+[    2.275705] scsi 2:0:0:0: Direct-Access     VMware,  VMware Virtual S 1.0  PQ: 0 ANSI: 2
+[    2.275737] scsi target2:0:0: Beginning Domain Validation
+[    2.276985] scsi target2:0:0: Domain Validation skipping write tests
+[    2.276991] scsi target2:0:0: Ending Domain Validation
+[    2.277053] scsi target2:0:0: FAST-40 WIDE SCSI 80.0 MB/s ST (25 ns, offset 127)
+[    2.283748] sd 2:0:0:0: [sda] 41943040 512-byte logical blocks: (21.4 GB/20.0 GiB)
+[    2.283798] sd 2:0:0:0: [sda] Write Protect is off
+[    2.283802] sd 2:0:0:0: [sda] Mode Sense: 61 00 00 00
+[    2.283918] sd 2:0:0:0: [sda] Cache data unavailable
+[    2.283922] sd 2:0:0:0: [sda] Assuming drive cache: write through
+[    2.284212] sd 2:0:0:0: [sda] Cache data unavailable
+[    2.284216] sd 2:0:0:0: [sda] Assuming drive cache: write through
+[    2.284472] sd 2:0:0:0: Attached scsi generic sg1 type 0
+[    2.290299]  sda: sda1 sda2 < sda5 >
+[    2.290725] sd 2:0:0:0: [sda] Cache data unavailable
+[    2.290729] sd 2:0:0:0: [sda] Assuming drive cache: write through
+[    2.290733] sd 2:0:0:0: [sda] Attached SCSI disk
+[    2.355599] EXT4-fs (sda1): INFO: recovery required on readonly filesystem
+[    2.355607] EXT4-fs (sda1): write access will be enabled during recovery
+[    2.491735] EXT4-fs (sda1): orphan cleanup on readonly fs
+[    2.491757] EXT4-fs (sda1): ext4_orphan_cleanup: deleting unreferenced inode 953599
+[    2.491823] EXT4-fs (sda1): ext4_orphan_cleanup: deleting unreferenced inode 953358
+[    2.491934] EXT4-fs (sda1): ext4_orphan_cleanup: deleting unreferenced inode 689885
+[    2.491949] EXT4-fs (sda1): ext4_orphan_cleanup: deleting unreferenced inode 675704
+[    2.491961] EXT4-fs (sda1): ext4_orphan_cleanup: deleting unreferenced inode 953746
+[    2.491972] EXT4-fs (sda1): ext4_orphan_cleanup: deleting unreferenced inode 953749
+[    2.491983] EXT4-fs (sda1): ext4_orphan_cleanup: deleting unreferenced inode 953752
+[    2.491994] EXT4-fs (sda1): ext4_orphan_cleanup: deleting unreferenced inode 953754
+[    2.492004] EXT4-fs (sda1): 8 orphan inodes deleted
+[    2.492007] EXT4-fs (sda1): recovery complete
+[    2.495726] EXT4-fs (sda1): mounted filesystem with ordered data mode. Opts: (null)
+[   11.147005] Adding 1046524k swap on /dev/sda5.  Priority:-1 extents:1 across:1046524k 
+[   11.383588] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready
+[   11.383596] IPv6: ADDRCONF(NETDEV_UP): eth1: link is not ready
+[   11.682755] lp: driver loaded but no devices found
+[   11.685885] udevd[334]: starting version 175
+[   12.093496] shpchp: Standard Hot Plug PCI Controller Driver version: 0.4
+[   12.095649] piix4_smbus 0000:00:07.3: Host SMBus controller not enabled!
+[   12.584560] [drm] Initialized drm 1.1.0 20060810
+[   12.591167] [drm] Capabilities:
+[   12.591171] [drm]   Rect copy.
+[   12.591173] [drm]   Cursor.
+[   12.591175] [drm]   Cursor bypass.
+[   12.591176] [drm]   Cursor bypass 2.
+[   12.591178] [drm]   8bit emulation.
+[   12.591180] [drm]   Alpha cursor.
+[   12.591182] [drm]   Extended Fifo.
+[   12.591184] [drm]   Multimon.
+[   12.591186] [drm]   Pitchlock.
+[   12.591188] [drm]   Irq mask.
+[   12.591189] [drm]   Display Topology.
+[   12.591191] [drm]   GMR.
+[   12.591193] [drm]   Traces.
+[   12.591195] [drm]   GMR2.
+[   12.591197] [drm]   Screen Object 2.
+[   12.591199] [drm] Max GMR ids is 64
+[   12.591201] [drm] Max GMR descriptors is 4096
+[   12.591203] [drm] Max number of GMR pages is 196608
+[   12.591205] [drm] Max dedicated hypervisor surface memory is 786432 kiB
+[   12.591207] [drm] VRAM at 0xe8000000 size is 32768 kiB
+[   12.591210] [drm] MMIO at 0xfe000000 size is 2048 kiB
+[   12.591212] [drm] global init.
+[   12.594430] [TTM] Zone  kernel: Available graphics memory: 445704 kiB
+[   12.594434] [TTM] Zone highmem: Available graphics memory: 513228 kiB
+[   12.594437] [TTM] Initializing pool allocator
+[   12.594442] [TTM] Initializing DMA pool allocator
+[   12.595397] [drm] width 640
+[   12.595410] [drm] height 480
+[   12.595422] [drm] bpp 32
+[   12.679596] [drm] Fifo max 0x00200000 min 0x00001000 cap 0x0000077f
+[   12.979760] [drm] Supports vblank timestamp caching Rev 1 (10.10.2010).
+[   12.979765] [drm] No driver support for vblank timestamp query.
+[   12.980511] [drm] Screen objects system initialized
+[   12.980517] [drm] Detected no device 3D availability.
+[   12.986432] fbcon: svgadrmfb (fb0) is primary device
+[   13.435426] Console: switching to colour frame buffer device 100x37
+[   13.436999] [drm] Initialized vmwgfx 2.4.0 20120209 for 0000:00:0f.0 on minor 0
+[   14.425949] EXT4-fs (sda1): re-mounted. Opts: errors=remount-ro
+[   14.876212] parport_pc 00:09: reported by Plug and Play ACPI
+[   14.876710] parport0: PC-style at 0x378, irq 7 [PCSPP,TRISTATE]
+[   15.075793] lp0: using parport0 (interrupt-driven).
+[   15.382367] type=1400 audit(1445310272.137:2): apparmor="STATUS" operation="profile_load" name="/sbin/dhclient" pid=553 comm="apparmor_parser"
+[   15.383106] type=1400 audit(1445310272.137:3): apparmor="STATUS" operation="profile_load" name="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=553 comm="apparmor_parser"
+[   15.383406] type=1400 audit(1445310272.137:4): apparmor="STATUS" operation="profile_load" name="/usr/lib/connman/scripts/dhclient-script" pid=553 comm="apparmor_parser"
+[   16.883121] ppdev: user-space parallel port driver
+[   16.922744] input: ImPS/2 Generic Wheel Mouse as /devices/platform/i8042/serio1/input/input4
+[   17.368901] type=1400 audit(1445310274.093:5): apparmor="STATUS" operation="profile_load" name="/usr/lib/cups/backend/cups-pdf" pid=653 comm="apparmor_parser"
+[   17.566857] type=1400 audit(1445310274.329:6): apparmor="STATUS" operation="profile_load" name="/usr/sbin/cupsd" pid=653 comm="apparmor_parser"
+[   19.220983] Bluetooth: Core ver 2.16
+[   19.221013] NET: Registered protocol family 31
+[   19.221014] Bluetooth: HCI device and connection manager initialized
+[   19.221016] Bluetooth: HCI socket layer initialized
+[   19.221018] Bluetooth: L2CAP socket layer initialized
+[   19.221022] Bluetooth: SCO socket layer initialized
+[   19.321039] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+[   19.321041] Bluetooth: BNEP filters: protocol multicast
+[   19.363661] Bluetooth: RFCOMM TTY layer initialized
+[   19.363670] Bluetooth: RFCOMM socket layer initialized
+[   19.363672] Bluetooth: RFCOMM ver 1.11
+[   19.422284] microcode: CPU0 sig=0x1067a, pf=0x1, revision=0xa0c
+[   20.470236] init: failsafe main process (754) killed by TERM signal
+[   20.605475] microcode: Microcode Update Driver: v2.00 <tigran@aivazian.fsnet.co.uk>, Peter Oruba
+[   20.844764] pcnet32 0000:02:01.0: eth0: link up
+[   21.467171] type=1400 audit(1445310278.237:7): apparmor="STATUS" operation="profile_load" name="/usr/lib/lightdm/lightdm/lightdm-guest-session-wrapper" pid=871 comm="apparmor_parser"
+[   21.467574] type=1400 audit(1445310278.237:8): apparmor="STATUS" operation="profile_load" name="/usr/lib/lightdm/lightdm/lightdm-guest-session-wrapper//chromium_browser" pid=871 comm="apparmor_parser"
+[   21.471859] type=1400 audit(1445310278.241:9): apparmor="STATUS" operation="profile_replace" name="/sbin/dhclient" pid=872 comm="apparmor_parser"
+[   21.472212] type=1400 audit(1445310278.241:10): apparmor="STATUS" operation="profile_replace" name="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=872 comm="apparmor_parser"
+[   21.472413] type=1400 audit(1445310278.241:11): apparmor="STATUS" operation="profile_replace" name="/usr/lib/connman/scripts/dhclient-script" pid=872 comm="apparmor_parser"
+[   21.904366] type=1400 audit(1445310278.677:12): apparmor="STATUS" operation="profile_load" name="/usr/bin/evince" pid=873 comm="apparmor_parser"
+[   21.909937] type=1400 audit(1445310278.681:13): apparmor="STATUS" operation="profile_load" name="/usr/bin/evince//launchpad_integration" pid=873 comm="apparmor_parser"
+[   21.911886] type=1400 audit(1445310278.685:14): apparmor="STATUS" operation="profile_load" name="/usr/bin/evince//sanitized_helper" pid=873 comm="apparmor_parser"
+[   21.916491] type=1400 audit(1445310278.689:15): apparmor="STATUS" operation="profile_load" name="/usr/bin/evince-previewer" pid=873 comm="apparmor_parser"
+[   21.921199] type=1400 audit(1445310278.693:16): apparmor="STATUS" operation="profile_load" name="/usr/bin/evince-previewer//launchpad_integration" pid=873 comm="apparmor_parser"
+[   22.881507] pcnet32 0000:02:05.0: eth1: link up
+[   26.971088] init: plymouth-stop pre-start process (1192) terminated with status 1
+[   33.276550] acpiphp: ACPI Hot Plug PCI Controller Driver version: 0.5
+[   33.280534] acpiphp: Slot [32] registered
+[   33.283799] acpiphp: Slot [33] registered
+[   33.286193] acpiphp: Slot [34] registered
+[   33.287257] acpiphp: Slot [35] registered
+[   33.289398] acpiphp: Slot [36] registered
+[   33.290253] acpiphp: Slot [37] registered
+[   33.290756] acpiphp: Slot [38] registered
+[   33.291351] acpiphp: Slot [39] registered
+[   33.293235] acpiphp: Slot [40] registered
+[   33.296086] acpiphp: Slot [41] registered
+[   33.296105] acpiphp: Slot [42] registered
+[   33.296122] acpiphp: Slot [43] registered
+[   33.296146] acpiphp: Slot [44] registered
+[   33.296163] acpiphp: Slot [45] registered
+[   33.296179] acpiphp: Slot [46] registered
+[   33.296196] acpiphp: Slot [47] registered
+[   33.296214] acpiphp: Slot [48] registered
+[   33.296235] acpiphp: Slot [49] registered
+[   33.296253] acpiphp: Slot [50] registered
+[   33.296270] acpiphp: Slot [51] registered
+[   33.296286] acpiphp: Slot [52] registered
+[   33.296302] acpiphp: Slot [53] registered
+[   33.296318] acpiphp: Slot [54] registered
+[   33.296336] acpiphp: Slot [55] registered
+[   33.296352] acpiphp: Slot [56] registered
+[   33.296368] acpiphp: Slot [57] registered
+[   33.296385] acpiphp: Slot [58] registered
+[   33.296401] acpiphp: Slot [59] registered
+[   33.296419] acpiphp: Slot [60] registered
+[   33.296438] acpiphp: Slot [61] registered
+[   33.296455] acpiphp: Slot [62] registered
+[   33.296471] acpiphp: Slot [63] registered
+[   39.145348] init: vmware-tools pre-start process (906) terminated with status 1
+[  162.266802] core is opening.
+[  162.266810] FSM INIT-init SV
+[  162.266821] [UEMAC][init]CCCH_defaultconfig completed
+[  162.266823] [UEMAC][ra_rrcconfig]:RACH config have done 
+[  162.266826] [InitQueue]Q point: f0c97940
+[  162.266827] [ue_mac_sv_init]SV(CraQueue): f0c97940
+[  162.266840] [RLC][rlc_init_enter] PCCH instance has bulided
+[  162.266842] [RLC][rlc_init_enter] BCCH instance has bulided
+[  162.266844] [RLC][rlc_init_enter] CCCH recv instance has bulided
+[  162.266845] [RLC][rlc_init_enter] CCCH tran instance has bulided
+[  162.266847] core has opened.
+[  164.308891] [UEMAC][idle_default]MAC idle_default_handler
+[  164.308895] [UEMAC][idle_default]MAC IDLE default ioctl hander,
+[  164.308897] [MAC][DEFAULT_CMD]16
+[  164.308899] [UEMAC][RRCTOMAC_spsconfig]rrctomac_spsconfig
+[  164.308900] [UEMAC][idle_default]MAC idle_default_handler
+[  164.308901] [UEMAC][idle_default]MAC IDLE default ioctl hander,
+[  164.308902] [MAC][DEFAULT_CMD]9
+[  164.308903] [UEMAC][RRCTOMAC_mainconfig]rrctomac_mainconfig
+[  164.308904] [UEMAC][idle_default]MAC idle_default_handler
+[  164.308905] [UEMAC][idle_default]MAC IDLE default ioctl hander,
+[  164.308906] [MAC][DEFAULT_CMD]5
+[  164.308907] [UEMAC][RRCTOMAC_TA]rrctomac_taconfig
+[  164.308911] [UEMAC][idle_default]MAC idle_default_handler
+[  164.308913] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=0
+[  164.308914] =====================================================
+[  164.308915] 05 00 00 00 02 00 00 00 01 0b 40 e2 01 00 02 00 
+[  164.308928] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.308940] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.308953] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.308965] 
+[  164.308966] =====================================================
+[  164.308967] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 1
+[  164.308969] [UEMAC][idle_default]MAC IDLE receive a RLCdatareq,[UEMAC][idle_default]txQueueSize:20
+[  164.320513] [UEMAC][contention_ra]RA counter :1
+[  164.320604] [UEMAC][contention_ra]MAC ra_PreambleIndex:3
+[  164.320605] [UEMAC][sendrapreamble]run here,start send RAP 
+[  164.320607] [UEMAC][wait_raresponse]run here,start WRAtimer
+[  164.320633] protocol f4f7 is buggy, dev eth1
+[  164.322251] [UEMAC][cra_default]cra default 
+[  164.322254] recieve DLSCH data packet, 
+[  164.322256] [HEXI]LCID IN GETTING HEAD LENGTH AND LENGTH OF HEAD:3,1
+[  164.322257] [HEXI]COMPLEX 7 BIT SUBHEAD!
+[  164.322258] [HEXI]TYPE IN DECOMPLEX:B
+[  164.322260] [HEXI]RAR SDU NUMBER AND THE OFFSET:1 2
+[  164.322261] [MAC RAR]RAPID:3
+[  164.322262] [HEXI]rapid_in_subhead:3
+[  164.322263] [HEXI]my_id:3
+[  164.322264] [HEXI]T_C_RNTI IN RAR:61
+[  164.322265] [MAC][decomplex]m_tb_size:1176
+[  164.322270] decomplex for RAR function done
+[  164.323857] [UEMAC][waitsend_msg3]MAC SV(PREAMBLE_TRANSMISSION_COUNTER):1
+[  164.323863] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  164.323867] [UE MAC][send_msg3]RA ALLOCATION RESULT:1
+[  164.323871] [MAC CCCHSNED]CONTINUE FLAG:0;LCID:0;DATA TYPE FROM CCCH:0
+[  164.323872] [HEXI]SV(m_temp_cr)->m_part_1=33554432
+[  164.323873] [HEXI]SV(m_temp_cr)->m_part_2=0
+[  164.323874] [HEXI]SV(m_temp_cr)->m_part_2=0
+[  164.323875] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  164.323876] [COMPLEX]TBSIZE:147
+[  164.323878] THE TYPE OF SDU:0
+[  164.323879] 
+[  164.323879] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  164.323881] [HEXI] packet sent to srio:len:22
+[  164.323882] =====================================================
+[  164.323883] 3d 00 12 14 05 00 00 00 02 00 00 00 01 0b 40 e2 
+[  164.323973] 01 00 02 00 00 00 05 00 00 00 00 10 00 00 01 00 
+[  164.323986] 00 00 10 5f 00 00 10 df 04 08 10 df 04 08 bc 01 
+[  164.323999] 00 00 70 03 00 00 06 00 00 00 00 10 00 00 02 00 
+[  164.324040] 00 00 24 5f 00 00 24 df 04 08 24 df 04 08 c8 00 
+[  164.324053] 
+[  164.324054] =====================================================
+[  164.324055] complex function done
+[  164.324056] [UEMAC][send_msg3]:this is the first time to do CRA 
+[  164.324058] [RLC_MAC]excute RA send_msg3!
+[  164.324105] protocol f4f7 is buggy, dev eth1
+[  164.332093] [UEMAC][cra_default]cra default 
+[  164.332098] recieve DLSCH data packet, 
+[  164.332100] [HEXI]LCID IN GETTING HEAD LENGTH AND LENGTH OF HEAD:28,1
+[  164.332101] [HEXI]LCID IN GETTING HEAD LENGTH AND LENGTH OF HEAD:0,2
+[  164.332102] [HEXI]COMPLEX 15 BIT SUBHEAD!
+[  164.332104] [HEXI]TYPE IN DECOMPLEX:C
+[  164.332104] recieve DL_PDU data packet
+[  164.332105] [UE MAC]lcid:28
+[  164.332108] [HEXI]DECOMPLEX:OFFSET OF CONTENTIONRESOLUTION:1
+[  164.332109] [HEXI]LENGTH OF HEAD IN DECOMPLEX DL_PDU:5
+[  164.332111] [MAC DECOMPLEX]PRAT1:33554432,PART2:0;ORIGINAL DATA:PART1:33554432,PART2:0
+[  164.332116] [UE MAC]lcid:0
+[  164.332118] 
+[  164.332118] [RLC][rlc_pkt_receive_from_mac] entering rlc_pkt_receive_from_mac(lcid is 0,pbch is 0)
+[  164.332120] =====================================================
+[  164.332121] 03 00 00 00 04 00 00 00 02 00 00 00 01 00 00 00 
+[  164.332134] 02 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00 
+[  164.332146] 78 00 00 00 08 00 00 00 e8 03 00 00 02 00 00 00 
+[  164.332159] 14 00 00 00 14 00 00 00 01 01 01 00 00 00 20 00 
+[  164.332171] 
+[  164.332172] =====================================================
+[  164.332173] [RLC][rlc_pkt_receive_from_mac][<--] send to RRC
+[  164.332175] [HEXI] packet sent to rlc:len:1272
+[  164.332176] decomplex function done
+[  164.332782] [UEMAC][cra_success]:contention based random access success 
+[  164.343838] [con_default_handler]CraQueue:f0c97940
+[  164.343843] 
+[  164.343843] [RLC][rlc_ioctrl_handler] CRLC_BULID_REQ has received
+[  164.343845] [RLC][PCRLC_BULID_REQ] entering PCRLC_BULID_REQ
+[  164.343845]  [RLC][PCRLC_BULID_REQ] build am instance lcid is 1
+[  164.343849] [RLC][PCRLC_BULID_REQ] init SN is 0
+[  164.343854] [RLC][PCRLC_BULID_REQ] PCRLC_BULID_REQ: am instance has established(rbid is 1)
+[  164.343855] [UEMAC][con_default]CON default ioctl hander
+[  164.343857] [con_default_handler]CraQueue:f0c97940
+[  164.343858] [UEMAC][RRCTOMAC_lcconfig]rrctomac_lcconfig
+[  164.343860] [UEMAC][con_default]CON default ioctl hander
+[  164.343862] [con_default_handler]CraQueue:f0c97940
+[  164.343863] 
+[  164.343863] [RLC][rlc_ioctrl_handler] CRLC_BULID_REQ has received
+[  164.343864] [RLC][PCRLC_BULID_REQ] entering PCRLC_BULID_REQ
+[  164.343864]  [RLC][PCRLC_BULID_REQ] build am instance lcid is 2
+[  164.343915] [RLC][PCRLC_BULID_REQ] init SN is 0
+[  164.343959] [RLC][PCRLC_BULID_REQ] PCRLC_BULID_REQ: am instance has established(rbid is 2)
+[  164.343961] [UEMAC][con_default]CON default ioctl hander
+[  164.343963] [con_default_handler]CraQueue:f0c97940
+[  164.343964] [UEMAC][RRCTOMAC_lcconfig]rrctomac_lcconfig
+[  164.343965] [UEMAC][con_default]CON default ioctl hander
+[  164.343966] [con_default_handler]CraQueue:f0c97940
+[  164.343967] [UEMAC][RRCTOMAC_mainconfig]rrctomac_mainconfig
+[  164.343968] [UEMAC][con_default]CON default ioctl hander
+[  164.343969] [con_default_handler]CraQueue:f0c97940
+[  164.343970] [UEMAC][RRCTOMAC_spsconfig]rrctomac_spsconfig
+[  164.343971] [UEMAC][con_default]CON default ioctl hander
+[  164.343981] [con_default_handler]CraQueue:f0c97940
+[  164.343982] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=1
+[  164.343983] =====================================================
+[  164.343984] 06 00 00 00 04 00 00 00 00 00 00 00 00 00 00 00 
+[  164.344302] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.344314] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.344433] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.344446] 
+[  164.344447] =====================================================
+[  164.344449] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 3
+[  164.344450] [RLC][rlc_pkt_receive_from_upper]AM_MODE list_add done!
+[  164.344451] [RLC][rlc_pkt_receive_from_upper] amIns addr is f5c0de7c, amIns->rbid=1, amIns->lcid=1
+[  164.344457] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  164.344460] =====================================================
+[  164.344461] a0 00 
+[  164.344463] =====================================================
+[  164.344481] [RLC][rlc_AM_segment] SN = 1
+[  164.344482] =====================================================
+[  164.344483] a0 00 06 00 00 00 04 00 00 00 
+[  164.344491] =====================================================
+[  164.344493] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  164.344494] [COMPLEX]TBSIZE:1400
+[  164.344496] THE TYPE OF SDU:0
+[  164.344497] 
+[  164.344497] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  164.344499] [HEXI] packet sent to srio:len:14
+[  164.344500] =====================================================
+[  164.344501] 3d 01 0a 50 a0 00 06 00 00 00 04 00 00 00 00 00 
+[  164.344513] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.344526] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.344538] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.344551] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.344563] 
+[  164.344564] =====================================================
+[  164.344565] complex function done
+[  164.344566] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  164.344567] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  164.344672] protocol f4f7 is buggy, dev eth1
+[  164.347675] [con_default_handler]CraQueue:f0c97940
+[  164.347678] [UEMAC][con_default]CON receive a data packet from PHYadapter
+[  164.347680] recieve DLSCH data packet, 
+[  164.347682] [HEXI]LCID IN GETTING HEAD LENGTH AND LENGTH OF HEAD:1,1
+[  164.347683] [HEXI]COMPLEX 15 BIT SUBHEAD!
+[  164.347684] [HEXI]TYPE IN DECOMPLEX:C
+[  164.347685] recieve DL_PDU data packet
+[  164.347686] [UE MAC]lcid:1
+[  164.347695] 
+[  164.347695] [RLC][rlc_pkt_receive_from_mac] entering rlc_pkt_receive_from_mac(lcid is 1,pbch is 0)
+[  164.347697] =====================================================
+[  164.347698] a0 00 04 00 00 00 01 00 00 00 00 01 bb ef 00 00 
+[  164.347710] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.347723] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 
+[  164.347735] 00 00 01 00 00 00 01 00 00 00 02 00 00 00 02 00 
+[  164.347748] 
+[  164.347749] =====================================================
+[  164.347750] [RLC][rlc_AM_pkt_receive_from_mac] the header is:
+[  164.347751] =====================================================
+[  164.347752] 00 a0 
+[  164.347754] =====================================================
+[  164.347756] [RLC][isInsideAmRecvWin] vr_r=0, vr_mr=512, SN=0, mr-r = 512
+[  164.347758] [RLC][rlc_AM_pkt_receive_from_mac] pkt has been put into buffer(SN is 0)
+[  164.347759] [RLC][rlc_AM_pkt_receive_from_mac] SN > amIns->vr_h
+[  164.347760] [RLC][rlc_AM_pkt_receive_from_mac] amIns->vr_h is updated to 1
+[  164.347761] [RLC][rlc_AM_pkt_receive_from_mac] amIns->vr_ms has received completly and updated to 1
+[  164.347761] [RLC][rlc_AM_pkt_receive_from_mac] SN == amIns->vr_r
+[  164.347762] [RLC][rlc_AM_pkt_receive_from_mac] Enter rlc_AM_reassemble_deliver
+[  164.347764] [RLC][rlc_AM_reassemble_deliver] vr_r=1, vr_h=1
+[  164.347770] [RLC][rlc_AM_reassemble_deliver] pduhdr->E=0, pduhdr->FIfirst=0, pduhdr->FIsecond=0
+[  164.347771] [RLC][rlc_AM_reassemble_deliver] <--send to PDCP2
+[  164.347772] [RLC] fixhead->P = 1
+[  164.347773] [RLC] amIns->statProhTimer = 0
+[  164.347774] [RLC][rlc_AM_pkt_receive_from_mac] the statProhTimer start
+[  164.347777] [HEXI] packet sent to rlc:len:1272
+[  164.347779] decomplex function done
+[  164.357962] [con_default_handler]CraQueue:f0c97940
+[  164.357966] 
+[  164.357966] [RLC][rlc_ioctrl_handler] CRLC_BULID_REQ has received
+[  164.357968] [RLC][PCRLC_BULID_REQ] entering PCRLC_BULID_REQ
+[  164.357968]  [RLC][PCRLC_BULID_REQ] PCRLC_BULID_REQ: um tran and recv instance has established(rbid is 3)
+[  164.357972] [UEMAC][con_default]CON default ioctl hander
+[  164.357974] [con_default_handler]CraQueue:f0c97940
+[  164.357975] [UEMAC][RRCTOMAC_lcconfig]rrctomac_lcconfig
+[  164.357977] [UEMAC][con_default]CON default ioctl hander
+[  164.357978] [con_default_handler]CraQueue:f0c97940
+[  164.357979] 
+[  164.357979] [RLC][rlc_ioctrl_handler] CRLC_BULID_REQ has received
+[  164.357980] [RLC][PCRLC_BULID_REQ] entering PCRLC_BULID_REQ
+[  164.357980]  [RLC][PCRLC_BULID_REQ] PCRLC_BULID_REQ: um tran and recv instance has established(rbid is 4)
+[  164.357982] [UEMAC][con_default]CON default ioctl hander
+[  164.357984] [con_default_handler]CraQueue:f0c97940
+[  164.357984] [UEMAC][RRCTOMAC_lcconfig]rrctomac_lcconfig
+[  164.357985] [UEMAC][con_default]CON default ioctl hander
+[  164.357987] [con_default_handler]CraQueue:f0c97940
+[  164.357988] 
+[  164.357988] [RLC][rlc_ioctrl_handler] CRLC_BULID_REQ has received
+[  164.357989] [RLC][PCRLC_BULID_REQ] entering PCRLC_BULID_REQ
+[  164.357989]  [RLC][PCRLC_BULID_REQ] PCRLC_BULID_REQ: um tran and recv instance has established(rbid is 5)
+[  164.357991] [UEMAC][con_default]CON default ioctl hander
+[  164.357992] [con_default_handler]CraQueue:f0c97940
+[  164.357993] [UEMAC][RRCTOMAC_lcconfig]rrctomac_lcconfig
+[  164.357994] [UEMAC][con_default]CON default ioctl hander
+[  164.359106] [con_default_handler]CraQueue:f0c97940
+[  164.359108] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=1
+[  164.359110] =====================================================
+[  164.359111] 06 00 00 00 02 00 00 00 00 00 c0 f5 c8 00 00 00 
+[  164.359124] 05 00 b4 60 4a e8 49 bb 89 f0 62 ad c0 5d cd e3 
+[  164.359136] ba 0d 02 00 12 d8 94 f9 69 6e 75 78 00 00 00 00 
+[  164.359149] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.359161] 
+[  164.359162] =====================================================
+[  164.359165] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 3
+[  164.359166] [RLC][rlc_pkt_receive_from_upper]AM_MODE list_add done!
+[  164.359167] [RLC][rlc_pkt_receive_from_upper] amIns addr is f5c0de7c, amIns->rbid=1, amIns->lcid=1
+[  164.359172] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  164.359175] =====================================================
+[  164.359176] a0 01 
+[  164.359178] =====================================================
+[  164.359183] [RLC][rlc_AM_segment] SN = 2
+[  164.359184] =====================================================
+[  164.359185] a0 01 06 00 00 00 02 00 00 00 
+[  164.359193] =====================================================
+[  164.359195] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  164.359196] [COMPLEX]TBSIZE:1400
+[  164.359198] THE TYPE OF SDU:0
+[  164.359199] 
+[  164.359199] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  164.359201] [HEXI] packet sent to srio:len:50
+[  164.359202] =====================================================
+[  164.359203] 3d 01 2e 74 a0 01 06 00 00 00 02 00 00 00 00 00 
+[  164.359215] c0 f5 c8 00 00 00 05 00 b4 60 4a e8 49 bb 89 f0 
+[  164.359228] 62 ad c0 5d cd e3 ba 0d 02 00 12 d8 94 f9 69 6e 
+[  164.359240] 75 78 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.359253] 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+[  164.359265] 
+[  164.359266] =====================================================
+[  164.359267] complex function done
+[  164.359268] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  164.359269] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  164.359277] protocol f4f7 is buggy, dev eth1
+[  164.367820] [con_default_handler]CraQueue:f0c97940
+[  164.367826] [RLC][rlc_ctrl_pkt_trans] entering rlc_ctrl_pkt_trans()
+[  164.367828] [RLC][size_of_ctrl_pdu] size of ctrl pdu is 2
+[  164.367829] [RLC][rlc_ctrl_pkt_trans] size = 2
+[  164.367832] [RLC][rlc_ctrl_pkt_trans] vr_ms = 1
+[  164.367833] =====================================================
+[  164.367834] 04 00 
+[  164.367836] =====================================================
+[  164.367838] [RLC][rlc_ctrl_pkt_trans] ctrlPduBufferNum = 1, ctlPduSize = 2
+[  164.367839] =====================================================
+[  164.367840] 00 04 
+[  164.367842] =====================================================
+[  166.368777] [con_default_handler]CraQueue:f0c97940
+[  166.368784] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  166.368786] =====================================================
+[  166.368788] 00 00 00 00 00 00 00 ab 00 08 00 45 00 00 ab a1 
+[  166.368811] 81 40 00 ff 11 e4 b2 0a 0a 0a 08 e0 00 00 fb 14 
+[  166.368834] e9 14 e9 00 97 a5 1c 00 00 84 00 00 00 00 04 00 
+[  166.368857] 00 00 00 09 5f 73 65 72 76 69 63 65 73 07 5f 64 
+[  166.368880] 
+[  166.368882] =====================================================
+[  166.368885] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  166.368887] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  166.368897] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  166.368906] [RLC] entring rlc_UM_segment
+[  166.368908] =====================================================
+[  166.368909] 00 00 
+[  166.368914] =====================================================
+[  166.368917] [RLC][rlc_UM_segment] SN = 1
+[  166.368920] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  166.368922] [COMPLEX]TBSIZE:1400
+[  166.368924] [COMPLEX]LONG BSR CONTROL ELEMENT FOUND!
+[  166.368926] THE TYPE OF SDU:0
+[  166.368928] 
+[  166.368928] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  166.368931] [HEXI] packet sent to srio:len:195
+[  166.368933] =====================================================
+[  166.368934] 3e 21 02 04 80 b8 05 00 10 00 04 00 00 00 00 00 
+[  166.368957] 00 00 00 00 ab 00 08 00 45 00 00 ab a1 81 40 00 
+[  166.368980] ff 11 e4 b2 0a 0a 0a 08 e0 00 00 fb 14 e9 14 e9 
+[  166.369003] 00 97 a5 1c 00 00 84 00 00 00 00 04 00 00 00 00 
+[  166.369026] 09 5f 73 65 72 76 69 63 65 73 07 5f 64 6e 73 2d 
+[  166.369048] 
+[  166.369050] =====================================================
+[  166.369052] complex function done
+[  166.369054] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  166.369056] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  166.369067] protocol f4f7 is buggy, dev eth1
+[  166.389094] [con_default_handler]CraQueue:f0c97940
+[  166.393320] [con_default_handler]CraQueue:f0c97940
+[  166.393324] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  166.393325] =====================================================
+[  166.393326] 00 00 00 00 00 00 01 09 00 08 00 45 00 01 09 a1 
+[  166.393340] 82 40 00 ff 11 e4 53 0a 0a 0a 08 e0 00 00 fb 14 
+[  166.393354] e9 14 e9 00 f5 d1 9d 00 00 00 00 00 04 00 00 00 
+[  166.393368] 07 00 00 09 75 62 75 6e 74 75 20 5b 5d 0c 5f 77 
+[  166.393382] 
+[  166.393383] =====================================================
+[  166.393385] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  166.393387] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  166.393394] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  166.393397] [RLC] entring rlc_UM_segment
+[  166.393398] =====================================================
+[  166.393399] 00 01 
+[  166.393401] =====================================================
+[  166.393404] [RLC][rlc_UM_segment] SN = 2
+[  166.393406] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  166.393407] [COMPLEX]TBSIZE:1400
+[  166.393409] THE TYPE OF SDU:1
+[  166.393411] 
+[  166.393411] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  166.393413] [HEXI] packet sent to srio:len:283
+[  166.393414] =====================================================
+[  166.393415] 3d 04 81 16 1a 00 01 00 00 00 00 00 00 01 09 00 
+[  166.393429] 08 00 45 00 01 09 a1 82 40 00 ff 11 e4 53 0a 0a 
+[  166.393442] 0a 08 e0 00 00 fb 14 e9 14 e9 00 f5 d1 9d 00 00 
+[  166.393456] 00 00 00 04 00 00 00 07 00 00 09 75 62 75 6e 74 
+[  166.393470] 75 20 5b 5d 0c 5f 77 6f 72 6b 73 74 61 74 69 6f 
+[  166.393483] 
+[  166.393484] =====================================================
+[  166.393486] complex function done
+[  166.393487] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  166.393488] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  166.393497] protocol f4f7 is buggy, dev eth1
+[  166.428127] [con_default_handler]CraQueue:f0c97940
+[  166.428131] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  166.428133] =====================================================
+[  166.428134] 00 00 00 00 00 00 00 43 00 08 00 45 00 00 43 a1 
+[  166.428148] 83 40 00 ff 11 e5 18 0a 0a 0a 08 e0 00 00 fb 14 
+[  166.428162] e9 14 e9 00 2f 3d 82 00 00 00 00 00 01 00 00 00 
+[  166.428176] 00 00 00 0a 5f 73 61 6e 65 2d 70 6f 72 74 04 5f 
+[  166.428189] 
+[  166.428190] =====================================================
+[  166.428193] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  166.428195] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  166.428201] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  166.428204] [RLC] entring rlc_UM_segment
+[  166.428205] =====================================================
+[  166.428206] 00 02 
+[  166.428209] =====================================================
+[  166.428213] [RLC][rlc_UM_segment] SN = 3
+[  166.428215] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  166.428216] [COMPLEX]TBSIZE:1400
+[  166.428218] THE TYPE OF SDU:0
+[  166.428220] 
+[  166.428220] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  166.428222] [HEXI] packet sent to srio:len:84
+[  166.428223] =====================================================
+[  166.428224] 3d 04 50 53 00 02 00 00 00 00 00 00 00 43 00 08 
+[  166.428237] 00 45 00 00 43 a1 83 40 00 ff 11 e5 18 0a 0a 0a 
+[  166.428251] 08 e0 00 00 fb 14 e9 14 e9 00 2f 3d 82 00 00 00 
+[  166.428265] 00 00 01 00 00 00 00 00 00 0a 5f 73 61 6e 65 2d 
+[  166.428278] 70 6f 72 74 04 5f 74 63 70 05 6c 6f 63 61 6c 00 
+[  166.428292] 
+[  166.428293] =====================================================
+[  166.428295] complex function done
+[  166.428296] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  166.428297] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  166.428305] protocol f4f7 is buggy, dev eth1
+[  166.646449] [con_default_handler]CraQueue:f0c97940
+[  166.646455] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  166.646457] =====================================================
+[  166.646459] 00 00 00 00 00 00 01 09 00 08 00 45 00 01 09 a1 
+[  166.646483] 84 40 00 ff 11 e4 51 0a 0a 0a 08 e0 00 00 fb 14 
+[  166.646506] e9 14 e9 00 f5 d1 9d 00 00 00 00 00 04 00 00 00 
+[  166.646529] 07 00 00 09 75 62 75 6e 74 75 20 5b 5d 0c 5f 77 
+[  166.646552] 
+[  166.646553] =====================================================
+[  166.646557] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  166.646559] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  166.646569] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  166.646573] [RLC] entring rlc_UM_segment
+[  166.646575] =====================================================
+[  166.646576] 00 03 
+[  166.646581] =====================================================
+[  166.646584] [RLC][rlc_UM_segment] SN = 4
+[  166.646588] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  166.646590] [COMPLEX]TBSIZE:1400
+[  166.646593] THE TYPE OF SDU:1
+[  166.646595] 
+[  166.646595] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  166.646599] [HEXI] packet sent to srio:len:283
+[  166.646600] =====================================================
+[  166.646602] 3d 04 81 16 1a 00 03 00 00 00 00 00 00 01 09 00 
+[  166.646625] 08 00 45 00 01 09 a1 84 40 00 ff 11 e4 51 0a 0a 
+[  166.646648] 0a 08 e0 00 00 fb 14 e9 14 e9 00 f5 d1 9d 00 00 
+[  166.646670] 00 00 00 04 00 00 00 07 00 00 09 75 62 75 6e 74 
+[  166.646693] 75 20 5b 5d 0c 5f 77 6f 72 6b 73 74 61 74 69 6f 
+[  166.646716] 
+[  166.646718] =====================================================
+[  166.646720] complex function done
+[  166.646722] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  166.646723] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  166.646734] protocol f4f7 is buggy, dev eth1
+[  166.899544] [con_default_handler]CraQueue:f0c97940
+[  166.899550] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  166.899552] =====================================================
+[  166.899554] 00 00 00 00 00 00 01 09 00 08 00 45 00 01 09 a1 
+[  166.899577] 85 40 00 ff 11 e4 50 0a 0a 0a 08 e0 00 00 fb 14 
+[  166.899600] e9 14 e9 00 f5 d1 9d 00 00 00 00 00 04 00 00 00 
+[  166.899623] 07 00 00 09 75 62 75 6e 74 75 20 5b 5d 0c 5f 77 
+[  166.899646] 
+[  166.899647] =====================================================
+[  166.899650] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  166.899653] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  166.899662] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  166.899666] [RLC] entring rlc_UM_segment
+[  166.899668] =====================================================
+[  166.899669] 00 04 
+[  166.899673] =====================================================
+[  166.899677] [RLC][rlc_UM_segment] SN = 5
+[  166.899681] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  166.899683] [COMPLEX]TBSIZE:1400
+[  166.899686] THE TYPE OF SDU:1
+[  166.899688] 
+[  166.899688] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  166.899692] [HEXI] packet sent to srio:len:283
+[  166.899693] =====================================================
+[  166.899695] 3d 04 81 16 1a 00 04 00 00 00 00 00 00 01 09 00 
+[  166.899718] 08 00 45 00 01 09 a1 85 40 00 ff 11 e4 50 0a 0a 
+[  166.899741] 0a 08 e0 00 00 fb 14 e9 14 e9 00 f5 d1 9d 00 00 
+[  166.899763] 00 00 00 04 00 00 00 07 00 00 09 75 62 75 6e 74 
+[  166.899786] 75 20 5b 5d 0c 5f 77 6f 72 6b 73 74 61 74 69 6f 
+[  166.899809] 
+[  166.899811] =====================================================
+[  166.899813] complex function done
+[  166.899815] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  166.899816] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  166.899866] protocol f4f7 is buggy, dev eth1
+[  167.102174] [con_default_handler]CraQueue:f0c97940
+[  167.102181] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  167.102183] =====================================================
+[  167.102185] 00 00 00 00 00 00 00 f1 00 08 00 45 00 00 f1 a1 
+[  167.102208] 86 40 00 ff 11 e4 67 0a 0a 0a 08 e0 00 00 fb 14 
+[  167.102231] e9 14 e9 00 dd 67 cb 00 00 84 00 00 00 00 07 00 
+[  167.102254] 00 00 00 09 75 62 75 6e 74 75 20 5b 5d 0c 5f 77 
+[  167.102277] 
+[  167.102278] =====================================================
+[  167.102281] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  167.102284] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  167.102293] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  167.102297] [RLC] entring rlc_UM_segment
+[  167.102299] =====================================================
+[  167.102300] 00 05 
+[  167.102304] =====================================================
+[  167.102308] [RLC][rlc_UM_segment] SN = 6
+[  167.102311] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  167.102313] [COMPLEX]TBSIZE:1400
+[  167.102316] THE TYPE OF SDU:1
+[  167.102318] 
+[  167.102318] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  167.102322] [HEXI] packet sent to srio:len:259
+[  167.102323] =====================================================
+[  167.102325] 3d 04 80 fe 02 00 05 00 00 00 00 00 00 00 f1 00 
+[  167.102347] 08 00 45 00 00 f1 a1 86 40 00 ff 11 e4 67 0a 0a 
+[  167.102370] 0a 08 e0 00 00 fb 14 e9 14 e9 00 dd 67 cb 00 00 
+[  167.102393] 84 00 00 00 00 07 00 00 00 00 09 75 62 75 6e 74 
+[  167.102416] 75 20 5b 5d 0c 5f 77 6f 72 6b 73 74 61 74 69 6f 
+[  167.102439] 
+[  167.102440] =====================================================
+[  167.102442] complex function done
+[  167.102444] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  167.102446] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  167.102457] protocol f4f7 is buggy, dev eth1
+[  167.382528] [con_default_handler]CraQueue:f0c97940
+[  167.382535] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  167.382537] =====================================================
+[  167.382538] 00 00 00 00 00 00 00 ab 00 08 00 45 00 00 ab a1 
+[  167.382562] 88 40 00 ff 11 e4 ab 0a 0a 0a 08 e0 00 00 fb 14 
+[  167.382585] e9 14 e9 00 97 a5 1c 00 00 84 00 00 00 00 04 00 
+[  167.382608] 00 00 00 09 5f 73 65 72 76 69 63 65 73 07 5f 64 
+[  167.382631] 
+[  167.382632] =====================================================
+[  167.382636] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  167.382638] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  167.382647] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  167.382651] [RLC] entring rlc_UM_segment
+[  167.382652] =====================================================
+[  167.382654] 00 06 
+[  167.382658] =====================================================
+[  167.382661] [RLC][rlc_UM_segment] SN = 7
+[  167.382665] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  167.382667] [COMPLEX]TBSIZE:1400
+[  167.382670] THE TYPE OF SDU:1
+[  167.382672] 
+[  167.382672] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  167.382675] [HEXI] packet sent to srio:len:189
+[  167.382677] =====================================================
+[  167.382679] 3d 04 80 b8 bc 00 06 00 00 00 00 00 00 00 ab 00 
+[  167.382701] 08 00 45 00 00 ab a1 88 40 00 ff 11 e4 ab 0a 0a 
+[  167.382724] 0a 08 e0 00 00 fb 14 e9 14 e9 00 97 a5 1c 00 00 
+[  167.382747] 84 00 00 00 00 04 00 00 00 00 09 5f 73 65 72 76 
+[  167.382770] 69 63 65 73 07 5f 64 6e 73 2d 73 64 04 5f 75 64 
+[  167.382793] 
+[  167.382794] =====================================================
+[  167.382796] complex function done
+[  167.382798] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  167.382800] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  167.433182] [con_default_handler]CraQueue:f0c97940
+[  167.433188] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  167.433190] =====================================================
+[  167.433191] 00 00 00 00 00 00 00 43 00 08 00 45 00 00 43 a1 
+[  167.433215] 89 40 00 ff 11 e5 12 0a 0a 0a 08 e0 00 00 fb 14 
+[  167.433238] e9 14 e9 00 2f 3d 82 00 00 00 00 00 01 00 00 00 
+[  167.433261] 00 00 00 0a 5f 73 61 6e 65 2d 70 6f 72 74 04 5f 
+[  167.433284] 
+[  167.433286] =====================================================
+[  167.433289] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  167.433291] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  167.433300] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  167.433307] [RLC] entring rlc_UM_segment
+[  167.433309] =====================================================
+[  167.433311] 00 07 
+[  167.433315] =====================================================
+[  167.433318] [RLC][rlc_UM_segment] SN = 8
+[  167.433321] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  167.433323] [COMPLEX]TBSIZE:1400
+[  167.433326] THE TYPE OF SDU:0
+[  167.433328] 
+[  167.433328] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  167.433332] [HEXI] packet sent to srio:len:84
+[  167.433333] =====================================================
+[  167.433335] 3d 04 50 53 00 07 00 00 00 00 00 00 00 43 00 08 
+[  167.433358] 00 45 00 00 43 a1 89 40 00 ff 11 e5 12 0a 0a 0a 
+[  167.433381] 08 e0 00 00 fb 14 e9 14 e9 00 2f 3d 82 00 00 00 
+[  167.433403] 00 00 01 00 00 00 00 00 00 0a 5f 73 61 6e 65 2d 
+[  167.433426] 70 6f 72 74 04 5f 74 63 70 05 6c 6f 63 61 6c 00 
+[  167.433449] 
+[  167.433451] =====================================================
+[  167.433453] complex function done
+[  167.433455] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  167.433456] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  168.115054] [con_default_handler]CraQueue:f0c97940
+[  168.115061] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  168.115063] =====================================================
+[  168.115065] 00 00 00 00 00 00 00 f1 00 08 00 45 00 00 f1 a1 
+[  168.115088] 8a 40 00 ff 11 e4 63 0a 0a 0a 08 e0 00 00 fb 14 
+[  168.115111] e9 14 e9 00 dd 67 cb 00 00 84 00 00 00 00 07 00 
+[  168.115134] 00 00 00 09 75 62 75 6e 74 75 20 5b 5d 0c 5f 77 
+[  168.115157] 
+[  168.115158] =====================================================
+[  168.115162] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  168.115164] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  168.115173] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  168.115177] [RLC] entring rlc_UM_segment
+[  168.115179] =====================================================
+[  168.115181] 00 08 
+[  168.115185] =====================================================
+[  168.115188] [RLC][rlc_UM_segment] SN = 9
+[  168.115192] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  168.115194] [COMPLEX]TBSIZE:1400
+[  168.115197] THE TYPE OF SDU:1
+[  168.115199] 
+[  168.115199] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  168.115202] [HEXI] packet sent to srio:len:259
+[  168.115204] =====================================================
+[  168.115206] 3d 04 80 fe 02 00 08 00 00 00 00 00 00 00 f1 00 
+[  168.115228] 08 00 45 00 00 f1 a1 8a 40 00 ff 11 e4 63 0a 0a 
+[  168.115251] 0a 08 e0 00 00 fb 14 e9 14 e9 00 dd 67 cb 00 00 
+[  168.115274] 84 00 00 00 00 07 00 00 00 00 09 75 62 75 6e 74 
+[  168.115297] 75 20 5b 5d 0c 5f 77 6f 72 6b 73 74 61 74 69 6f 
+[  168.115320] 
+[  168.115322] =====================================================
+[  168.115324] complex function done
+[  168.115326] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  168.115328] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  169.392668] [con_default_handler]CraQueue:f0c97940
+[  169.392674] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  169.392676] =====================================================
+[  169.392678] 00 00 00 00 00 00 01 04 00 08 00 45 00 01 04 a1 
+[  169.392701] 8b 40 00 ff 11 e4 4f 0a 0a 0a 08 e0 00 00 fb 14 
+[  169.392724] e9 14 e9 00 f0 6e 3c 00 00 84 00 00 00 00 09 00 
+[  169.392747] 00 00 00 09 5f 73 65 72 76 69 63 65 73 07 5f 64 
+[  169.392770] 
+[  169.392771] =====================================================
+[  169.392774] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  169.392777] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  169.392786] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  169.392790] [RLC] entring rlc_UM_segment
+[  169.392792] =====================================================
+[  169.392793] 00 09 
+[  169.392797] =====================================================
+[  169.392802] [RLC][rlc_UM_segment] SN = 10
+[  169.392806] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  169.392808] [COMPLEX]TBSIZE:1400
+[  169.392811] THE TYPE OF SDU:1
+[  169.392813] 
+[  169.392813] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  169.392817] [HEXI] packet sent to srio:len:278
+[  169.392818] =====================================================
+[  169.392820] 3d 04 81 11 15 00 09 00 00 00 00 00 00 01 04 00 
+[  169.392842] 08 00 45 00 01 04 a1 8b 40 00 ff 11 e4 4f 0a 0a 
+[  169.392865] 0a 08 e0 00 00 fb 14 e9 14 e9 00 f0 6e 3c 00 00 
+[  169.392888] 84 00 00 00 00 09 00 00 00 00 09 5f 73 65 72 76 
+[  169.392911] 69 63 65 73 07 5f 64 6e 73 2d 73 64 04 5f 75 64 
+[  169.392934] 
+[  169.392935] =====================================================
+[  169.392937] complex function done
+[  169.392939] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  169.392941] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  169.392952] net_ratelimit: 3 callbacks suppressed
+[  169.392954] protocol f4f7 is buggy, dev eth1
+[  169.427647] [con_default_handler]CraQueue:f0c97940
+[  169.427653] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  169.427655] =====================================================
+[  169.427657] 00 00 00 00 00 00 00 43 00 08 00 45 00 00 43 a1 
+[  169.427680] 8c 40 00 ff 11 e5 0f 0a 0a 0a 08 e0 00 00 fb 14 
+[  169.427703] e9 14 e9 00 2f 3d 82 00 00 00 00 00 01 00 00 00 
+[  169.427726] 00 00 00 0a 5f 73 61 6e 65 2d 70 6f 72 74 04 5f 
+[  169.427749] 
+[  169.427751] =====================================================
+[  169.427754] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  169.427756] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  169.427765] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  169.427768] [RLC] entring rlc_UM_segment
+[  169.427770] =====================================================
+[  169.427772] 00 0a 
+[  169.427776] =====================================================
+[  169.427783] [RLC][rlc_UM_segment] SN = 11
+[  169.427787] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  169.427789] [COMPLEX]TBSIZE:1400
+[  169.427792] THE TYPE OF SDU:0
+[  169.427794] 
+[  169.427794] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  169.427797] [HEXI] packet sent to srio:len:84
+[  169.427798] =====================================================
+[  169.427800] 3d 04 50 53 00 0a 00 00 00 00 00 00 00 43 00 08 
+[  169.427823] 00 45 00 00 43 a1 8c 40 00 ff 11 e5 0f 0a 0a 0a 
+[  169.427846] 08 e0 00 00 fb 14 e9 14 e9 00 2f 3d 82 00 00 00 
+[  169.427868] 00 00 01 00 00 00 00 00 00 0a 5f 73 61 6e 65 2d 
+[  169.427891] 70 6f 72 74 04 5f 74 63 70 05 6c 6f 63 61 6c 00 
+[  169.427914] 
+[  169.427916] =====================================================
+[  169.427918] complex function done
+[  169.427919] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  169.427921] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  169.427932] protocol f4f7 is buggy, dev eth1
+[  170.125120] [con_default_handler]CraQueue:f0c97940
+[  170.125126] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  170.125128] =====================================================
+[  170.125130] 00 00 00 00 00 00 00 f1 00 08 00 45 00 00 f1 a1 
+[  170.125154] 8d 40 00 ff 11 e4 60 0a 0a 0a 08 e0 00 00 fb 14 
+[  170.125177] e9 14 e9 00 dd 67 cb 00 00 84 00 00 00 00 07 00 
+[  170.125200] 00 00 00 09 75 62 75 6e 74 75 20 5b 5d 0c 5f 77 
+[  170.125222] 
+[  170.125224] =====================================================
+[  170.125227] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  170.125230] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  170.125239] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  170.125242] [RLC] entring rlc_UM_segment
+[  170.125245] =====================================================
+[  170.125246] 00 0b 
+[  170.125250] =====================================================
+[  170.125255] [RLC][rlc_UM_segment] SN = 12
+[  170.125259] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  170.125261] [COMPLEX]TBSIZE:1400
+[  170.125264] THE TYPE OF SDU:1
+[  170.125266] 
+[  170.125266] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  170.125269] [HEXI] packet sent to srio:len:259
+[  170.125271] =====================================================
+[  170.125273] 3d 04 80 fe 02 00 0b 00 00 00 00 00 00 00 f1 00 
+[  170.125295] 08 00 45 00 00 f1 a1 8d 40 00 ff 11 e4 60 0a 0a 
+[  170.125318] 0a 08 e0 00 00 fb 14 e9 14 e9 00 dd 67 cb 00 00 
+[  170.125341] 84 00 00 00 00 07 00 00 00 00 09 75 62 75 6e 74 
+[  170.125364] 75 20 5b 5d 0c 5f 77 6f 72 6b 73 74 61 74 69 6f 
+[  170.125387] 
+[  170.125388] =====================================================
+[  170.125390] complex function done
+[  170.125392] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  170.125394] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  170.125405] protocol f4f7 is buggy, dev eth1
+[  173.420758] [con_default_handler]CraQueue:f0c97940
+[  173.420764] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  173.420766] =====================================================
+[  173.420767] 00 00 00 00 00 00 00 43 00 08 00 45 00 00 43 a1 
+[  173.420791] 8e 40 00 ff 11 e5 0d 0a 0a 0a 08 e0 00 00 fb 14 
+[  173.420814] e9 14 e9 00 2f 3d 82 00 00 00 00 00 01 00 00 00 
+[  173.420837] 00 00 00 0a 5f 73 61 6e 65 2d 70 6f 72 74 04 5f 
+[  173.420859] 
+[  173.420861] =====================================================
+[  173.420865] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  173.420867] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  173.420876] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  173.420880] [RLC] entring rlc_UM_segment
+[  173.420882] =====================================================
+[  173.420883] 00 0c 
+[  173.420888] =====================================================
+[  173.420893] [RLC][rlc_UM_segment] SN = 13
+[  173.420896] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  173.420898] [COMPLEX]TBSIZE:1400
+[  173.420901] THE TYPE OF SDU:0
+[  173.420903] 
+[  173.420903] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  173.420906] [HEXI] packet sent to srio:len:84
+[  173.420908] =====================================================
+[  173.420909] 3d 04 50 53 00 0c 00 00 00 00 00 00 00 43 00 08 
+[  173.420932] 00 45 00 00 43 a1 8e 40 00 ff 11 e5 0d 0a 0a 0a 
+[  173.420955] 08 e0 00 00 fb 14 e9 14 e9 00 2f 3d 82 00 00 00 
+[  173.420978] 00 00 01 00 00 00 00 00 00 0a 5f 73 61 6e 65 2d 
+[  173.421001] 70 6f 72 74 04 5f 74 63 70 05 6c 6f 63 61 6c 00 
+[  173.421024] 
+[  173.421025] =====================================================
+[  173.421028] complex function done
+[  173.421029] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  173.421031] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  173.421042] protocol f4f7 is buggy, dev eth1
+[  181.410975] [con_default_handler]CraQueue:f0c97940
+[  181.410981] [RLC][rlc_pkt_receive_from_upper][-->] receive from upper, pbch=0, rbid=4
+[  181.410983] =====================================================
+[  181.410985] 00 00 00 00 00 00 00 43 00 08 00 45 00 00 43 a1 
+[  181.411009] 8f 40 00 ff 11 e5 0c 0a 0a 0a 08 e0 00 00 fb 14 
+[  181.411032] e9 14 e9 00 2f 3d 82 00 00 00 00 00 01 00 00 00 
+[  181.411054] 00 00 00 0a 5f 73 61 6e 65 2d 70 6f 72 74 04 5f 
+[  181.411077] 
+[  181.411079] =====================================================
+[  181.411082] [RLC_MAC][rlc_pkt_receive_from_upper]ins_mode is: 2
+[  181.411085] [RLC][rlc_pkt_receive_from_upper]UM_MODE list_add done!
+[  181.411094] [UEMAC][SCHEDULER]SEND DATA ALLOW IOCTL
+[  181.411098] [RLC] entring rlc_UM_segment
+[  181.411100] =====================================================
+[  181.411101] 00 0d 
+[  181.411105] =====================================================
+[  181.411109] [RLC][rlc_UM_segment] SN = 14
+[  181.411112] [RLC_MAC]m_rlc_type1_ici.rnti: 0
+[  181.411114] [COMPLEX]TBSIZE:1400
+[  181.411117] THE TYPE OF SDU:0
+[  181.411119] 
+[  181.411119] [COMPLEX]RNTI TO PHY:61;RNTI IN RLC:0
+[  181.411122] [HEXI] packet sent to srio:len:84
+[  181.411124] =====================================================
+[  181.411125] 3d 04 50 53 00 0d 00 00 00 00 00 00 00 43 00 08 
+[  181.411148] 00 45 00 00 43 a1 8f 40 00 ff 11 e5 0c 0a 0a 0a 
+[  181.411171] 08 e0 00 00 fb 14 e9 14 e9 00 2f 3d 82 00 00 00 
+[  181.411194] 00 00 01 00 00 00 00 00 00 0a 5f 73 61 6e 65 2d 
+[  181.411217] 70 6f 72 74 04 5f 74 63 70 05 6c 6f 63 61 6c 00 
+[  181.411240] 
+[  181.411241] =====================================================
+[  181.411244] complex function done
+[  181.411245] [RLC][PMRLC_TRANSOP_IND][<--] send to MAC
+[  181.411247] [RLC][PMRLC_BUFFERREP_REQ] There is no data to report
+[  181.411258] protocol f4f7 is buggy, dev eth1

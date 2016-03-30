@@ -1,0 +1,3482 @@
+
+rrcfsm.o:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+00000000 <rrc_messege_handler_rlc>:
+ **-------------------------------------- --------------------
+ ** Modified by:
+ ** Modified Date: 
+ ******************************************************************************/
+static void rrc_messege_handler_rlc(FSM_PKT* pkptr)
+{
+       0:	55                   	push   %ebp
+       1:	89 e5                	mov    %esp,%ebp
+       3:	56                   	push   %esi
+       4:	53                   	push   %ebx
+       5:	83 ec 08             	sub    $0x8,%esp
+       8:	e8 fc ff ff ff       	call   9 <rrc_messege_handler_rlc+0x9>
+       d:	89 c3                	mov    %eax,%ebx
+	FIN(rrc_messege_handler_rlc());
+	SV_PTR_GET(rrc_sv);
+       f:	e8 fc ff ff ff       	call   10 <rrc_messege_handler_rlc+0x10>
+	fsm_printf("[rrc] [fsm] rrc_messege_handler_rlc().\n");
+      14:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+      1b:	e8 fc ff ff ff       	call   1c <rrc_messege_handler_rlc+0x1c>
+
+	struct lte_rrc_head* sh_ptr;
+	sh_ptr = (struct lte_rrc_head*)pkptr->data;
+      20:	8b b3 ac 00 00 00    	mov    0xac(%ebx),%esi
+	fsm_skb_pull(pkptr, sizeof(struct lte_rrc_head));
+      26:	ba 04 00 00 00       	mov    $0x4,%edx
+      2b:	89 d8                	mov    %ebx,%eax
+      2d:	e8 fc ff ff ff       	call   2e <rrc_messege_handler_rlc+0x2e>
+
+	fsm_printf("[rrc] [fsm] --> Msg type: %d\n", sh_ptr->message_type);
+      32:	8b 06                	mov    (%esi),%eax
+      34:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+      3b:	89 44 24 04          	mov    %eax,0x4(%esp)
+      3f:	e8 fc ff ff ff       	call   40 <rrc_messege_handler_rlc+0x40>
+	fsm_printf("[rrc] [fsm] --> sh_ptr addr:%p\n", sh_ptr);
+      44:	89 74 24 04          	mov    %esi,0x4(%esp)
+      48:	c7 04 24 28 00 00 00 	movl   $0x28,(%esp)
+      4f:	e8 fc ff ff ff       	call   50 <rrc_messege_handler_rlc+0x50>
+
+	if(sh_ptr->message_type == 0)
+      54:	8b 06                	mov    (%esi),%eax
+      56:	85 c0                	test   %eax,%eax
+      58:	74 36                	je     90 <rrc_messege_handler_rlc+0x90>
+		paging = fsm_mem_alloc(sizeof(struct Paging));
+		fsm_mem_cpy(paging, (void *)&(pcch_msg->paging), sizeof(struct Paging));
+		fsm_printf("[rrc] [fsm] --> recived Paging!\n");
+		fsm_schedule_self(0, CODE_RCV_PAGING);
+	}
+	else if(sh_ptr->message_type == 1)
+      5a:	83 f8 01             	cmp    $0x1,%eax
+      5d:	0f 84 05 02 00 00    	je     268 <rrc_messege_handler_rlc+0x268>
+
+		fsm_printf("[rrc] [fsm] --> recived MIB!\n");
+		fsm_schedule_self(0, CODE_RCV_MIB);
+
+	}
+	else if(sh_ptr->message_type == 2)
+      63:	83 f8 02             	cmp    $0x2,%eax
+      66:	0f 84 e4 00 00 00    	je     150 <rrc_messege_handler_rlc+0x150>
+			fsm_mem_cpy(sib1, (void *)&(bcch_dl_sch_msg->msg.sib1), sizeof(struct SystemInformationBlockType1));
+			fsm_printf("[rrc] [fsm] --> recived SIB1!\n");
+			fsm_schedule_self(0, CODE_RCV_SIB1);
+		}
+	}
+	else if(sh_ptr->message_type == 3)
+      6c:	83 f8 03             	cmp    $0x3,%eax
+      6f:	90                   	nop
+      70:	0f 84 3a 01 00 00    	je     1b0 <rrc_messege_handler_rlc+0x1b0>
+			fsm_mem_cpy(rrcConnectionSetup, &(dl_ccch_msg->msg.rrcConnectionSetup), sizeof(struct RRCConnectionSetup));
+			fsm_schedule_self(1000, CODE_RCV_RRC_CONN_SETUP);
+		}
+
+	}
+	else if(sh_ptr->message_type == 4)
+      76:	83 f8 04             	cmp    $0x4,%eax
+      79:	74 75                	je     f0 <rrc_messege_handler_rlc+0xf0>
+			fsm_mem_cpy(rrcConnectionRelease, (void *)&(dl_dcch_msg->msg.rrcConnectionRelease), sizeof(struct RRCConnectionRelease));
+			fsm_schedule_self(1000, CODE_RCV_RRC_CONN_RELEASE);
+		}
+
+	}
+	fsm_pkt_destroy(pkptr);
+      7b:	89 d8                	mov    %ebx,%eax
+      7d:	e8 fc ff ff ff       	call   7e <rrc_messege_handler_rlc+0x7e>
+
+	FOUT;
+}
+      82:	83 c4 08             	add    $0x8,%esp
+      85:	5b                   	pop    %ebx
+      86:	5e                   	pop    %esi
+      87:	5d                   	pop    %ebp
+      88:	c3                   	ret    
+      89:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+
+	if(sh_ptr->message_type == 0)
+	{
+		//PCCH_Message
+		struct PCCH_Message *pcch_msg;
+		fsm_printf("[rrc] [fsm] --> recive PCCH_Message.\n");
+      90:	c7 04 24 48 00 00 00 	movl   $0x48,(%esp)
+      97:	e8 fc ff ff ff       	call   98 <rrc_messege_handler_rlc+0x98>
+		pcch_msg = (struct PCCH_Message *)pkptr->data;
+		
+		check_free_ptr(paging);
+      9c:	a1 00 00 00 00       	mov    0x0,%eax
+	if(sh_ptr->message_type == 0)
+	{
+		//PCCH_Message
+		struct PCCH_Message *pcch_msg;
+		fsm_printf("[rrc] [fsm] --> recive PCCH_Message.\n");
+		pcch_msg = (struct PCCH_Message *)pkptr->data;
+      a1:	8b b3 ac 00 00 00    	mov    0xac(%ebx),%esi
+		
+		check_free_ptr(paging);
+      a7:	e8 fc ff ff ff       	call   a8 <rrc_messege_handler_rlc+0xa8>
+		paging = fsm_mem_alloc(sizeof(struct Paging));
+      ac:	b8 d8 01 00 00       	mov    $0x1d8,%eax
+      b1:	e8 fc ff ff ff       	call   b2 <rrc_messege_handler_rlc+0xb2>
+		fsm_mem_cpy(paging, (void *)&(pcch_msg->paging), sizeof(struct Paging));
+      b6:	b9 d8 01 00 00       	mov    $0x1d8,%ecx
+      bb:	89 f2                	mov    %esi,%edx
+		struct PCCH_Message *pcch_msg;
+		fsm_printf("[rrc] [fsm] --> recive PCCH_Message.\n");
+		pcch_msg = (struct PCCH_Message *)pkptr->data;
+		
+		check_free_ptr(paging);
+		paging = fsm_mem_alloc(sizeof(struct Paging));
+      bd:	a3 00 00 00 00       	mov    %eax,0x0
+		fsm_mem_cpy(paging, (void *)&(pcch_msg->paging), sizeof(struct Paging));
+      c2:	e8 fc ff ff ff       	call   c3 <rrc_messege_handler_rlc+0xc3>
+		fsm_printf("[rrc] [fsm] --> recived Paging!\n");
+      c7:	c7 04 24 70 00 00 00 	movl   $0x70,(%esp)
+      ce:	e8 fc ff ff ff       	call   cf <rrc_messege_handler_rlc+0xcf>
+		fsm_schedule_self(0, CODE_RCV_PAGING);
+      d3:	ba 0e 00 00 00       	mov    $0xe,%edx
+      d8:	31 c0                	xor    %eax,%eax
+      da:	e8 fc ff ff ff       	call   db <rrc_messege_handler_rlc+0xdb>
+			fsm_mem_cpy(rrcConnectionRelease, (void *)&(dl_dcch_msg->msg.rrcConnectionRelease), sizeof(struct RRCConnectionRelease));
+			fsm_schedule_self(1000, CODE_RCV_RRC_CONN_RELEASE);
+		}
+
+	}
+	fsm_pkt_destroy(pkptr);
+      df:	89 d8                	mov    %ebx,%eax
+      e1:	e8 fc ff ff ff       	call   e2 <rrc_messege_handler_rlc+0xe2>
+
+	FOUT;
+}
+      e6:	83 c4 08             	add    $0x8,%esp
+      e9:	5b                   	pop    %ebx
+      ea:	5e                   	pop    %esi
+      eb:	5d                   	pop    %ebp
+      ec:	c3                   	ret    
+      ed:	8d 76 00             	lea    0x0(%esi),%esi
+
+	}
+	else if(sh_ptr->message_type == 4)
+	{
+		//DL_DCCH_Message
+		fsm_printf("[rrc] [fsm] --> recive DL_DCCH_Message.\n");
+      f0:	c7 04 24 ec 01 00 00 	movl   $0x1ec,(%esp)
+      f7:	e8 fc ff ff ff       	call   f8 <rrc_messege_handler_rlc+0xf8>
+		struct DL_DCCH_Message *dl_dcch_msg = (struct DL_DCCH_Message *)pkptr->data;
+      fc:	8b b3 ac 00 00 00    	mov    0xac(%ebx),%esi
+		if (dl_dcch_msg->type == 1)
+     102:	8b 06                	mov    (%esi),%eax
+     104:	83 f8 01             	cmp    $0x1,%eax
+     107:	0f 84 f6 01 00 00    	je     303 <rrc_messege_handler_rlc+0x303>
+			check_free_ptr(rrcConnectionReconfiguration);
+			rrcConnectionReconfiguration = fsm_mem_alloc(sizeof(struct RRCConnectionReconfiguration));
+			fsm_mem_cpy(rrcConnectionReconfiguration, (void *)&(dl_dcch_msg->msg.rrcConnectionReconfiguration), sizeof(struct RRCConnectionReconfiguration));
+			fsm_schedule_self(1000, CODE_RCV_RRC_CONN_RECONF);
+		}
+		else if (dl_dcch_msg->type == 2)
+     10d:	83 f8 02             	cmp    $0x2,%eax
+     110:	0f 85 65 ff ff ff    	jne    7b <rrc_messege_handler_rlc+0x7b>
+		{
+			check_free_ptr(rrcConnectionRelease);
+     116:	a1 00 00 00 00       	mov    0x0,%eax
+     11b:	e8 fc ff ff ff       	call   11c <rrc_messege_handler_rlc+0x11c>
+			rrcConnectionRelease = fsm_mem_alloc(sizeof(struct RRCConnectionRelease));
+     120:	b8 40 00 00 00       	mov    $0x40,%eax
+     125:	e8 fc ff ff ff       	call   126 <rrc_messege_handler_rlc+0x126>
+			fsm_mem_cpy(rrcConnectionRelease, (void *)&(dl_dcch_msg->msg.rrcConnectionRelease), sizeof(struct RRCConnectionRelease));
+     12a:	8d 56 04             	lea    0x4(%esi),%edx
+     12d:	b9 40 00 00 00       	mov    $0x40,%ecx
+			fsm_schedule_self(1000, CODE_RCV_RRC_CONN_RECONF);
+		}
+		else if (dl_dcch_msg->type == 2)
+		{
+			check_free_ptr(rrcConnectionRelease);
+			rrcConnectionRelease = fsm_mem_alloc(sizeof(struct RRCConnectionRelease));
+     132:	a3 00 00 00 00       	mov    %eax,0x0
+			fsm_mem_cpy(rrcConnectionRelease, (void *)&(dl_dcch_msg->msg.rrcConnectionRelease), sizeof(struct RRCConnectionRelease));
+     137:	e8 fc ff ff ff       	call   138 <rrc_messege_handler_rlc+0x138>
+			fsm_schedule_self(1000, CODE_RCV_RRC_CONN_RELEASE);
+     13c:	ba 07 00 00 00       	mov    $0x7,%edx
+     141:	b8 e8 03 00 00       	mov    $0x3e8,%eax
+     146:	e8 fc ff ff ff       	call   147 <rrc_messege_handler_rlc+0x147>
+     14b:	e9 2b ff ff ff       	jmp    7b <rrc_messege_handler_rlc+0x7b>
+
+	}
+	else if(sh_ptr->message_type == 2)
+	{
+		//BCCH_DL_SCH_Message
+		fsm_printf("[rrc] [fsm] --> recive BCCH_DL_SCH_Message.\n");
+     150:	c7 04 24 c0 00 00 00 	movl   $0xc0,(%esp)
+     157:	e8 fc ff ff ff       	call   158 <rrc_messege_handler_rlc+0x158>
+		struct BCCH_DL_SCH_Message *bcch_dl_sch_msg = (struct BCCH_DL_SCH_Message *)pkptr->data;
+     15c:	8b b3 ac 00 00 00    	mov    0xac(%ebx),%esi
+		if (bcch_dl_sch_msg->type == 1)
+     162:	83 3e 01             	cmpl   $0x1,(%esi)
+     165:	0f 84 55 01 00 00    	je     2c0 <rrc_messege_handler_rlc+0x2c0>
+			fsm_printf("[rrc] [fsm] --> recived SI!\n");
+			fsm_schedule_self(0, CODE_RCV_SI);
+		}
+		else
+		{
+			check_free_ptr(sib1);
+     16b:	a1 00 00 00 00       	mov    0x0,%eax
+     170:	e8 fc ff ff ff       	call   171 <rrc_messege_handler_rlc+0x171>
+			sib1 = fsm_mem_alloc(sizeof(struct SystemInformationBlockType1));
+     175:	b8 6c 01 00 00       	mov    $0x16c,%eax
+     17a:	e8 fc ff ff ff       	call   17b <rrc_messege_handler_rlc+0x17b>
+			fsm_mem_cpy(sib1, (void *)&(bcch_dl_sch_msg->msg.sib1), sizeof(struct SystemInformationBlockType1));
+     17f:	8d 56 04             	lea    0x4(%esi),%edx
+     182:	b9 6c 01 00 00       	mov    $0x16c,%ecx
+			fsm_schedule_self(0, CODE_RCV_SI);
+		}
+		else
+		{
+			check_free_ptr(sib1);
+			sib1 = fsm_mem_alloc(sizeof(struct SystemInformationBlockType1));
+     187:	a3 00 00 00 00       	mov    %eax,0x0
+			fsm_mem_cpy(sib1, (void *)&(bcch_dl_sch_msg->msg.sib1), sizeof(struct SystemInformationBlockType1));
+     18c:	e8 fc ff ff ff       	call   18d <rrc_messege_handler_rlc+0x18d>
+			fsm_printf("[rrc] [fsm] --> recived SIB1!\n");
+     191:	c7 04 24 f0 00 00 00 	movl   $0xf0,(%esp)
+     198:	e8 fc ff ff ff       	call   199 <rrc_messege_handler_rlc+0x199>
+			fsm_schedule_self(0, CODE_RCV_SIB1);
+     19d:	ba 10 00 00 00       	mov    $0x10,%edx
+     1a2:	31 c0                	xor    %eax,%eax
+     1a4:	e8 fc ff ff ff       	call   1a5 <rrc_messege_handler_rlc+0x1a5>
+     1a9:	e9 cd fe ff ff       	jmp    7b <rrc_messege_handler_rlc+0x7b>
+     1ae:	66 90                	xchg   %ax,%ax
+		}
+	}
+	else if(sh_ptr->message_type == 3)
+	{
+		//DL_CCCH_Message
+		fsm_printf("[rrc] [fsm] --> recive DL_CCCH_Message.\n");
+     1b0:	c7 04 24 10 01 00 00 	movl   $0x110,(%esp)
+     1b7:	e8 fc ff ff ff       	call   1b8 <rrc_messege_handler_rlc+0x1b8>
+		struct DL_CCCH_Message *dl_ccch_msg = (struct DL_CCCH_Message *)pkptr->data;
+     1bc:	8b b3 ac 00 00 00    	mov    0xac(%ebx),%esi
+
+		fsm_printf(" 		  dl_ccch_msg->type=%d.\n",dl_ccch_msg->type);
+     1c2:	8b 06                	mov    (%esi),%eax
+     1c4:	c7 04 24 59 00 00 00 	movl   $0x59,(%esp)
+     1cb:	89 44 24 04          	mov    %eax,0x4(%esp)
+     1cf:	e8 fc ff ff ff       	call   1d0 <rrc_messege_handler_rlc+0x1d0>
+		fsm_printf(" 		  dl_ccch_msg addr=%p.\n",dl_ccch_msg);
+     1d4:	89 74 24 04          	mov    %esi,0x4(%esp)
+     1d8:	c7 04 24 75 00 00 00 	movl   $0x75,(%esp)
+     1df:	e8 fc ff ff ff       	call   1e0 <rrc_messege_handler_rlc+0x1e0>
+
+		if (dl_ccch_msg->type == 3)
+     1e4:	8b 06                	mov    (%esi),%eax
+     1e6:	83 f8 03             	cmp    $0x3,%eax
+     1e9:	0f 84 4e 01 00 00    	je     33d <rrc_messege_handler_rlc+0x33d>
+			check_free_ptr(rrcConnectionReject);
+			rrcConnectionReject = fsm_mem_alloc(sizeof(struct RRCConnectionReject));
+			fsm_mem_cpy(rrcConnectionReject, (void *)&(dl_ccch_msg->msg.rrcConnectionReject), sizeof(struct RRCConnectionReject));
+			fsm_schedule_self(0, CODE_RCV_RRC_CONN_REJECT);
+		}
+		else if (dl_ccch_msg->type == 4)
+     1ef:	83 f8 04             	cmp    $0x4,%eax
+     1f2:	0f 85 83 fe ff ff    	jne    7b <rrc_messege_handler_rlc+0x7b>
+		{
+			check_free_ptr(rrcConnectionSetup);
+     1f8:	a1 00 00 00 00       	mov    0x0,%eax
+     1fd:	e8 fc ff ff ff       	call   1fe <rrc_messege_handler_rlc+0x1fe>
+			rrcConnectionSetup = fsm_mem_alloc(sizeof(struct RRCConnectionSetup));
+     202:	b8 f0 04 00 00       	mov    $0x4f0,%eax
+     207:	e8 fc ff ff ff       	call   208 <rrc_messege_handler_rlc+0x208>
+     20c:	a3 00 00 00 00       	mov    %eax,0x0
+			fsm_printf("[rrc] dl_ccch_msg->msg.rrcConnectionSetup.radioResourceConfigDedicated.drbToAddModList.num = %d\n",dl_ccch_msg->msg.rrcConnectionSetup.radioResourceConfigDedicated.drbToAddModList.num);
+     211:	8b 86 84 00 00 00    	mov    0x84(%esi),%eax
+     217:	c7 04 24 3c 01 00 00 	movl   $0x13c,(%esp)
+     21e:	89 44 24 04          	mov    %eax,0x4(%esp)
+     222:	e8 fc ff ff ff       	call   223 <rrc_messege_handler_rlc+0x223>
+			fsm_printf("[rrc] dl_ccch_msg->msg.rrcConnectionSetup.rrcTransactionIdentifier = %d\n",dl_ccch_msg->msg.rrcConnectionSetup.rrcTransactionIdentifier);
+     227:	0f b6 46 04          	movzbl 0x4(%esi),%eax
+     22b:	c7 04 24 a0 01 00 00 	movl   $0x1a0,(%esp)
+     232:	89 44 24 04          	mov    %eax,0x4(%esp)
+     236:	e8 fc ff ff ff       	call   237 <rrc_messege_handler_rlc+0x237>
+			fsm_mem_cpy(rrcConnectionSetup, &(dl_ccch_msg->msg.rrcConnectionSetup), sizeof(struct RRCConnectionSetup));
+     23b:	a1 00 00 00 00       	mov    0x0,%eax
+     240:	8d 56 04             	lea    0x4(%esi),%edx
+     243:	b9 f0 04 00 00       	mov    $0x4f0,%ecx
+     248:	e8 fc ff ff ff       	call   249 <rrc_messege_handler_rlc+0x249>
+			fsm_schedule_self(1000, CODE_RCV_RRC_CONN_SETUP);
+     24d:	ba 05 00 00 00       	mov    $0x5,%edx
+     252:	b8 e8 03 00 00       	mov    $0x3e8,%eax
+     257:	e8 fc ff ff ff       	call   258 <rrc_messege_handler_rlc+0x258>
+     25c:	e9 1a fe ff ff       	jmp    7b <rrc_messege_handler_rlc+0x7b>
+     261:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+	}
+	else if(sh_ptr->message_type == 1)
+	{
+		//BCCH_BCH_Message
+		struct BCCH_BCH_Message *bcch_bch_msg;
+		fsm_printf("[rrc] [fsm] --> recive BCCH_BCH_Message.\n");
+     268:	c7 04 24 94 00 00 00 	movl   $0x94,(%esp)
+     26f:	e8 fc ff ff ff       	call   270 <rrc_messege_handler_rlc+0x270>
+		bcch_bch_msg = (struct BCCH_BCH_Message *)pkptr->data;
+
+		//struct MasterInformationBlock mib = bcch_bch_msg->mib;
+		check_free_ptr(mib);
+     274:	a1 00 00 00 00       	mov    0x0,%eax
+	else if(sh_ptr->message_type == 1)
+	{
+		//BCCH_BCH_Message
+		struct BCCH_BCH_Message *bcch_bch_msg;
+		fsm_printf("[rrc] [fsm] --> recive BCCH_BCH_Message.\n");
+		bcch_bch_msg = (struct BCCH_BCH_Message *)pkptr->data;
+     279:	8b b3 ac 00 00 00    	mov    0xac(%ebx),%esi
+
+		//struct MasterInformationBlock mib = bcch_bch_msg->mib;
+		check_free_ptr(mib);
+     27f:	e8 fc ff ff ff       	call   280 <rrc_messege_handler_rlc+0x280>
+		mib = fsm_mem_alloc(sizeof(struct MasterInformationBlock));
+     284:	b8 10 00 00 00       	mov    $0x10,%eax
+     289:	e8 fc ff ff ff       	call   28a <rrc_messege_handler_rlc+0x28a>
+		fsm_mem_cpy(mib, (void *)&(bcch_bch_msg->mib), sizeof(struct MasterInformationBlock));
+     28e:	89 f2                	mov    %esi,%edx
+     290:	b9 10 00 00 00       	mov    $0x10,%ecx
+		fsm_printf("[rrc] [fsm] --> recive BCCH_BCH_Message.\n");
+		bcch_bch_msg = (struct BCCH_BCH_Message *)pkptr->data;
+
+		//struct MasterInformationBlock mib = bcch_bch_msg->mib;
+		check_free_ptr(mib);
+		mib = fsm_mem_alloc(sizeof(struct MasterInformationBlock));
+     295:	a3 00 00 00 00       	mov    %eax,0x0
+		fsm_mem_cpy(mib, (void *)&(bcch_bch_msg->mib), sizeof(struct MasterInformationBlock));
+     29a:	e8 fc ff ff ff       	call   29b <rrc_messege_handler_rlc+0x29b>
+
+		fsm_printf("[rrc] [fsm] --> recived MIB!\n");
+     29f:	c7 04 24 1e 00 00 00 	movl   $0x1e,(%esp)
+     2a6:	e8 fc ff ff ff       	call   2a7 <rrc_messege_handler_rlc+0x2a7>
+		fsm_schedule_self(0, CODE_RCV_MIB);
+     2ab:	ba 0f 00 00 00       	mov    $0xf,%edx
+     2b0:	31 c0                	xor    %eax,%eax
+     2b2:	e8 fc ff ff ff       	call   2b3 <rrc_messege_handler_rlc+0x2b3>
+     2b7:	e9 bf fd ff ff       	jmp    7b <rrc_messege_handler_rlc+0x7b>
+     2bc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+		//BCCH_DL_SCH_Message
+		fsm_printf("[rrc] [fsm] --> recive BCCH_DL_SCH_Message.\n");
+		struct BCCH_DL_SCH_Message *bcch_dl_sch_msg = (struct BCCH_DL_SCH_Message *)pkptr->data;
+		if (bcch_dl_sch_msg->type == 1)
+		{
+			check_free_ptr(si);
+     2c0:	a1 00 00 00 00       	mov    0x0,%eax
+     2c5:	e8 fc ff ff ff       	call   2c6 <rrc_messege_handler_rlc+0x2c6>
+			si = fsm_mem_alloc(sizeof(struct SystemInformation));
+     2ca:	b8 0c 01 00 00       	mov    $0x10c,%eax
+     2cf:	e8 fc ff ff ff       	call   2d0 <rrc_messege_handler_rlc+0x2d0>
+			fsm_mem_cpy(si, (void *)&(bcch_dl_sch_msg->msg.si), sizeof(struct SystemInformation));
+     2d4:	8d 56 04             	lea    0x4(%esi),%edx
+     2d7:	b9 0c 01 00 00       	mov    $0x10c,%ecx
+		fsm_printf("[rrc] [fsm] --> recive BCCH_DL_SCH_Message.\n");
+		struct BCCH_DL_SCH_Message *bcch_dl_sch_msg = (struct BCCH_DL_SCH_Message *)pkptr->data;
+		if (bcch_dl_sch_msg->type == 1)
+		{
+			check_free_ptr(si);
+			si = fsm_mem_alloc(sizeof(struct SystemInformation));
+     2dc:	a3 00 00 00 00       	mov    %eax,0x0
+			fsm_mem_cpy(si, (void *)&(bcch_dl_sch_msg->msg.si), sizeof(struct SystemInformation));
+     2e1:	e8 fc ff ff ff       	call   2e2 <rrc_messege_handler_rlc+0x2e2>
+			fsm_printf("[rrc] [fsm] --> recived SI!\n");
+     2e6:	c7 04 24 3c 00 00 00 	movl   $0x3c,(%esp)
+     2ed:	e8 fc ff ff ff       	call   2ee <rrc_messege_handler_rlc+0x2ee>
+			fsm_schedule_self(0, CODE_RCV_SI);
+     2f2:	ba 11 00 00 00       	mov    $0x11,%edx
+     2f7:	31 c0                	xor    %eax,%eax
+     2f9:	e8 fc ff ff ff       	call   2fa <rrc_messege_handler_rlc+0x2fa>
+     2fe:	e9 78 fd ff ff       	jmp    7b <rrc_messege_handler_rlc+0x7b>
+		//DL_DCCH_Message
+		fsm_printf("[rrc] [fsm] --> recive DL_DCCH_Message.\n");
+		struct DL_DCCH_Message *dl_dcch_msg = (struct DL_DCCH_Message *)pkptr->data;
+		if (dl_dcch_msg->type == 1)
+		{
+			check_free_ptr(rrcConnectionReconfiguration);
+     303:	a1 00 00 00 00       	mov    0x0,%eax
+     308:	e8 fc ff ff ff       	call   309 <rrc_messege_handler_rlc+0x309>
+			rrcConnectionReconfiguration = fsm_mem_alloc(sizeof(struct RRCConnectionReconfiguration));
+     30d:	b8 f0 04 00 00       	mov    $0x4f0,%eax
+     312:	e8 fc ff ff ff       	call   313 <rrc_messege_handler_rlc+0x313>
+			fsm_mem_cpy(rrcConnectionReconfiguration, (void *)&(dl_dcch_msg->msg.rrcConnectionReconfiguration), sizeof(struct RRCConnectionReconfiguration));
+     317:	8d 56 04             	lea    0x4(%esi),%edx
+     31a:	b9 f0 04 00 00       	mov    $0x4f0,%ecx
+		fsm_printf("[rrc] [fsm] --> recive DL_DCCH_Message.\n");
+		struct DL_DCCH_Message *dl_dcch_msg = (struct DL_DCCH_Message *)pkptr->data;
+		if (dl_dcch_msg->type == 1)
+		{
+			check_free_ptr(rrcConnectionReconfiguration);
+			rrcConnectionReconfiguration = fsm_mem_alloc(sizeof(struct RRCConnectionReconfiguration));
+     31f:	a3 00 00 00 00       	mov    %eax,0x0
+			fsm_mem_cpy(rrcConnectionReconfiguration, (void *)&(dl_dcch_msg->msg.rrcConnectionReconfiguration), sizeof(struct RRCConnectionReconfiguration));
+     324:	e8 fc ff ff ff       	call   325 <rrc_messege_handler_rlc+0x325>
+			fsm_schedule_self(1000, CODE_RCV_RRC_CONN_RECONF);
+     329:	ba 06 00 00 00       	mov    $0x6,%edx
+     32e:	b8 e8 03 00 00       	mov    $0x3e8,%eax
+     333:	e8 fc ff ff ff       	call   334 <rrc_messege_handler_rlc+0x334>
+     338:	e9 3e fd ff ff       	jmp    7b <rrc_messege_handler_rlc+0x7b>
+		fsm_printf(" 		  dl_ccch_msg->type=%d.\n",dl_ccch_msg->type);
+		fsm_printf(" 		  dl_ccch_msg addr=%p.\n",dl_ccch_msg);
+
+		if (dl_ccch_msg->type == 3)
+		{
+			check_free_ptr(rrcConnectionReject);
+     33d:	a1 00 00 00 00       	mov    0x0,%eax
+     342:	e8 fc ff ff ff       	call   343 <rrc_messege_handler_rlc+0x343>
+			rrcConnectionReject = fsm_mem_alloc(sizeof(struct RRCConnectionReject));
+     347:	b8 04 00 00 00       	mov    $0x4,%eax
+     34c:	e8 fc ff ff ff       	call   34d <rrc_messege_handler_rlc+0x34d>
+			fsm_mem_cpy(rrcConnectionReject, (void *)&(dl_ccch_msg->msg.rrcConnectionReject), sizeof(struct RRCConnectionReject));
+     351:	8d 56 04             	lea    0x4(%esi),%edx
+     354:	b9 04 00 00 00       	mov    $0x4,%ecx
+		fsm_printf(" 		  dl_ccch_msg addr=%p.\n",dl_ccch_msg);
+
+		if (dl_ccch_msg->type == 3)
+		{
+			check_free_ptr(rrcConnectionReject);
+			rrcConnectionReject = fsm_mem_alloc(sizeof(struct RRCConnectionReject));
+     359:	a3 00 00 00 00       	mov    %eax,0x0
+			fsm_mem_cpy(rrcConnectionReject, (void *)&(dl_ccch_msg->msg.rrcConnectionReject), sizeof(struct RRCConnectionReject));
+     35e:	e8 fc ff ff ff       	call   35f <rrc_messege_handler_rlc+0x35f>
+			fsm_schedule_self(0, CODE_RCV_RRC_CONN_REJECT);
+     363:	ba 04 00 00 00       	mov    $0x4,%edx
+     368:	31 c0                	xor    %eax,%eax
+     36a:	e8 fc ff ff ff       	call   36b <rrc_messege_handler_rlc+0x36b>
+     36f:	e9 07 fd ff ff       	jmp    7b <rrc_messege_handler_rlc+0x7b>
+     374:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+     37a:	8d bf 00 00 00 00    	lea    0x0(%edi),%edi
+
+00000380 <rrc_messege_handler_upper>:
+ **-------------------------------------- --------------------
+ ** Modified by: 
+ ** Modified Date: 
+ ******************************************************************************/
+static void rrc_messege_handler_upper(FSM_PKT* pkptr)
+{
+     380:	55                   	push   %ebp
+     381:	89 e5                	mov    %esp,%ebp
+     383:	53                   	push   %ebx
+     384:	83 ec 04             	sub    $0x4,%esp
+     387:	e8 fc ff ff ff       	call   388 <rrc_messege_handler_upper+0x8>
+     38c:	89 c3                	mov    %eax,%ebx
+	FIN(rrc_messege_handler_upper());
+	SV_PTR_GET(rrc_sv);
+     38e:	e8 fc ff ff ff       	call   38f <rrc_messege_handler_upper+0xf>
+	fsm_printf("[rrc] [fsm] rrc_messege_handler_upper().\n");
+     393:	c7 04 24 18 02 00 00 	movl   $0x218,(%esp)
+     39a:	e8 fc ff ff ff       	call   39b <rrc_messege_handler_upper+0x1b>
+	fsm_pkt_destroy(pkptr);
+     39f:	89 d8                	mov    %ebx,%eax
+     3a1:	e8 fc ff ff ff       	call   3a2 <rrc_messege_handler_upper+0x22>
+
+	FOUT;
+}
+     3a6:	83 c4 04             	add    $0x4,%esp
+     3a9:	5b                   	pop    %ebx
+     3aa:	5d                   	pop    %ebp
+     3ab:	c3                   	ret    
+     3ac:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+
+000003b0 <other_events_handler>:
+ **-------------------------------------- --------------------
+ ** Modified by:
+ ** Modified Date: 
+ ******************************************************************************/
+static void other_events_handler()
+{
+     3b0:	55                   	push   %ebp
+     3b1:	89 e5                	mov    %esp,%ebp
+     3b3:	57                   	push   %edi
+     3b4:	56                   	push   %esi
+     3b5:	53                   	push   %ebx
+     3b6:	81 ec 28 02 00 00    	sub    $0x228,%esp
+     3bc:	e8 fc ff ff ff       	call   3bd <other_events_handler+0xd>
+	FIN(other_events_handler());
+
+	SV_PTR_GET(rrc_sv);
+     3c1:	e8 fc ff ff ff       	call   3c2 <other_events_handler+0x12>
+	fsm_printf("[rrc] [fsm] other_events_handler().\n");
+     3c6:	c7 04 24 44 02 00 00 	movl   $0x244,(%esp)
+     3cd:	e8 fc ff ff ff       	call   3ce <other_events_handler+0x1e>
+
+	int *state=fsm_current_state_ptr_get();
+     3d2:	e8 fc ff ff ff       	call   3d3 <other_events_handler+0x23>
+     3d7:	89 c3                	mov    %eax,%ebx
+	if (Evt_RCV_PAGING && (*state ==7|| *state ==11))
+     3d9:	e8 fc ff ff ff       	call   3da <other_events_handler+0x2a>
+     3de:	83 f8 03             	cmp    $0x3,%eax
+     3e1:	74 7d                	je     460 <other_events_handler+0xb0>
+
+		fsm_printf("[rrc] [fsm] handle paging successfully.\n");
+
+	}
+
+	else if(Evt_RCV_MIB && (*state ==5||*state ==7|| *state ==11) )
+     3e3:	e8 fc ff ff ff       	call   3e4 <other_events_handler+0x34>
+     3e8:	83 f8 03             	cmp    $0x3,%eax
+     3eb:	0f 84 cf 00 00 00    	je     4c0 <other_events_handler+0x110>
+		{
+			fsm_printf("[rrc] [fsm] receive all system information and current fsm state is ST_IDLE_WAIT_SYSINFO, transit to ST_IDLE_NORMALLY.\n");
+			fsm_schedule_self(0, CODE_END_RECV_SYSINFO);
+		}
+	}
+	else if(Evt_RCV_SIB1 && (*state ==5||*state ==7|| *state ==11))
+     3f1:	e8 fc ff ff ff       	call   3f2 <other_events_handler+0x42>
+     3f6:	83 f8 03             	cmp    $0x3,%eax
+     3f9:	0f 84 49 01 00 00    	je     548 <other_events_handler+0x198>
+     3ff:	90                   	nop
+		{
+			fsm_printf("[rrc] [fsm] receive all system information and current fsm state is ST_IDLE_WAIT_SYSINFO, transit to ST_IDLE_NORMALLY.\n");
+			fsm_schedule_self(0, CODE_END_RECV_SYSINFO);
+		}
+	}
+	else if(Evt_RCV_SI && (*state ==5||*state ==7|| *state ==11))
+     400:	e8 fc ff ff ff       	call   401 <other_events_handler+0x51>
+     405:	83 f8 03             	cmp    $0x3,%eax
+     408:	0f 84 a2 01 00 00    	je     5b0 <other_events_handler+0x200>
+     40e:	66 90                	xchg   %ax,%ax
+		}
+
+		fsm_printf("[rrc] [fsm] handle SI successfully.\n");
+	}
+
+	else if(Evt_TimeOut_T302)
+     410:	e8 fc ff ff ff       	call   411 <other_events_handler+0x61>
+     415:	83 f8 03             	cmp    $0x3,%eax
+     418:	0f 84 e2 01 00 00    	je     600 <other_events_handler+0x250>
+     41e:	66 90                	xchg   %ax,%ax
+	{
+		//fix me: T302 timeout
+	}
+	else if(Evt_TimeOut_T305)
+     420:	e8 fc ff ff ff       	call   421 <other_events_handler+0x71>
+     425:	83 f8 03             	cmp    $0x3,%eax
+     428:	0f 84 f0 01 00 00    	je     61e <other_events_handler+0x26e>
+     42e:	66 90                	xchg   %ax,%ax
+	{
+		//fix me: T305 timeout
+	}
+	else if(Evt_TimeOut_T320)
+     430:	e8 fc ff ff ff       	call   431 <other_events_handler+0x81>
+     435:	83 f8 03             	cmp    $0x3,%eax
+     438:	0f 84 00 02 00 00    	je     63e <other_events_handler+0x28e>
+     43e:	66 90                	xchg   %ax,%ax
+	{
+		//fix me: T320 timeout
+	}
+	else if(Evt_TimeOut_T321)
+     440:	e8 fc ff ff ff       	call   441 <other_events_handler+0x91>
+     445:	83 f8 03             	cmp    $0x3,%eax
+     448:	0f 84 10 02 00 00    	je     65e <other_events_handler+0x2ae>
+	{
+		//fix me: T321 timeout
+	}
+	FOUT;
+}
+     44e:	81 c4 28 02 00 00    	add    $0x228,%esp
+     454:	5b                   	pop    %ebx
+     455:	5e                   	pop    %esi
+     456:	5f                   	pop    %edi
+     457:	5d                   	pop    %ebp
+     458:	c3                   	ret    
+     459:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+
+	SV_PTR_GET(rrc_sv);
+	fsm_printf("[rrc] [fsm] other_events_handler().\n");
+
+	int *state=fsm_current_state_ptr_get();
+	if (Evt_RCV_PAGING && (*state ==7|| *state ==11))
+     460:	e8 fc ff ff ff       	call   461 <other_events_handler+0xb1>
+     465:	83 f8 0e             	cmp    $0xe,%eax
+     468:	0f 85 75 ff ff ff    	jne    3e3 <other_events_handler+0x33>
+     46e:	8b 03                	mov    (%ebx),%eax
+     470:	83 f8 0b             	cmp    $0xb,%eax
+     473:	74 09                	je     47e <other_events_handler+0xce>
+     475:	83 f8 07             	cmp    $0x7,%eax
+     478:	0f 85 65 ff ff ff    	jne    3e3 <other_events_handler+0x33>
+	{
+		fsm_printf("[rrc] [fsm] start to handle paging.\n");
+     47e:	c7 04 24 6c 02 00 00 	movl   $0x26c,(%esp)
+     485:	e8 fc ff ff ff       	call   486 <other_events_handler+0xd6>
+		if(*state ==7 && paging->havePagingRecord==true)
+     48a:	a1 00 00 00 00       	mov    0x0,%eax
+     48f:	83 3b 07             	cmpl   $0x7,(%ebx)
+     492:	0f 84 3d 02 00 00    	je     6d5 <other_events_handler+0x325>
+		{
+			CheckPagingRecord(paging->pagingRecordList,ue_Identity);
+		}
+
+		if (paging->systemInfoModification==true)
+     498:	80 b8 d4 01 00 00 00 	cmpb   $0x0,0x1d4(%eax)
+     49f:	74 11                	je     4b2 <other_events_handler+0x102>
+		{
+			fsm_printf("[rrc] [fsm] paging.systemInfoModification==true, renew the system information from enb.\n");
+     4a1:	c7 04 24 94 02 00 00 	movl   $0x294,(%esp)
+     4a8:	e8 fc ff ff ff       	call   4a9 <other_events_handler+0xf9>
+			Begin_recv_sysinfo();
+     4ad:	e8 fc ff ff ff       	call   4ae <other_events_handler+0xfe>
+		}
+
+		fsm_printf("[rrc] [fsm] handle paging successfully.\n");
+     4b2:	c7 04 24 f0 02 00 00 	movl   $0x2f0,(%esp)
+     4b9:	e8 fc ff ff ff       	call   4ba <other_events_handler+0x10a>
+     4be:	eb 8e                	jmp    44e <other_events_handler+0x9e>
+
+	}
+
+	else if(Evt_RCV_MIB && (*state ==5||*state ==7|| *state ==11) )
+     4c0:	e8 fc ff ff ff       	call   4c1 <other_events_handler+0x111>
+     4c5:	83 f8 0f             	cmp    $0xf,%eax
+     4c8:	0f 85 23 ff ff ff    	jne    3f1 <other_events_handler+0x41>
+     4ce:	8b 03                	mov    (%ebx),%eax
+     4d0:	83 f8 07             	cmp    $0x7,%eax
+     4d3:	74 0e                	je     4e3 <other_events_handler+0x133>
+     4d5:	83 f8 05             	cmp    $0x5,%eax
+     4d8:	74 09                	je     4e3 <other_events_handler+0x133>
+     4da:	83 f8 0b             	cmp    $0xb,%eax
+     4dd:	0f 85 0e ff ff ff    	jne    3f1 <other_events_handler+0x41>
+	{
+		m_receivedmib=true;
+		DoReceiveMIB(mib);
+     4e3:	a1 00 00 00 00       	mov    0x0,%eax
+
+	}
+
+	else if(Evt_RCV_MIB && (*state ==5||*state ==7|| *state ==11) )
+	{
+		m_receivedmib=true;
+     4e8:	c6 05 00 00 00 00 01 	movb   $0x1,0x0
+		DoReceiveMIB(mib);
+     4ef:	e8 fc ff ff ff       	call   4f0 <other_events_handler+0x140>
+
+		if(*state==5 && m_receivedmib==true && m_receivedsib1==true && m_receivedSib2==true)
+     4f4:	83 3b 05             	cmpl   $0x5,(%ebx)
+     4f7:	0f 85 51 ff ff ff    	jne    44e <other_events_handler+0x9e>
+		m_receivedsib1=true;
+		fsm_printf("[rrc] [fsm] start to handle SIB1 .\n");
+		SendCellAccessRelatedInfotoUS(sib1->cellAccessRelatedInfo);
+		fsm_printf("[rrc] [fsm] handle SIB1 successfully.\n");
+
+		if(*state==5 && m_receivedmib==true && m_receivedsib1==true && m_receivedSib2==true)
+     4fd:	80 3d 00 00 00 00 00 	cmpb   $0x0,0x0
+     504:	0f 84 44 ff ff ff    	je     44e <other_events_handler+0x9e>
+     50a:	80 3d 00 00 00 00 00 	cmpb   $0x0,0x0
+     511:	0f 84 37 ff ff ff    	je     44e <other_events_handler+0x9e>
+     517:	80 3d 00 00 00 00 00 	cmpb   $0x0,0x0
+     51e:	0f 84 2a ff ff ff    	je     44e <other_events_handler+0x9e>
+		{
+			fsm_printf("[rrc] [fsm] receive all system information and current fsm state is ST_IDLE_WAIT_SYSINFO, transit to ST_IDLE_NORMALLY.\n");
+     524:	c7 04 24 1c 03 00 00 	movl   $0x31c,(%esp)
+     52b:	e8 fc ff ff ff       	call   52c <other_events_handler+0x17c>
+			fsm_schedule_self(0, CODE_END_RECV_SYSINFO);
+     530:	ba 01 00 00 00       	mov    $0x1,%edx
+     535:	31 c0                	xor    %eax,%eax
+     537:	e8 fc ff ff ff       	call   538 <other_events_handler+0x188>
+     53c:	e9 0d ff ff ff       	jmp    44e <other_events_handler+0x9e>
+     541:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+		{
+			fsm_printf("[rrc] [fsm] receive all system information and current fsm state is ST_IDLE_WAIT_SYSINFO, transit to ST_IDLE_NORMALLY.\n");
+			fsm_schedule_self(0, CODE_END_RECV_SYSINFO);
+		}
+	}
+	else if(Evt_RCV_SIB1 && (*state ==5||*state ==7|| *state ==11))
+     548:	e8 fc ff ff ff       	call   549 <other_events_handler+0x199>
+     54d:	83 f8 10             	cmp    $0x10,%eax
+     550:	0f 85 a9 fe ff ff    	jne    3ff <other_events_handler+0x4f>
+     556:	8b 03                	mov    (%ebx),%eax
+     558:	83 f8 07             	cmp    $0x7,%eax
+     55b:	74 0e                	je     56b <other_events_handler+0x1bb>
+     55d:	83 f8 05             	cmp    $0x5,%eax
+     560:	74 09                	je     56b <other_events_handler+0x1bb>
+     562:	83 f8 0b             	cmp    $0xb,%eax
+     565:	0f 85 94 fe ff ff    	jne    3ff <other_events_handler+0x4f>
+	{
+		m_receivedsib1=true;
+     56b:	c6 05 00 00 00 00 01 	movb   $0x1,0x0
+		fsm_printf("[rrc] [fsm] start to handle SIB1 .\n");
+     572:	c7 04 24 94 03 00 00 	movl   $0x394,(%esp)
+     579:	e8 fc ff ff ff       	call   57a <other_events_handler+0x1ca>
+		SendCellAccessRelatedInfotoUS(sib1->cellAccessRelatedInfo);
+     57e:	8b 35 00 00 00 00    	mov    0x0,%esi
+     584:	b9 30 00 00 00       	mov    $0x30,%ecx
+     589:	89 e7                	mov    %esp,%edi
+     58b:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+     58d:	e8 fc ff ff ff       	call   58e <other_events_handler+0x1de>
+		fsm_printf("[rrc] [fsm] handle SIB1 successfully.\n");
+     592:	c7 04 24 b8 03 00 00 	movl   $0x3b8,(%esp)
+     599:	e8 fc ff ff ff       	call   59a <other_events_handler+0x1ea>
+
+		if(*state==5 && m_receivedmib==true && m_receivedsib1==true && m_receivedSib2==true)
+     59e:	83 3b 05             	cmpl   $0x5,(%ebx)
+     5a1:	0f 85 a7 fe ff ff    	jne    44e <other_events_handler+0x9e>
+     5a7:	e9 51 ff ff ff       	jmp    4fd <other_events_handler+0x14d>
+     5ac:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+		{
+			fsm_printf("[rrc] [fsm] receive all system information and current fsm state is ST_IDLE_WAIT_SYSINFO, transit to ST_IDLE_NORMALLY.\n");
+			fsm_schedule_self(0, CODE_END_RECV_SYSINFO);
+		}
+	}
+	else if(Evt_RCV_SI && (*state ==5||*state ==7|| *state ==11))
+     5b0:	e8 fc ff ff ff       	call   5b1 <other_events_handler+0x201>
+     5b5:	83 f8 11             	cmp    $0x11,%eax
+     5b8:	0f 85 50 fe ff ff    	jne    40e <other_events_handler+0x5e>
+     5be:	8b 03                	mov    (%ebx),%eax
+     5c0:	83 f8 07             	cmp    $0x7,%eax
+     5c3:	74 0e                	je     5d3 <other_events_handler+0x223>
+     5c5:	83 f8 05             	cmp    $0x5,%eax
+     5c8:	74 09                	je     5d3 <other_events_handler+0x223>
+     5ca:	83 f8 0b             	cmp    $0xb,%eax
+     5cd:	0f 85 3b fe ff ff    	jne    40e <other_events_handler+0x5e>
+	{
+		fsm_printf("[rrc] [fsm] start to handle SI .\n");
+     5d3:	c7 04 24 e0 03 00 00 	movl   $0x3e0,(%esp)
+     5da:	e8 fc ff ff ff       	call   5db <other_events_handler+0x22b>
+		if(si->haveSib2==true)
+     5df:	8b 35 00 00 00 00    	mov    0x0,%esi
+     5e5:	80 3e 00             	cmpb   $0x0,(%esi)
+     5e8:	0f 85 82 00 00 00    	jne    670 <other_events_handler+0x2c0>
+				fsm_printf("[rrc] [fsm] receive all system information and current fsm state is ST_IDLE_WAIT_SYSINFO, transit to ST_IDLE_NORMALLY.\n");
+				fsm_schedule_self(0, CODE_END_RECV_SYSINFO);
+			}
+		}
+
+		fsm_printf("[rrc] [fsm] handle SI successfully.\n");
+     5ee:	c7 04 24 04 04 00 00 	movl   $0x404,(%esp)
+     5f5:	e8 fc ff ff ff       	call   5f6 <other_events_handler+0x246>
+     5fa:	e9 4f fe ff ff       	jmp    44e <other_events_handler+0x9e>
+     5ff:	90                   	nop
+	}
+
+	else if(Evt_TimeOut_T302)
+     600:	e8 fc ff ff ff       	call   601 <other_events_handler+0x251>
+     605:	83 f8 12             	cmp    $0x12,%eax
+     608:	0f 84 40 fe ff ff    	je     44e <other_events_handler+0x9e>
+     60e:	66 90                	xchg   %ax,%ax
+	{
+		//fix me: T302 timeout
+	}
+	else if(Evt_TimeOut_T305)
+     610:	e8 fc ff ff ff       	call   611 <other_events_handler+0x261>
+     615:	83 f8 03             	cmp    $0x3,%eax
+     618:	0f 85 10 fe ff ff    	jne    42e <other_events_handler+0x7e>
+     61e:	66 90                	xchg   %ax,%ax
+     620:	e8 fc ff ff ff       	call   621 <other_events_handler+0x271>
+     625:	83 f8 13             	cmp    $0x13,%eax
+     628:	0f 84 20 fe ff ff    	je     44e <other_events_handler+0x9e>
+     62e:	66 90                	xchg   %ax,%ax
+	{
+		//fix me: T305 timeout
+	}
+	else if(Evt_TimeOut_T320)
+     630:	e8 fc ff ff ff       	call   631 <other_events_handler+0x281>
+     635:	83 f8 03             	cmp    $0x3,%eax
+     638:	0f 85 00 fe ff ff    	jne    43e <other_events_handler+0x8e>
+     63e:	66 90                	xchg   %ax,%ax
+     640:	e8 fc ff ff ff       	call   641 <other_events_handler+0x291>
+     645:	83 f8 14             	cmp    $0x14,%eax
+     648:	0f 84 00 fe ff ff    	je     44e <other_events_handler+0x9e>
+     64e:	66 90                	xchg   %ax,%ax
+	{
+		//fix me: T320 timeout
+	}
+	else if(Evt_TimeOut_T321)
+     650:	e8 fc ff ff ff       	call   651 <other_events_handler+0x2a1>
+     655:	83 f8 03             	cmp    $0x3,%eax
+     658:	0f 85 f0 fd ff ff    	jne    44e <other_events_handler+0x9e>
+     65e:	66 90                	xchg   %ax,%ax
+     660:	e8 fc ff ff ff       	call   661 <other_events_handler+0x2b1>
+	{
+		//fix me: T321 timeout
+	}
+	FOUT;
+}
+     665:	81 c4 28 02 00 00    	add    $0x228,%esp
+     66b:	5b                   	pop    %ebx
+     66c:	5e                   	pop    %esi
+     66d:	5f                   	pop    %edi
+     66e:	5d                   	pop    %ebp
+     66f:	c3                   	ret    
+	else if(Evt_RCV_SI && (*state ==5||*state ==7|| *state ==11))
+	{
+		fsm_printf("[rrc] [fsm] start to handle SI .\n");
+		if(si->haveSib2==true)
+		{
+			m_receivedSib2=true;
+     670:	c6 05 00 00 00 00 01 	movb   $0x1,0x0
+			if(si->sib2.haveMBSFN_SubframeConfigList==true)
+			{
+			}
+
+			ApplyRadioResourceConfigCommon(si->sib2.radioResourceConfigCommon);
+     677:	83 c6 24             	add    $0x24,%esi
+     67a:	89 e7                	mov    %esp,%edi
+     67c:	b9 2f 00 00 00       	mov    $0x2f,%ecx
+     681:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+     683:	e8 fc ff ff ff       	call   684 <other_events_handler+0x2d4>
+
+			if(*state==5 && m_receivedmib==true && m_receivedsib1==true && m_receivedSib2==true)
+     688:	83 3b 05             	cmpl   $0x5,(%ebx)
+     68b:	0f 85 5d ff ff ff    	jne    5ee <other_events_handler+0x23e>
+     691:	80 3d 00 00 00 00 00 	cmpb   $0x0,0x0
+     698:	0f 84 50 ff ff ff    	je     5ee <other_events_handler+0x23e>
+     69e:	80 3d 00 00 00 00 00 	cmpb   $0x0,0x0
+     6a5:	0f 84 43 ff ff ff    	je     5ee <other_events_handler+0x23e>
+     6ab:	80 3d 00 00 00 00 00 	cmpb   $0x0,0x0
+     6b2:	0f 84 36 ff ff ff    	je     5ee <other_events_handler+0x23e>
+			{
+				fsm_printf("[rrc] [fsm] receive all system information and current fsm state is ST_IDLE_WAIT_SYSINFO, transit to ST_IDLE_NORMALLY.\n");
+     6b8:	c7 04 24 1c 03 00 00 	movl   $0x31c,(%esp)
+     6bf:	e8 fc ff ff ff       	call   6c0 <other_events_handler+0x310>
+				fsm_schedule_self(0, CODE_END_RECV_SYSINFO);
+     6c4:	ba 01 00 00 00       	mov    $0x1,%edx
+     6c9:	31 c0                	xor    %eax,%eax
+     6cb:	e8 fc ff ff ff       	call   6cc <other_events_handler+0x31c>
+     6d0:	e9 19 ff ff ff       	jmp    5ee <other_events_handler+0x23e>
+
+	int *state=fsm_current_state_ptr_get();
+	if (Evt_RCV_PAGING && (*state ==7|| *state ==11))
+	{
+		fsm_printf("[rrc] [fsm] start to handle paging.\n");
+		if(*state ==7 && paging->havePagingRecord==true)
+     6d5:	80 38 00             	cmpb   $0x0,(%eax)
+     6d8:	0f 84 ba fd ff ff    	je     498 <other_events_handler+0xe8>
+		{
+			CheckPagingRecord(paging->pagingRecordList,ue_Identity);
+     6de:	8d bc 24 d0 01 00 00 	lea    0x1d0(%esp),%edi
+     6e5:	be 00 00 00 00       	mov    $0x0,%esi
+     6ea:	b9 16 00 00 00       	mov    $0x16,%ecx
+     6ef:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+     6f1:	8d 70 04             	lea    0x4(%eax),%esi
+     6f4:	89 e7                	mov    %esp,%edi
+     6f6:	b1 74                	mov    $0x74,%cl
+     6f8:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+     6fa:	e8 fc ff ff ff       	call   6fb <other_events_handler+0x34b>
+     6ff:	a1 00 00 00 00       	mov    0x0,%eax
+     704:	e9 8f fd ff ff       	jmp    498 <other_events_handler+0xe8>
+     709:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+
+00000710 <transit_to_idle_connecting>:
+ **-------------------------------------- --------------------
+ ** Modified by:
+ ** Modified Date: 
+ ******************************************************************************/
+static void transit_to_idle_connecting(void)
+{
+     710:	55                   	push   %ebp
+     711:	89 e5                	mov    %esp,%ebp
+     713:	57                   	push   %edi
+     714:	56                   	push   %esi
+     715:	53                   	push   %ebx
+     716:	81 ec 4c 02 00 00    	sub    $0x24c,%esp
+     71c:	e8 fc ff ff ff       	call   71d <transit_to_idle_connecting+0xd>
+
+	FIN(transit_to_idle_connecting());
+	fsm_printf("[rrc] [fsm] transit_to_idle_connecting().\n");
+     721:	c7 04 24 2c 04 00 00 	movl   $0x42c,(%esp)
+	
+	
+	struct RadioResourceConfigDedicated *radioResourceConfigdefault;
+	radioResourceConfigdefault = gen_Defaultradioresource ();          
+	struct PhysicalConfigDedicated physicalConfigdefault;
+	physicalConfigdefault = radioResourceConfigdefault->physicalConfigDedicated ; 
+     728:	8d bd 88 fe ff ff    	lea    -0x178(%ebp),%edi
+ ******************************************************************************/
+static void transit_to_idle_connecting(void)
+{
+
+	FIN(transit_to_idle_connecting());
+	fsm_printf("[rrc] [fsm] transit_to_idle_connecting().\n");
+     72e:	e8 fc ff ff ff       	call   72f <transit_to_idle_connecting+0x1f>
+	
+	
+	struct RadioResourceConfigDedicated *radioResourceConfigdefault;
+	radioResourceConfigdefault = gen_Defaultradioresource ();          
+     733:	e8 fc ff ff ff       	call   734 <transit_to_idle_connecting+0x24>
+	struct PhysicalConfigDedicated physicalConfigdefault;
+	physicalConfigdefault = radioResourceConfigdefault->physicalConfigDedicated ; 
+     738:	b9 36 00 00 00       	mov    $0x36,%ecx
+     73d:	8d b0 14 04 00 00    	lea    0x414(%eax),%esi
+	FIN(transit_to_idle_connecting());
+	fsm_printf("[rrc] [fsm] transit_to_idle_connecting().\n");
+	
+	
+	struct RadioResourceConfigDedicated *radioResourceConfigdefault;
+	radioResourceConfigdefault = gen_Defaultradioresource ();          
+     743:	89 c3                	mov    %eax,%ebx
+	struct PhysicalConfigDedicated physicalConfigdefault;
+	physicalConfigdefault = radioResourceConfigdefault->physicalConfigDedicated ; 
+     745:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+	struct SPS_Config sps_Configdefault;
+	sps_Configdefault = radioResourceConfigdefault->sps_Config;     
+     747:	8d 7d b0             	lea    -0x50(%ebp),%edi
+     74a:	8d b0 cc 03 00 00    	lea    0x3cc(%eax),%esi
+     750:	b1 11                	mov    $0x11,%cl
+     752:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+	struct MAC_MainConfig mac_MainConfigdefault;
+	mac_MainConfigdefault = radioResourceConfigdefault->mac_MainConfig;    
+     754:	8d bd 60 ff ff ff    	lea    -0xa0(%ebp),%edi
+     75a:	8d b0 78 03 00 00    	lea    0x378(%eax),%esi
+     760:	b1 14                	mov    $0x14,%cl
+     762:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+	struct SystemInformationBlockType2 *TimeAlignmentTimerCommontest;
+	TimeAlignmentTimerCommontest = gen_sysInfoTimer();
+	struct UL_CCCH_Message *ulccchRRCrequestmsg;
+	ulccchRRCrequestmsg = gen_ul_ccchmsg_send_rrcquest();                 
+
+	set_default_physical_channel(physicalConfigdefault);
+     764:	8d b5 88 fe ff ff    	lea    -0x178(%ebp),%esi
+	sps_Configdefault = radioResourceConfigdefault->sps_Config;     
+	struct MAC_MainConfig mac_MainConfigdefault;
+	mac_MainConfigdefault = radioResourceConfigdefault->mac_MainConfig;    
+
+	struct SystemInformationBlockType2 *TimeAlignmentTimerCommontest;
+	TimeAlignmentTimerCommontest = gen_sysInfoTimer();
+     76a:	e8 fc ff ff ff       	call   76b <transit_to_idle_connecting+0x5b>
+     76f:	89 85 84 fe ff ff    	mov    %eax,-0x17c(%ebp)
+	struct UL_CCCH_Message *ulccchRRCrequestmsg;
+	ulccchRRCrequestmsg = gen_ul_ccchmsg_send_rrcquest();                 
+     775:	e8 fc ff ff ff       	call   776 <transit_to_idle_connecting+0x66>
+
+	set_default_physical_channel(physicalConfigdefault);
+     77a:	b9 36 00 00 00       	mov    $0x36,%ecx
+	mac_MainConfigdefault = radioResourceConfigdefault->mac_MainConfig;    
+
+	struct SystemInformationBlockType2 *TimeAlignmentTimerCommontest;
+	TimeAlignmentTimerCommontest = gen_sysInfoTimer();
+	struct UL_CCCH_Message *ulccchRRCrequestmsg;
+	ulccchRRCrequestmsg = gen_ul_ccchmsg_send_rrcquest();                 
+     77f:	89 85 80 fe ff ff    	mov    %eax,-0x180(%ebp)
+
+	set_default_physical_channel(physicalConfigdefault);
+     785:	89 e7                	mov    %esp,%edi
+     787:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+	set_default_semi_persistent (sps_Configdefault);
+     789:	8d 75 b0             	lea    -0x50(%ebp),%esi
+	struct SystemInformationBlockType2 *TimeAlignmentTimerCommontest;
+	TimeAlignmentTimerCommontest = gen_sysInfoTimer();
+	struct UL_CCCH_Message *ulccchRRCrequestmsg;
+	ulccchRRCrequestmsg = gen_ul_ccchmsg_send_rrcquest();                 
+
+	set_default_physical_channel(physicalConfigdefault);
+     78c:	e8 fc ff ff ff       	call   78d <transit_to_idle_connecting+0x7d>
+	set_default_semi_persistent (sps_Configdefault);
+     791:	b9 11 00 00 00       	mov    $0x11,%ecx
+     796:	89 e7                	mov    %esp,%edi
+     798:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+
+	fsm_printf("[rrc] [fsm] CCCH_Config we use the initial one ,so I do nothing here,if there may causes some problems,please contact me 3 Q .\n");
+
+	set_default_MAC(mac_MainConfigdefault);
+     79a:	8d b5 60 ff ff ff    	lea    -0xa0(%ebp),%esi
+	TimeAlignmentTimerCommontest = gen_sysInfoTimer();
+	struct UL_CCCH_Message *ulccchRRCrequestmsg;
+	ulccchRRCrequestmsg = gen_ul_ccchmsg_send_rrcquest();                 
+
+	set_default_physical_channel(physicalConfigdefault);
+	set_default_semi_persistent (sps_Configdefault);
+     7a0:	e8 fc ff ff ff       	call   7a1 <transit_to_idle_connecting+0x91>
+
+	fsm_printf("[rrc] [fsm] CCCH_Config we use the initial one ,so I do nothing here,if there may causes some problems,please contact me 3 Q .\n");
+     7a5:	c7 04 24 58 04 00 00 	movl   $0x458,(%esp)
+     7ac:	e8 fc ff ff ff       	call   7ad <transit_to_idle_connecting+0x9d>
+
+	set_default_MAC(mac_MainConfigdefault);
+     7b1:	b9 14 00 00 00       	mov    $0x14,%ecx
+     7b6:	89 e7                	mov    %esp,%edi
+     7b8:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+     7ba:	e8 fc ff ff ff       	call   7bb <transit_to_idle_connecting+0xab>
+	set_timeAlignmentTimerCommon (TimeAlignmentTimerCommontest);
+     7bf:	8b 85 84 fe ff ff    	mov    -0x17c(%ebp),%eax
+     7c5:	e8 fc ff ff ff       	call   7c6 <transit_to_idle_connecting+0xb6>
+
+	setTimer(TIMER_T300, 2000000); 
+     7ca:	ba 80 84 1e 00       	mov    $0x1e8480,%edx
+     7cf:	b8 2c 01 00 00       	mov    $0x12c,%eax
+     7d4:	e8 fc ff ff ff       	call   7d5 <transit_to_idle_connecting+0xc5>
+	fsm_printf("[rrc] [fsm] Time_T300 is starting, the duration is 2000ms.\n");
+     7d9:	c7 04 24 d8 04 00 00 	movl   $0x4d8,(%esp)
+     7e0:	e8 fc ff ff ff       	call   7e1 <transit_to_idle_connecting+0xd1>
+
+	send_RRCConnectionRequest(ulccchRRCrequestmsg);
+     7e5:	8b 85 80 fe ff ff    	mov    -0x180(%ebp),%eax
+     7eb:	e8 fc ff ff ff       	call   7ec <transit_to_idle_connecting+0xdc>
+
+	fsm_mem_free(radioResourceConfigdefault);
+     7f0:	89 d8                	mov    %ebx,%eax
+     7f2:	e8 fc ff ff ff       	call   7f3 <transit_to_idle_connecting+0xe3>
+	radioResourceConfigdefault = NULL;
+	fsm_mem_free(TimeAlignmentTimerCommontest);
+     7f7:	8b 85 84 fe ff ff    	mov    -0x17c(%ebp),%eax
+     7fd:	e8 fc ff ff ff       	call   7fe <transit_to_idle_connecting+0xee>
+	TimeAlignmentTimerCommontest = NULL;
+	fsm_mem_free(ulccchRRCrequestmsg);
+     802:	8b 85 80 fe ff ff    	mov    -0x180(%ebp),%eax
+     808:	e8 fc ff ff ff       	call   809 <transit_to_idle_connecting+0xf9>
+	ulccchRRCrequestmsg = NULL;
+	
+	FOUT;
+}
+     80d:	81 c4 4c 02 00 00    	add    $0x24c,%esp
+     813:	5b                   	pop    %ebx
+     814:	5e                   	pop    %esi
+     815:	5f                   	pop    %edi
+     816:	5d                   	pop    %ebp
+     817:	c3                   	ret    
+     818:	90                   	nop
+     819:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+
+00000820 <rcv_rrc_conn_setup>:
+ **-------------------------------------- --------------------
+ ** Modified by:
+ ** Modified Date: 
+ ******************************************************************************/
+static void rcv_rrc_conn_setup(void)
+{
+     820:	55                   	push   %ebp
+     821:	89 e5                	mov    %esp,%ebp
+     823:	57                   	push   %edi
+     824:	56                   	push   %esi
+     825:	81 ec e8 00 00 00    	sub    $0xe8,%esp
+     82b:	e8 fc ff ff ff       	call   82c <rcv_rrc_conn_setup+0xc>
+	FIN(rcv_rrc_conn_setup());
+
+	fsm_printf("[rrc] [fsm] rcv_rrc_conn_setup().\n");
+     830:	c7 04 24 14 05 00 00 	movl   $0x514,(%esp)
+     837:	e8 fc ff ff ff       	call   838 <rcv_rrc_conn_setup+0x18>
+
+	if(rrcConnectionSetup != NULL)
+     83c:	a1 00 00 00 00       	mov    0x0,%eax
+     841:	85 c0                	test   %eax,%eax
+     843:	0f 84 b7 00 00 00    	je     900 <rcv_rrc_conn_setup+0xe0>
+	{
+		struct SrbToAddModList srbToAddModList_setup;
+		struct DrbToAddModList drbToAddModList_setup;
+		struct UL_DCCH_Message *Ul_Dcch_rrccompletemsg;
+
+		srbToAddModList_setup = rrcConnectionSetup->radioResourceConfigDedicated.srbToAddModList; 
+     849:	8d 7d 84             	lea    -0x7c(%ebp),%edi
+     84c:	b9 1d 00 00 00       	mov    $0x1d,%ecx
+     851:	8d 70 08             	lea    0x8(%eax),%esi
+     854:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+     856:	8b 70 08             	mov    0x8(%eax),%esi
+		drbToAddModList_setup = rrcConnectionSetup->radioResourceConfigDedicated.drbToAddModList;
+		fsm_printf("[rrc] drbToAddModList.num = %d\n", drbToAddModList_setup.num);
+     859:	8b 80 80 00 00 00    	mov    0x80(%eax),%eax
+     85f:	c7 04 24 38 05 00 00 	movl   $0x538,(%esp)
+     866:	89 44 24 04          	mov    %eax,0x4(%esp)
+     86a:	e8 fc ff ff ff       	call   86b <rcv_rrc_conn_setup+0x4b>
+		fsm_printf("[rrc] srbToAddModList.num = %d\n", srbToAddModList_setup.num);
+     86f:	89 74 24 04          	mov    %esi,0x4(%esp)
+     873:	c7 04 24 58 05 00 00 	movl   $0x558,(%esp)
+     87a:	e8 fc ff ff ff       	call   87b <rcv_rrc_conn_setup+0x5b>
+		ApplySrbToAdd(srbToAddModList_setup);
+     87f:	b9 1d 00 00 00       	mov    $0x1d,%ecx
+     884:	89 75 84             	mov    %esi,-0x7c(%ebp)
+     887:	8d 75 84             	lea    -0x7c(%ebp),%esi
+     88a:	89 e7                	mov    %esp,%edi
+     88c:	f3 a5                	rep movsl %ds:(%esi),%es:(%edi)
+     88e:	e8 fc ff ff ff       	call   88f <rcv_rrc_conn_setup+0x6f>
+	//	ApplyDrbToAdd(drbToAddModList_setup);
+
+		set_MAC_mainconfig(rrcConnectionSetup);
+     893:	a1 00 00 00 00       	mov    0x0,%eax
+     898:	e8 fc ff ff ff       	call   899 <rcv_rrc_conn_setup+0x79>
+		set_semi_persistent(rrcConnectionSetup);
+     89d:	a1 00 00 00 00       	mov    0x0,%eax
+     8a2:	e8 fc ff ff ff       	call   8a3 <rcv_rrc_conn_setup+0x83>
+		set_physicalConfigDedicated(rrcConnectionSetup);
+     8a7:	a1 00 00 00 00       	mov    0x0,%eax
+     8ac:	e8 fc ff ff ff       	call   8ad <rcv_rrc_conn_setup+0x8d>
+
+		cancleTimer(TIMER_T302); 
+     8b1:	b8 2e 01 00 00       	mov    $0x12e,%eax
+     8b6:	e8 fc ff ff ff       	call   8b7 <rcv_rrc_conn_setup+0x97>
+		cancleTimer(TIMER_T305);
+     8bb:	b8 31 01 00 00       	mov    $0x131,%eax
+     8c0:	e8 fc ff ff ff       	call   8c1 <rcv_rrc_conn_setup+0xa1>
+
+		Ul_Dcch_rrccompletemsg = gen_ul_dcch_rrccomplete(); 
+     8c5:	e8 fc ff ff ff       	call   8c6 <rcv_rrc_conn_setup+0xa6>
+     8ca:	89 c6                	mov    %eax,%esi
+		send_RRCConnectionSetupComplete(Ul_Dcch_rrccompletemsg);
+     8cc:	e8 fc ff ff ff       	call   8cd <rcv_rrc_conn_setup+0xad>
+
+		fsm_mem_free(Ul_Dcch_rrccompletemsg);
+     8d1:	89 f0                	mov    %esi,%eax
+     8d3:	e8 fc ff ff ff       	call   8d4 <rcv_rrc_conn_setup+0xb4>
+		Ul_Dcch_rrccompletemsg = NULL;
+		cancleTimer(TIMER_T300); 
+     8d8:	b8 2c 01 00 00       	mov    $0x12c,%eax
+     8dd:	e8 fc ff ff ff       	call   8de <rcv_rrc_conn_setup+0xbe>
+
+		fsm_mem_free(rrcConnectionSetup);
+     8e2:	a1 00 00 00 00       	mov    0x0,%eax
+     8e7:	e8 fc ff ff ff       	call   8e8 <rcv_rrc_conn_setup+0xc8>
+		rrcConnectionSetup = NULL;
+     8ec:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     8f3:	00 00 00 
+		fsm_printf("[rrc] [fsm] rrcConnectionSetup is NULL\n");
+	}
+
+	FOUT;
+
+}
+     8f6:	81 c4 e8 00 00 00    	add    $0xe8,%esp
+     8fc:	5e                   	pop    %esi
+     8fd:	5f                   	pop    %edi
+     8fe:	5d                   	pop    %ebp
+     8ff:	c3                   	ret    
+		fsm_mem_free(rrcConnectionSetup);
+		rrcConnectionSetup = NULL;
+	}
+	else
+	{
+		fsm_printf("[rrc] [fsm] rrcConnectionSetup is NULL\n");
+     900:	c7 04 24 78 05 00 00 	movl   $0x578,(%esp)
+     907:	e8 fc ff ff ff       	call   908 <rcv_rrc_conn_setup+0xe8>
+	}
+
+	FOUT;
+
+}
+     90c:	81 c4 e8 00 00 00    	add    $0xe8,%esp
+     912:	5e                   	pop    %esi
+     913:	5f                   	pop    %edi
+     914:	5d                   	pop    %ebp
+     915:	c3                   	ret    
+     916:	8d 76 00             	lea    0x0(%esi),%esi
+     919:	8d bc 27 00 00 00 00 	lea    0x0(%edi,%eiz,1),%edi
+
+00000920 <rrc_ioctl_handler>:
+ **-------------------------------------- --------------------
+ ** Modified by: Liu yingtao
+ ** Modified Date: 
+ ******************************************************************************/
+static void rrc_ioctl_handler(void)
+{
+     920:	55                   	push   %ebp
+     921:	89 e5                	mov    %esp,%ebp
+     923:	83 ec 04             	sub    $0x4,%esp
+     926:	e8 fc ff ff ff       	call   927 <rrc_ioctl_handler+0x7>
+	FIN(rrc_ioctl_handler());
+	SV_PTR_GET(rrc_sv);
+     92b:	e8 fc ff ff ff       	call   92c <rrc_ioctl_handler+0xc>
+	fsm_printf("[rrc] [fsm] in rrc_ioctl_handler().\n");
+     930:	c7 04 24 a0 05 00 00 	movl   $0x5a0,(%esp)
+     937:	e8 fc ff ff ff       	call   938 <rrc_ioctl_handler+0x18>
+
+	switch(fsm_ev_ioctrl_cmd())
+     93c:	e8 fc ff ff ff       	call   93d <rrc_ioctl_handler+0x1d>
+     941:	83 f8 24             	cmp    $0x24,%eax
+     944:	76 12                	jbe    958 <rrc_ioctl_handler+0x38>
+		case IOCCMD_MACTORRC_REPORT_CRNTI:
+			//fsm_schedule_self(0, );
+			FOUT;
+
+		default:
+			fsm_printf("[rrc] [fsm] Unrecognized I/O control command.\n");
+     946:	c7 04 24 c8 05 00 00 	movl   $0x5c8,(%esp)
+     94d:	e8 fc ff ff ff       	call   94e <rrc_ioctl_handler+0x2e>
+			FOUT;
+	}
+
+}
+     952:	c9                   	leave  
+     953:	c3                   	ret    
+     954:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+{
+	FIN(rrc_ioctl_handler());
+	SV_PTR_GET(rrc_sv);
+	fsm_printf("[rrc] [fsm] in rrc_ioctl_handler().\n");
+
+	switch(fsm_ev_ioctrl_cmd())
+     958:	ff 24 85 00 00 00 00 	jmp    *0x0(,%eax,4)
+     95f:	90                   	nop
+		case IOCCMD_USTORRC_RRC_CONN_REQ:
+			fsm_schedule_self(0, CODE_CONN_REQ_FROM_NAS);
+			FOUT;
+
+		case IOCCMD_USTORRC_RRC_CONN_RELEASE:
+			fsm_schedule_self(0, CODE_RCV_RRC_CONN_RELEASE);
+     960:	ba 07 00 00 00       	mov    $0x7,%edx
+     965:	31 c0                	xor    %eax,%eax
+     967:	e8 fc ff ff ff       	call   968 <rrc_ioctl_handler+0x48>
+		default:
+			fsm_printf("[rrc] [fsm] Unrecognized I/O control command.\n");
+			FOUT;
+	}
+
+}
+     96c:	c9                   	leave  
+     96d:	c3                   	ret    
+     96e:	66 90                	xchg   %ax,%ax
+		case IOCCMD_USTORRC_CELL_ACCESS:
+			fsm_schedule_self(0, CODE_BEGIN_RECV_SYSINFO);
+			FOUT;
+
+		case IOCCMD_USTORRC_RRC_CONN_REQ:
+			fsm_schedule_self(0, CODE_CONN_REQ_FROM_NAS);
+     970:	ba 02 00 00 00       	mov    $0x2,%edx
+     975:	31 c0                	xor    %eax,%eax
+     977:	e8 fc ff ff ff       	call   978 <rrc_ioctl_handler+0x58>
+		default:
+			fsm_printf("[rrc] [fsm] Unrecognized I/O control command.\n");
+			FOUT;
+	}
+
+}
+     97c:	c9                   	leave  
+     97d:	c3                   	ret    
+     97e:	66 90                	xchg   %ax,%ax
+	fsm_printf("[rrc] [fsm] in rrc_ioctl_handler().\n");
+
+	switch(fsm_ev_ioctrl_cmd())
+	{
+		case IOCCMD_USTORRC_CELL_ACCESS:
+			fsm_schedule_self(0, CODE_BEGIN_RECV_SYSINFO);
+     980:	31 d2                	xor    %edx,%edx
+     982:	31 c0                	xor    %eax,%eax
+     984:	e8 fc ff ff ff       	call   985 <rrc_ioctl_handler+0x65>
+		default:
+			fsm_printf("[rrc] [fsm] Unrecognized I/O control command.\n");
+			FOUT;
+	}
+
+}
+     989:	c9                   	leave  
+     98a:	c3                   	ret    
+     98b:	90                   	nop
+     98c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+
+00000990 <rrc_close>:
+ **-------------------------------------- --------------------
+ ** Modified by: zhou yang 
+ ** Modified Date: 2014/10/1
+ ******************************************************************************/
+void rrc_close(void)
+{
+     990:	55                   	push   %ebp
+     991:	89 e5                	mov    %esp,%ebp
+     993:	83 ec 04             	sub    $0x4,%esp
+     996:	e8 fc ff ff ff       	call   997 <rrc_close+0x7>
+	FIN(rrc_close());
+	SV_PTR_GET(rrc_sv);
+     99b:	e8 fc ff ff ff       	call   99c <rrc_close+0xc>
+	fsm_printf("[rrc] [fsm] RRC is closing, release malloced memory!.\n");
+     9a0:	c7 04 24 f8 05 00 00 	movl   $0x5f8,(%esp)
+     9a7:	e8 fc ff ff ff       	call   9a8 <rrc_close+0x18>
+
+
+	if(paging != NULL)
+     9ac:	a1 00 00 00 00       	mov    0x0,%eax
+     9b1:	85 c0                	test   %eax,%eax
+     9b3:	74 0f                	je     9c4 <rrc_close+0x34>
+	{
+		fsm_mem_free(paging);
+     9b5:	e8 fc ff ff ff       	call   9b6 <rrc_close+0x26>
+		paging=NULL;
+     9ba:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     9c1:	00 00 00 
+	}
+	if(mib != NULL)
+     9c4:	a1 00 00 00 00       	mov    0x0,%eax
+     9c9:	85 c0                	test   %eax,%eax
+     9cb:	74 0f                	je     9dc <rrc_close+0x4c>
+	{
+		fsm_mem_free(mib);
+     9cd:	e8 fc ff ff ff       	call   9ce <rrc_close+0x3e>
+		mib=NULL;
+     9d2:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     9d9:	00 00 00 
+	}
+	if(si != NULL)
+     9dc:	a1 00 00 00 00       	mov    0x0,%eax
+     9e1:	85 c0                	test   %eax,%eax
+     9e3:	74 0f                	je     9f4 <rrc_close+0x64>
+	{
+		fsm_mem_free(si);
+     9e5:	e8 fc ff ff ff       	call   9e6 <rrc_close+0x56>
+		si=NULL;
+     9ea:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     9f1:	00 00 00 
+	}
+	if(sib1 != NULL)
+     9f4:	a1 00 00 00 00       	mov    0x0,%eax
+     9f9:	85 c0                	test   %eax,%eax
+     9fb:	74 0f                	je     a0c <rrc_close+0x7c>
+	{
+		fsm_mem_free(sib1);
+     9fd:	e8 fc ff ff ff       	call   9fe <rrc_close+0x6e>
+		sib1=NULL;
+     a02:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     a09:	00 00 00 
+	}
+	if(rrcConnectionReject != NULL)
+     a0c:	a1 00 00 00 00       	mov    0x0,%eax
+     a11:	85 c0                	test   %eax,%eax
+     a13:	74 0f                	je     a24 <rrc_close+0x94>
+	{
+		fsm_mem_free(rrcConnectionReject);
+     a15:	e8 fc ff ff ff       	call   a16 <rrc_close+0x86>
+		rrcConnectionReject=NULL;
+     a1a:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     a21:	00 00 00 
+	}
+	if(rrcConnectionSetup != NULL)
+     a24:	a1 00 00 00 00       	mov    0x0,%eax
+     a29:	85 c0                	test   %eax,%eax
+     a2b:	74 0f                	je     a3c <rrc_close+0xac>
+	{
+		fsm_mem_free(rrcConnectionSetup);
+     a2d:	e8 fc ff ff ff       	call   a2e <rrc_close+0x9e>
+		rrcConnectionSetup=NULL;
+     a32:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     a39:	00 00 00 
+	}
+	if(rrcConnectionReconfiguration != NULL)
+     a3c:	a1 00 00 00 00       	mov    0x0,%eax
+     a41:	85 c0                	test   %eax,%eax
+     a43:	74 0f                	je     a54 <rrc_close+0xc4>
+	{
+		fsm_mem_free(rrcConnectionReconfiguration);
+     a45:	e8 fc ff ff ff       	call   a46 <rrc_close+0xb6>
+		rrcConnectionReconfiguration=NULL;
+     a4a:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     a51:	00 00 00 
+	}
+	if(rrcConnectionRelease != NULL)
+     a54:	a1 00 00 00 00       	mov    0x0,%eax
+     a59:	85 c0                	test   %eax,%eax
+     a5b:	74 0f                	je     a6c <rrc_close+0xdc>
+	{
+		fsm_mem_free(rrcConnectionRelease);
+     a5d:	e8 fc ff ff ff       	call   a5e <rrc_close+0xce>
+		rrcConnectionRelease=NULL;
+     a62:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     a69:	00 00 00 
+	}
+
+	if(ueCellReselectionPriorityList!=NULL)
+     a6c:	a1 00 00 00 00       	mov    0x0,%eax
+     a71:	85 c0                	test   %eax,%eax
+     a73:	74 0f                	je     a84 <rrc_close+0xf4>
+	{
+		fsm_mem_free(ueCellReselectionPriorityList);
+     a75:	e8 fc ff ff ff       	call   a76 <rrc_close+0xe6>
+			ueCellReselectionPriorityList=NULL;
+     a7a:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+     a81:	00 00 00 
+	{
+		fsm_mem_free(ueFreqPriorityList);
+		ueFreqPriorityList=NULL;
+	}
+*/
+	stop_timer();
+     a84:	e8 fc ff ff ff       	call   a85 <rrc_close+0xf5>
+	release_radio_resource();
+     a89:	e8 fc ff ff ff       	call   a8a <rrc_close+0xfa>
+	FOUT;
+}
+     a8e:	c9                   	leave  
+     a8f:	c3                   	ret    
+
+00000a90 <rrc_main>:
+struct CellReselectionPriority *ueCellReselectionPriorityList = NULL; //zhouyang 2014/10/1
+
+
+
+void rrc_main(void)
+{
+     a90:	55                   	push   %ebp
+     a91:	89 e5                	mov    %esp,%ebp
+     a93:	83 ec 18             	sub    $0x18,%esp
+     a96:	89 5d f4             	mov    %ebx,-0xc(%ebp)
+     a99:	89 75 f8             	mov    %esi,-0x8(%ebp)
+     a9c:	89 7d fc             	mov    %edi,-0x4(%ebp)
+     a9f:	e8 fc ff ff ff       	call   aa0 <rrc_main+0x10>
+	FSM_ENTER(rrc_main);
+     aa4:	e8 fc ff ff ff       	call   aa5 <rrc_main+0x15>
+	FSM_BLOCK_SWITCH
+     aa9:	83 38 0f             	cmpl   $0xf,(%eax)
+
+
+
+void rrc_main(void)
+{
+	FSM_ENTER(rrc_main);
+     aac:	89 c3                	mov    %eax,%ebx
+	FSM_BLOCK_SWITCH
+     aae:	76 18                	jbe    ac8 <rrc_main+0x38>
+				FSM_CASE_TRANSIT(3, ST_IDLE_NORMALLY, t311_timeout(), "ST_CONNECTED_REESTABLISH -> ST_IDLE_NORMALLY")
+				FSM_CASE_DEFAULT(ST_CONNECTED_REESTABLISH, st_connect_reest_default(), "ST_CONNECTED_REESTABLISH -> ST_CONNECTED_REESTABLISH")   //transit to idle state by default.
+			}
+		}
+	}
+	FSM_EXIT(0)
+     ab0:	c7 00 00 00 00 00    	movl   $0x0,(%eax)
+     ab6:	66 90                	xchg   %ax,%ax
+}
+     ab8:	8b 5d f4             	mov    -0xc(%ebp),%ebx
+     abb:	8b 75 f8             	mov    -0x8(%ebp),%esi
+     abe:	8b 7d fc             	mov    -0x4(%ebp),%edi
+     ac1:	89 ec                	mov    %ebp,%esp
+     ac3:	5d                   	pop    %ebp
+     ac4:	c3                   	ret    
+     ac5:	8d 76 00             	lea    0x0(%esi),%esi
+
+
+void rrc_main(void)
+{
+	FSM_ENTER(rrc_main);
+	FSM_BLOCK_SWITCH
+     ac8:	8b 00                	mov    (%eax),%eax
+     aca:	ff 24 85 94 00 00 00 	jmp    *0x94(,%eax,4)
+     ad1:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_CONNECTING, transit_to_idle_connecting(), "ST_IDLE_NORMALLY -> ST_IDLE_CONNECTING")
+				FSM_CASE_DEFAULT(ST_IDLE_NORMALLY, st_idle_normal_default(), "ST_IDLE_NORMALLY -> ST_IDLE_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CONNECTING, "ST_IDLE_CONNECTING", st_idle_connecting_enter(),st_idle_connecting_exit())
+     ad8:	c7 05 5c 00 00 00 ec 	movl   $0xec,0x5c
+     adf:	00 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_idle_connecting_exit(void)
+{
+	FIN(st_idle_connecting_exit());
+	fsm_printf("[rrc] [fsm] st_idle_connecting_exit().\n");
+     ae2:	c7 04 24 f8 08 00 00 	movl   $0x8f8,(%esp)
+     ae9:	e8 fc ff ff ff       	call   aea <rrc_main+0x5a>
+
+	if(RRC_CLOSE)
+     aee:	e8 fc ff ff ff       	call   aef <rrc_main+0x5f>
+     af3:	83 f8 05             	cmp    $0x5,%eax
+     af6:	0f 84 1b 0a 00 00    	je     1517 <rrc_main+0xa87>
+     afc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+			}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CONNECTING, "ST_IDLE_CONNECTING", st_idle_connecting_enter(),st_idle_connecting_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_CONNECTING")
+			FSM_TEST_COND(Evt_TimeOut_T300)
+     b00:	e8 fc ff ff ff       	call   b01 <rrc_main+0x71>
+				FSM_CASE_DEFAULT(ST_IDLE_NORMALLY, st_idle_normal_default(), "ST_IDLE_NORMALLY -> ST_IDLE_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CONNECTING, "ST_IDLE_CONNECTING", st_idle_connecting_enter(),st_idle_connecting_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_CONNECTING")
+     b05:	31 f6                	xor    %esi,%esi
+     b07:	bf ff ff ff ff       	mov    $0xffffffff,%edi
+			FSM_TEST_COND(Evt_TimeOut_T300)
+     b0c:	83 f8 03             	cmp    $0x3,%eax
+     b0f:	0f 84 e9 09 00 00    	je     14fe <rrc_main+0xa6e>
+			FSM_TEST_COND(Evt_RcvRRCConnReject)
+     b15:	e8 fc ff ff ff       	call   b16 <rrc_main+0x86>
+     b1a:	83 f8 03             	cmp    $0x3,%eax
+     b1d:	0f 84 c0 09 00 00    	je     14e3 <rrc_main+0xa53>
+			FSM_TEST_COND(Evt_RcvRRCConnSetup)
+     b23:	e8 fc ff ff ff       	call   b24 <rrc_main+0x94>
+     b28:	83 f8 03             	cmp    $0x3,%eax
+     b2b:	0f 84 94 09 00 00    	je     14c5 <rrc_main+0xa35>
+			FSM_COND_TEST_OUT("ST_IDLE_CONNECTING")
+     b31:	83 fe 01             	cmp    $0x1,%esi
+     b34:	0f 8e 9e 00 00 00    	jle    bd8 <rrc_main+0x148>
+     b3a:	c7 44 24 08 ff 00 00 	movl   $0xff,0x8(%esp)
+     b41:	00 
+     b42:	c7 44 24 04 ec 00 00 	movl   $0xec,0x4(%esp)
+     b49:	00 
+     b4a:	c7 04 24 13 01 00 00 	movl   $0x113,(%esp)
+     b51:	e8 fc ff ff ff       	call   b52 <rrc_main+0xc2>
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, t300_timeout(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_reject(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(2, ST_CONNECTED_NORMALLY, rcv_rrc_conn_setup(), "ST_IDLE_CONNECTING -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_DEFAULT(ST_IDLE_CONNECTING, st_idle_connecting_default(), "ST_IDLE_CONNECTING -> ST_IDLE_CONNECTING")   //transit to idle state by default.
+     b56:	c7 05 5c 00 00 00 98 	movl   $0x998,0x5c
+     b5d:	09 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_idle_connecting_default(void)
+{
+	FIN(st_idle_connecting_default());
+	fsm_printf("[rrc] [fsm] st_idle_connecting_default().\n");
+     b60:	c7 04 24 c4 09 00 00 	movl   $0x9c4,(%esp)
+     b67:	e8 fc ff ff ff       	call   b68 <rrc_main+0xd8>
+
+	if(EVT_IOCTL_ARRIVAL)
+     b6c:	e8 fc ff ff ff       	call   b6d <rrc_main+0xdd>
+     b71:	83 f8 05             	cmp    $0x5,%eax
+     b74:	0f 84 d5 0a 00 00    	je     164f <rrc_main+0xbbf>
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+     b7a:	e8 fc ff ff ff       	call   b7b <rrc_main+0xeb>
+     b7f:	83 f8 02             	cmp    $0x2,%eax
+     b82:	0f 84 e2 0a 00 00    	je     166a <rrc_main+0xbda>
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+     b88:	e8 fc ff ff ff       	call   b89 <rrc_main+0xf9>
+     b8d:	83 f8 01             	cmp    $0x1,%eax
+     b90:	0f 84 2b 0b 00 00    	je     16c1 <rrc_main+0xc31>
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_upper(pkptr);
+	}
+	else
+	{
+		other_events_handler();
+     b96:	e8 15 f8 ff ff       	call   3b0 <other_events_handler>
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, t300_timeout(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_reject(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(2, ST_CONNECTED_NORMALLY, rcv_rrc_conn_setup(), "ST_IDLE_CONNECTING -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_DEFAULT(ST_IDLE_CONNECTING, st_idle_connecting_default(), "ST_IDLE_CONNECTING -> ST_IDLE_CONNECTING")   //transit to idle state by default.
+     b9b:	c7 03 08 00 00 00    	movl   $0x8,(%ebx)
+     ba1:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_CONNECTING, transit_to_idle_connecting(), "ST_IDLE_NORMALLY -> ST_IDLE_CONNECTING")
+				FSM_CASE_DEFAULT(ST_IDLE_NORMALLY, st_idle_normal_default(), "ST_IDLE_NORMALLY -> ST_IDLE_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CONNECTING, "ST_IDLE_CONNECTING", st_idle_connecting_enter(),st_idle_connecting_exit())
+     ba8:	c7 05 5c 00 00 00 ec 	movl   $0xec,0x5c
+     baf:	00 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_idle_connecting_enter(void)
+{
+	FIN(st_idle_connecting_enter());
+	fsm_printf("[rrc] [fsm] st_idle_connecting_enter().\n");
+     bb2:	c7 04 24 cc 08 00 00 	movl   $0x8cc,(%esp)
+     bb9:	e8 fc ff ff ff       	call   bba <rrc_main+0x12a>
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_CONNECTING, transit_to_idle_connecting(), "ST_IDLE_NORMALLY -> ST_IDLE_CONNECTING")
+				FSM_CASE_DEFAULT(ST_IDLE_NORMALLY, st_idle_normal_default(), "ST_IDLE_NORMALLY -> ST_IDLE_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CONNECTING, "ST_IDLE_CONNECTING", st_idle_connecting_enter(),st_idle_connecting_exit())
+     bbe:	c7 03 09 00 00 00    	movl   $0x9,(%ebx)
+				FSM_CASE_DEFAULT(ST_CONNECTED_REESTABLISH, st_connect_reest_default(), "ST_CONNECTED_REESTABLISH -> ST_CONNECTED_REESTABLISH")   //transit to idle state by default.
+			}
+		}
+	}
+	FSM_EXIT(0)
+}
+     bc4:	8b 5d f4             	mov    -0xc(%ebp),%ebx
+     bc7:	8b 75 f8             	mov    -0x8(%ebp),%esi
+     bca:	8b 7d fc             	mov    -0x4(%ebp),%edi
+     bcd:	89 ec                	mov    %ebp,%esp
+     bcf:	5d                   	pop    %ebp
+     bd0:	c3                   	ret    
+     bd1:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+		{
+			FSM_COND_TEST_IN("ST_IDLE_CONNECTING")
+			FSM_TEST_COND(Evt_TimeOut_T300)
+			FSM_TEST_COND(Evt_RcvRRCConnReject)
+			FSM_TEST_COND(Evt_RcvRRCConnSetup)
+			FSM_COND_TEST_OUT("ST_IDLE_CONNECTING")
+     bd8:	85 f6                	test   %esi,%esi
+     bda:	0f 84 76 ff ff ff    	je     b56 <rrc_main+0xc6>
+			FSM_TRANSIT_SWITCH
+     be0:	83 ff 01             	cmp    $0x1,%edi
+     be3:	0f 84 1a 07 00 00    	je     1303 <rrc_main+0x873>
+     be9:	83 ff 02             	cmp    $0x2,%edi
+     bec:	0f 84 f7 06 00 00    	je     12e9 <rrc_main+0x859>
+     bf2:	85 ff                	test   %edi,%edi
+     bf4:	0f 85 5c ff ff ff    	jne    b56 <rrc_main+0xc6>
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, t300_timeout(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+     bfa:	c7 05 5c 00 00 00 20 	movl   $0x920,0x5c
+     c01:	09 00 00 
+	struct SrbToAddModList srbToAddModList_setup;
+	struct DrbToAddModList drbToAddModList_setup;
+	int srbIndex;
+	int drbIndex;
+
+	fsm_printf("[rrc] [fsm] t300_timeout().\n");
+     c04:	c7 04 24 24 01 00 00 	movl   $0x124,(%esp)
+     c0b:	e8 fc ff ff ff       	call   c0c <rrc_main+0x17c>
+
+	fsm_do_ioctrl(STRM_TO_RLCMAC,  IOCCMD_RRCTOMAC_RESET  , NULL, 0);
+     c10:	31 c9                	xor    %ecx,%ecx
+     c12:	ba 03 00 00 00       	mov    $0x3,%edx
+     c17:	b8 08 00 00 00       	mov    $0x8,%eax
+     c1c:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+     c23:	e8 fc ff ff ff       	call   c24 <rrc_main+0x194>
+	}
+
+	fsm_mem_free(DL_ccch_rrcsetupmsg);
+	DL_ccch_rrcsetupmsg = NULL;
+	*/
+	cancleTimer(TIMER_T300);
+     c28:	b8 2c 01 00 00       	mov    $0x12c,%eax
+     c2d:	e8 fc ff ff ff       	call   c2e <rrc_main+0x19e>
+			FSM_TEST_COND(Evt_RcvRRCConnReject)
+			FSM_TEST_COND(Evt_RcvRRCConnSetup)
+			FSM_COND_TEST_OUT("ST_IDLE_CONNECTING")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, t300_timeout(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+     c32:	c7 03 06 00 00 00    	movl   $0x6,(%ebx)
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, transit_to_idle(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_NORMALLY")
+					FSM_CASE_DEFAULT(ST_IDLE_WAIT_SYSINFO, st_wait_sysInfo_default(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_WAIT_SYSINFO")   //transit to idle state by default.
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_NORMALLY, "ST_IDLE_NORMALLY", st_idle_normal_enter(),st_idle_normal_exit())
+     c38:	c7 05 5c 00 00 00 db 	movl   $0xdb,0x5c
+     c3f:	00 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_idle_normal_enter(void)
+{
+	FIN(st_idle_normal_enter());
+	fsm_printf("[rrc] [fsm] st_idle_normal_enter().\n");
+     c42:	c7 04 24 08 08 00 00 	movl   $0x808,(%esp)
+     c49:	e8 fc ff ff ff       	call   c4a <rrc_main+0x1ba>
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, transit_to_idle(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_NORMALLY")
+					FSM_CASE_DEFAULT(ST_IDLE_WAIT_SYSINFO, st_wait_sysInfo_default(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_WAIT_SYSINFO")   //transit to idle state by default.
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_NORMALLY, "ST_IDLE_NORMALLY", st_idle_normal_enter(),st_idle_normal_exit())
+     c4e:	c7 03 07 00 00 00    	movl   $0x7,(%ebx)
+				FSM_CASE_DEFAULT(ST_CONNECTED_REESTABLISH, st_connect_reest_default(), "ST_CONNECTED_REESTABLISH -> ST_CONNECTED_REESTABLISH")   //transit to idle state by default.
+			}
+		}
+	}
+	FSM_EXIT(0)
+}
+     c54:	8b 5d f4             	mov    -0xc(%ebp),%ebx
+     c57:	8b 75 f8             	mov    -0x8(%ebp),%esi
+     c5a:	8b 7d fc             	mov    -0x4(%ebp),%edi
+     c5d:	89 ec                	mov    %ebp,%esp
+     c5f:	5d                   	pop    %ebp
+     c60:	c3                   	ret    
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_NORMALLY, "ST_CONNECTED_NORMALLY", st_connect_normal_enter(),st_connect_normal_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_NORMALLY")
+			FSM_TEST_COND(Evt_RcvRRCConnReconfig)
+			FSM_TEST_COND(Evt_RcvRRCConnRelease)
+     c61:	e8 fc ff ff ff       	call   c62 <rrc_main+0x1d2>
+     c66:	83 f8 07             	cmp    $0x7,%eax
+     c69:	0f 85 d8 04 00 00    	jne    1147 <rrc_main+0x6b7>
+			FSM_COND_TEST_OUT("ST_CONNECTED_NORMALLY")
+     c6f:	83 fe 01             	cmp    $0x1,%esi
+     c72:	0f 85 e8 04 00 00    	jne    1160 <rrc_main+0x6d0>
+     c78:	c7 44 24 08 ff 00 00 	movl   $0xff,0x8(%esp)
+     c7f:	00 
+     c80:	c7 44 24 04 41 01 00 	movl   $0x141,0x4(%esp)
+     c87:	00 
+     c88:	c7 04 24 13 01 00 00 	movl   $0x113,(%esp)
+     c8f:	e8 fc ff ff ff       	call   c90 <rrc_main+0x200>
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_RECONF, rcv_rrc_conn_reconf(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_RECONF")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_release(), "ST_CONNECTED_NORMALLY -> ST_IDLE_NORMALLY")
+				FSM_CASE_DEFAULT(ST_CONNECTED_NORMALLY, st_connect_normal_default(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_NORMALLY")   //transit to idle state by default.
+     c94:	c7 05 5c 00 00 00 4c 	movl   $0xb4c,0x5c
+     c9b:	0b 00 00 
+ ******************************************************************************/
+
+static void st_connect_normal_default(void)
+{
+	FIN(st_connect_normal_default());
+	fsm_printf("[rrc] [fsm] st_connect_normal_default().\n");
+     c9e:	c7 04 24 7c 0b 00 00 	movl   $0xb7c,(%esp)
+     ca5:	e8 fc ff ff ff       	call   ca6 <rrc_main+0x216>
+
+	if(EVT_IOCTL_ARRIVAL)
+     caa:	e8 fc ff ff ff       	call   cab <rrc_main+0x21b>
+     caf:	83 f8 05             	cmp    $0x5,%eax
+     cb2:	0f 84 37 09 00 00    	je     15ef <rrc_main+0xb5f>
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+     cb8:	e8 fc ff ff ff       	call   cb9 <rrc_main+0x229>
+     cbd:	83 f8 02             	cmp    $0x2,%eax
+     cc0:	0f 84 64 09 00 00    	je     162a <rrc_main+0xb9a>
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+     cc6:	e8 fc ff ff ff       	call   cc7 <rrc_main+0x237>
+     ccb:	83 f8 01             	cmp    $0x1,%eax
+     cce:	66 90                	xchg   %ax,%ax
+     cd0:	0f 84 a9 09 00 00    	je     167f <rrc_main+0xbef>
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_upper(pkptr);
+	}
+	else
+	{
+		other_events_handler();
+     cd6:	e8 d5 f6 ff ff       	call   3b0 <other_events_handler>
+			FSM_TEST_COND(Evt_ReconfigSuccess)
+			FSM_TEST_COND(Evt_ReconfigFail)
+			FSM_COND_TEST_OUT("ST_CONNECTED_RECONF")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_NORMALLY, reconfig_success(), "ST_CONNECTED_RECONF -> ST_CONNECTED_NORMALLY")
+     cdb:	c7 03 0a 00 00 00    	movl   $0xa,(%ebx)
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_reject(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(2, ST_CONNECTED_NORMALLY, rcv_rrc_conn_setup(), "ST_IDLE_CONNECTING -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_DEFAULT(ST_IDLE_CONNECTING, st_idle_connecting_default(), "ST_IDLE_CONNECTING -> ST_IDLE_CONNECTING")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_NORMALLY, "ST_CONNECTED_NORMALLY", st_connect_normal_enter(),st_connect_normal_exit())
+     ce1:	c7 05 5c 00 00 00 41 	movl   $0x141,0x5c
+     ce8:	01 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_connect_normal_enter(void)
+{
+	FIN(st_connect_normal_enter());
+	fsm_printf("[rrc] [fsm] st_connect_normal_enter().\n");
+     ceb:	c7 04 24 f0 09 00 00 	movl   $0x9f0,(%esp)
+     cf2:	e8 fc ff ff ff       	call   cf3 <rrc_main+0x263>
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_reject(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(2, ST_CONNECTED_NORMALLY, rcv_rrc_conn_setup(), "ST_IDLE_CONNECTING -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_DEFAULT(ST_IDLE_CONNECTING, st_idle_connecting_default(), "ST_IDLE_CONNECTING -> ST_IDLE_CONNECTING")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_NORMALLY, "ST_CONNECTED_NORMALLY", st_connect_normal_enter(),st_connect_normal_exit())
+     cf7:	c7 03 0b 00 00 00    	movl   $0xb,(%ebx)
+				FSM_CASE_DEFAULT(ST_CONNECTED_REESTABLISH, st_connect_reest_default(), "ST_CONNECTED_REESTABLISH -> ST_CONNECTED_REESTABLISH")   //transit to idle state by default.
+			}
+		}
+	}
+	FSM_EXIT(0)
+}
+     cfd:	8b 5d f4             	mov    -0xc(%ebp),%ebx
+     d00:	8b 75 f8             	mov    -0x8(%ebp),%esi
+     d03:	8b 7d fc             	mov    -0x4(%ebp),%edi
+     d06:	89 ec                	mov    %ebp,%esp
+     d08:	5d                   	pop    %ebp
+     d09:	c3                   	ret    
+     d0a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+void rrc_main(void)
+{
+	FSM_ENTER(rrc_main);
+	FSM_BLOCK_SWITCH
+	{
+		FSM_STATE_FORCED(ST_INIT, "ST_INIT", transit_to_idle_connecting(), st_init_exit())
+     d10:	c7 05 5c 00 00 00 90 	movl   $0x90,0x5c
+     d17:	00 00 00 
+     d1a:	e8 f1 f9 ff ff       	call   710 <transit_to_idle_connecting>
+     d1f:	c7 03 01 00 00 00    	movl   $0x1,(%ebx)
+     d25:	c7 05 5c 00 00 00 90 	movl   $0x90,0x5c
+     d2c:	00 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_init_exit(void)
+{
+	FIN(st_init_exit());
+	fsm_printf("[rrc] [fsm] st_init_exit().\n");
+     d2f:	c7 04 24 98 00 00 00 	movl   $0x98,(%esp)
+     d36:	e8 fc ff ff ff       	call   d37 <rrc_main+0x2a7>
+	FSM_ENTER(rrc_main);
+	FSM_BLOCK_SWITCH
+	{
+		FSM_STATE_FORCED(ST_INIT, "ST_INIT", transit_to_idle_connecting(), st_init_exit())
+		{
+			FSM_TRANSIT_FORCE(ST_IDLE_CONNECTING, , "default", "", "ST_INIT -> ST_IDLE_CONNECTING");
+     d3b:	c7 03 08 00 00 00    	movl   $0x8,(%ebx)
+     d41:	e9 62 fe ff ff       	jmp    ba8 <rrc_main+0x118>
+     d46:	66 90                	xchg   %ax,%ax
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_WAIT_SYSINFO, start_recv_sysInfo(), "ST_IDLE_CELL_SEL -> ST_IDLE_WAIT_SYSINFO")
+					FSM_CASE_DEFAULT(ST_IDLE_CELL_SEL, st_cell_sel_default(), "ST_IDLE_CELL_SEL -> ST_IDLE_CELL_SEL")
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_WAIT_SYSINFO, "ST_IDLE_WAIT_SYSINFO", st_wait_sysInfo_enter(),st_wait_sysInfo_exit())
+     d48:	c7 05 5c 00 00 00 c6 	movl   $0xc6,0x5c
+     d4f:	00 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_wait_sysInfo_exit(void)
+{
+	FIN(st_wait_sysInfo_exit());
+	fsm_printf("[rrc] [fsm] st_wait_sysInfo_exit().\n");
+     d52:	c7 04 24 3c 07 00 00 	movl   $0x73c,(%esp)
+     d59:	e8 fc ff ff ff       	call   d5a <rrc_main+0x2ca>
+
+	if(RRC_CLOSE)
+     d5e:	e8 fc ff ff ff       	call   d5f <rrc_main+0x2cf>
+     d63:	83 f8 05             	cmp    $0x5,%eax
+     d66:	0f 84 0b 08 00 00    	je     1577 <rrc_main+0xae7>
+     d6c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_WAIT_SYSINFO, "ST_IDLE_WAIT_SYSINFO", st_wait_sysInfo_enter(),st_wait_sysInfo_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_WAIT_SYSINFO")
+				FSM_TEST_COND(EVT_END_RECV_SYSINFO)
+     d70:	e8 fc ff ff ff       	call   d71 <rrc_main+0x2e1>
+     d75:	83 f8 03             	cmp    $0x3,%eax
+     d78:	0f 84 b1 07 00 00    	je     152f <rrc_main+0xa9f>
+				FSM_COND_TEST_OUT("ST_IDLE_WAIT_SYSINFO")
+				FSM_TRANSIT_SWITCH
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, transit_to_idle(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_NORMALLY")
+					FSM_CASE_DEFAULT(ST_IDLE_WAIT_SYSINFO, st_wait_sysInfo_default(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_WAIT_SYSINFO")   //transit to idle state by default.
+     d7e:	c7 05 5c 00 00 00 64 	movl   $0x764,0x5c
+     d85:	07 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_wait_sysInfo_default(void)
+{
+	FIN(st_wait_sysInfo_default());
+	fsm_printf("[rrc] [fsm] st_wait_sysInfo_default().\n");
+     d88:	c7 04 24 94 07 00 00 	movl   $0x794,(%esp)
+     d8f:	e8 fc ff ff ff       	call   d90 <rrc_main+0x300>
+
+	if(EVT_IOCTL_ARRIVAL)
+     d94:	e8 fc ff ff ff       	call   d95 <rrc_main+0x305>
+     d99:	83 f8 05             	cmp    $0x5,%eax
+     d9c:	0f 84 5e 04 00 00    	je     1200 <rrc_main+0x770>
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+     da2:	e8 fc ff ff ff       	call   da3 <rrc_main+0x313>
+     da7:	83 f8 02             	cmp    $0x2,%eax
+     daa:	0f 84 ff 07 00 00    	je     15af <rrc_main+0xb1f>
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+     db0:	e8 fc ff ff ff       	call   db1 <rrc_main+0x321>
+     db5:	83 f8 01             	cmp    $0x1,%eax
+     db8:	0f 84 01 08 00 00    	je     15bf <rrc_main+0xb2f>
+     dbe:	66 90                	xchg   %ax,%ax
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_upper(pkptr);
+	}
+	else
+	{
+		other_events_handler();
+     dc0:	e8 eb f5 ff ff       	call   3b0 <other_events_handler>
+				FSM_TEST_COND(EVT_END_RECV_SYSINFO)
+				FSM_COND_TEST_OUT("ST_IDLE_WAIT_SYSINFO")
+				FSM_TRANSIT_SWITCH
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, transit_to_idle(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_NORMALLY")
+					FSM_CASE_DEFAULT(ST_IDLE_WAIT_SYSINFO, st_wait_sysInfo_default(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_WAIT_SYSINFO")   //transit to idle state by default.
+     dc5:	c7 03 04 00 00 00    	movl   $0x4,(%ebx)
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_WAIT_SYSINFO, start_recv_sysInfo(), "ST_IDLE_CELL_SEL -> ST_IDLE_WAIT_SYSINFO")
+					FSM_CASE_DEFAULT(ST_IDLE_CELL_SEL, st_cell_sel_default(), "ST_IDLE_CELL_SEL -> ST_IDLE_CELL_SEL")
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_WAIT_SYSINFO, "ST_IDLE_WAIT_SYSINFO", st_wait_sysInfo_enter(),st_wait_sysInfo_exit())
+     dcb:	c7 05 5c 00 00 00 c6 	movl   $0xc6,0x5c
+     dd2:	00 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_wait_sysInfo_enter(void)
+{
+	FIN(st_wait_sysInfo_enter());
+	fsm_printf("[rrc] [fsm] st_wait_sysInfo_enter().\n");
+     dd5:	c7 04 24 14 07 00 00 	movl   $0x714,(%esp)
+     ddc:	e8 fc ff ff ff       	call   ddd <rrc_main+0x34d>
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_WAIT_SYSINFO, start_recv_sysInfo(), "ST_IDLE_CELL_SEL -> ST_IDLE_WAIT_SYSINFO")
+					FSM_CASE_DEFAULT(ST_IDLE_CELL_SEL, st_cell_sel_default(), "ST_IDLE_CELL_SEL -> ST_IDLE_CELL_SEL")
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_WAIT_SYSINFO, "ST_IDLE_WAIT_SYSINFO", st_wait_sysInfo_enter(),st_wait_sysInfo_exit())
+     de1:	c7 03 05 00 00 00    	movl   $0x5,(%ebx)
+				FSM_CASE_DEFAULT(ST_CONNECTED_REESTABLISH, st_connect_reest_default(), "ST_CONNECTED_REESTABLISH -> ST_CONNECTED_REESTABLISH")   //transit to idle state by default.
+			}
+		}
+	}
+	FSM_EXIT(0)
+}
+     de7:	8b 5d f4             	mov    -0xc(%ebp),%ebx
+     dea:	8b 75 f8             	mov    -0x8(%ebp),%esi
+     ded:	8b 7d fc             	mov    -0x4(%ebp),%edi
+     df0:	89 ec                	mov    %ebp,%esp
+     df2:	5d                   	pop    %ebp
+     df3:	c3                   	ret    
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_RECONF, "ST_CONNECTED_RECONF", st_connect_reconf_enter(),st_connect_reconf_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_RECONF")
+			FSM_TEST_COND(Evt_ReconfigSuccess)
+			FSM_TEST_COND(Evt_ReconfigFail)
+     df4:	e8 fc ff ff ff       	call   df5 <rrc_main+0x365>
+     df9:	83 f8 09             	cmp    $0x9,%eax
+     dfc:	0f 85 51 02 00 00    	jne    1053 <rrc_main+0x5c3>
+			FSM_COND_TEST_OUT("ST_CONNECTED_RECONF")
+     e02:	83 fe 01             	cmp    $0x1,%esi
+     e05:	0f 85 28 01 00 00    	jne    f33 <rrc_main+0x4a3>
+     e0b:	c7 44 24 08 ff 00 00 	movl   $0xff,0x8(%esp)
+     e12:	00 
+     e13:	c7 44 24 04 57 01 00 	movl   $0x157,0x4(%esp)
+     e1a:	00 
+     e1b:	c7 04 24 13 01 00 00 	movl   $0x113,(%esp)
+     e22:	e8 fc ff ff ff       	call   e23 <rrc_main+0x393>
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_NORMALLY, reconfig_success(), "ST_CONNECTED_RECONF -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_CONNECTED_REESTABLISH, reconfig_fail(), "ST_CONNECTED_RECONF -> ST_CONNECTED_REESTABLISH")
+				FSM_CASE_DEFAULT(ST_CONNECTED_RECONF, st_connect_reconf_default(), "ST_CONNECTED_RECONF -> ST_CONNECTED_RECONF")   //transit to idle state by default.
+     e27:	c7 05 5c 00 00 00 9c 	movl   $0xc9c,0x5c
+     e2e:	0c 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_connect_reconf_default(void)
+{
+	FIN(st_connect_reconf_default());
+	fsm_printf("[rrc] [fsm] st_connect_reconf_default().\n");
+     e31:	c7 04 24 c8 0c 00 00 	movl   $0xcc8,(%esp)
+     e38:	e8 fc ff ff ff       	call   e39 <rrc_main+0x3a9>
+
+	if(EVT_IOCTL_ARRIVAL)
+     e3d:	e8 fc ff ff ff       	call   e3e <rrc_main+0x3ae>
+     e42:	83 f8 05             	cmp    $0x5,%eax
+     e45:	0f 84 bf 07 00 00    	je     160a <rrc_main+0xb7a>
+     e4b:	90                   	nop
+     e4c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+     e50:	e8 fc ff ff ff       	call   e51 <rrc_main+0x3c1>
+     e55:	83 f8 02             	cmp    $0x2,%eax
+     e58:	0f 84 e1 07 00 00    	je     163f <rrc_main+0xbaf>
+     e5e:	66 90                	xchg   %ax,%ax
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+     e60:	e8 fc ff ff ff       	call   e61 <rrc_main+0x3d1>
+     e65:	83 f8 01             	cmp    $0x1,%eax
+     e68:	0f 84 21 08 00 00    	je     168f <rrc_main+0xbff>
+     e6e:	66 90                	xchg   %ax,%ax
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_upper(pkptr);
+	}
+	else
+	{
+		other_events_handler();
+     e70:	e8 3b f5 ff ff       	call   3b0 <other_events_handler>
+			FSM_COND_TEST_OUT("ST_CONNECTED_RECONF")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_NORMALLY, reconfig_success(), "ST_CONNECTED_RECONF -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_CONNECTED_REESTABLISH, reconfig_fail(), "ST_CONNECTED_RECONF -> ST_CONNECTED_REESTABLISH")
+				FSM_CASE_DEFAULT(ST_CONNECTED_RECONF, st_connect_reconf_default(), "ST_CONNECTED_RECONF -> ST_CONNECTED_RECONF")   //transit to idle state by default.
+     e75:	c7 03 0c 00 00 00    	movl   $0xc,(%ebx)
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_RECONF, rcv_rrc_conn_reconf(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_RECONF")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_release(), "ST_CONNECTED_NORMALLY -> ST_IDLE_NORMALLY")
+				FSM_CASE_DEFAULT(ST_CONNECTED_NORMALLY, st_connect_normal_default(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_RECONF, "ST_CONNECTED_RECONF", st_connect_reconf_enter(),st_connect_reconf_exit())
+     e7b:	c7 05 5c 00 00 00 57 	movl   $0x157,0x5c
+     e82:	01 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_connect_reconf_enter(void)
+{
+	FIN(st_connect_reconf_enter());
+	fsm_printf("[rrc] [fsm] st_connect_reconf_enter().\n");
+     e85:	c7 04 24 a8 0b 00 00 	movl   $0xba8,(%esp)
+     e8c:	e8 fc ff ff ff       	call   e8d <rrc_main+0x3fd>
+
+
+	static int flag_st_connect_reconf = 0;
+	if(flag_st_connect_reconf == 0)
+     e91:	a1 3c 00 00 00       	mov    0x3c,%eax
+     e96:	85 c0                	test   %eax,%eax
+     e98:	75 16                	jne    eb0 <rrc_main+0x420>
+	{
+		fsm_schedule_self(100, CODE_RECONF_SUCCESS); //test reconfig success
+     e9a:	ba 08 00 00 00       	mov    $0x8,%edx
+     e9f:	b8 64 00 00 00       	mov    $0x64,%eax
+     ea4:	e8 fc ff ff ff       	call   ea5 <rrc_main+0x415>
+		flag_st_connect_reconf++;
+     ea9:	83 05 3c 00 00 00 01 	addl   $0x1,0x3c
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_RECONF, rcv_rrc_conn_reconf(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_RECONF")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_release(), "ST_CONNECTED_NORMALLY -> ST_IDLE_NORMALLY")
+				FSM_CASE_DEFAULT(ST_CONNECTED_NORMALLY, st_connect_normal_default(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_RECONF, "ST_CONNECTED_RECONF", st_connect_reconf_enter(),st_connect_reconf_exit())
+     eb0:	c7 03 0d 00 00 00    	movl   $0xd,(%ebx)
+     eb6:	e9 fd fb ff ff       	jmp    ab8 <rrc_main+0x28>
+     ebb:	90                   	nop
+     ebc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_NORMALLY, reconfig_success(), "ST_CONNECTED_RECONF -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_CONNECTED_REESTABLISH, reconfig_fail(), "ST_CONNECTED_RECONF -> ST_CONNECTED_REESTABLISH")
+				FSM_CASE_DEFAULT(ST_CONNECTED_RECONF, st_connect_reconf_default(), "ST_CONNECTED_RECONF -> ST_CONNECTED_RECONF")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_REESTABLISH, "ST_CONNECTED_REESTABLISH", st_connect_reest_enter(),st_connect_reest_exit())
+     ec0:	c7 05 5c 00 00 00 6b 	movl   $0x16b,0x5c
+     ec7:	01 00 00 
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_REESTABLISH")
+     eca:	31 f6                	xor    %esi,%esi
+     ecc:	bf ff ff ff ff       	mov    $0xffffffff,%edi
+			FSM_TEST_COND(Evt_RcvRRCConnReestablish)
+     ed1:	e8 fc ff ff ff       	call   ed2 <rrc_main+0x442>
+     ed6:	83 f8 03             	cmp    $0x3,%eax
+     ed9:	0f 84 02 05 00 00    	je     13e1 <rrc_main+0x951>
+			FSM_TEST_COND(Evt_RcvRRCConnReestablishReject)
+     edf:	e8 fc ff ff ff       	call   ee0 <rrc_main+0x450>
+     ee4:	83 f8 03             	cmp    $0x3,%eax
+     ee7:	0f 84 d9 04 00 00    	je     13c6 <rrc_main+0x936>
+     eed:	8d 76 00             	lea    0x0(%esi),%esi
+			FSM_TEST_COND(Evt_TimeOut_T301)
+     ef0:	e8 fc ff ff ff       	call   ef1 <rrc_main+0x461>
+     ef5:	83 f8 03             	cmp    $0x3,%eax
+     ef8:	0f 84 ad 04 00 00    	je     13ab <rrc_main+0x91b>
+     efe:	66 90                	xchg   %ax,%ax
+			FSM_TEST_COND(Evt_TimeOut_T311)
+     f00:	e8 fc ff ff ff       	call   f01 <rrc_main+0x471>
+     f05:	83 f8 03             	cmp    $0x3,%eax
+     f08:	0f 84 7c 04 00 00    	je     138a <rrc_main+0x8fa>
+			FSM_COND_TEST_OUT("ST_CONNECTED_REESTABLISH")
+     f0e:	83 fe 01             	cmp    $0x1,%esi
+     f11:	0f 8e b9 02 00 00    	jle    11d0 <rrc_main+0x740>
+     f17:	c7 44 24 08 ff 00 00 	movl   $0xff,0x8(%esp)
+     f1e:	00 
+     f1f:	c7 44 24 04 6b 01 00 	movl   $0x16b,0x4(%esp)
+     f26:	00 
+     f27:	c7 04 24 13 01 00 00 	movl   $0x113,(%esp)
+     f2e:	e8 fc ff ff ff       	call   f2f <rrc_main+0x49f>
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_NORMALLY, reconfig_success(), "ST_CONNECTED_RECONF -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_CONNECTED_REESTABLISH, reconfig_fail(), "ST_CONNECTED_RECONF -> ST_CONNECTED_REESTABLISH")
+				FSM_CASE_DEFAULT(ST_CONNECTED_RECONF, st_connect_reconf_default(), "ST_CONNECTED_RECONF -> ST_CONNECTED_RECONF")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_REESTABLISH, "ST_CONNECTED_REESTABLISH", st_connect_reest_enter(),st_connect_reest_exit())
+     f33:	c7 05 5c 00 00 00 6b 	movl   $0x16b,0x5c
+     f3a:	01 00 00 
+     f3d:	c7 03 0f 00 00 00    	movl   $0xf,(%ebx)
+     f43:	e9 70 fb ff ff       	jmp    ab8 <rrc_main+0x28>
+	{
+		FSM_STATE_FORCED(ST_INIT, "ST_INIT", transit_to_idle_connecting(), st_init_exit())
+		{
+			FSM_TRANSIT_FORCE(ST_IDLE_CONNECTING, , "default", "", "ST_INIT -> ST_IDLE_CONNECTING");
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CELL_SEL, "ST_IDLE_CELL_SEL", st_cell_sel_enter(), st_cell_sel_exit())
+     f48:	c7 05 5c 00 00 00 b5 	movl   $0xb5,0x5c
+     f4f:	00 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_cell_sel_exit(void)
+{
+	FIN(st_cell_sel_exit());
+	fsm_printf("[rrc] [fsm] st_cell_sel_exit().\n");
+     f52:	c7 04 24 54 06 00 00 	movl   $0x654,(%esp)
+     f59:	e8 fc ff ff ff       	call   f5a <rrc_main+0x4ca>
+
+	//test_send_msg_to_us();
+
+	if(RRC_CLOSE)
+     f5e:	e8 fc ff ff ff       	call   f5f <rrc_main+0x4cf>
+     f63:	83 f8 05             	cmp    $0x5,%eax
+     f66:	0f 84 3c 05 00 00    	je     14a8 <rrc_main+0xa18>
+     f6c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+			FSM_TRANSIT_FORCE(ST_IDLE_CONNECTING, , "default", "", "ST_INIT -> ST_IDLE_CONNECTING");
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CELL_SEL, "ST_IDLE_CELL_SEL", st_cell_sel_enter(), st_cell_sel_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_CELL_SEL")
+				FSM_TEST_COND(EVT_BEGIN_RECV_SYSINFO)
+     f70:	e8 fc ff ff ff       	call   f71 <rrc_main+0x4e1>
+     f75:	83 f8 03             	cmp    $0x3,%eax
+     f78:	0f 84 f0 04 00 00    	je     146e <rrc_main+0x9de>
+				FSM_COND_TEST_OUT("ST_IDLE_CELL_SEL")
+				FSM_TRANSIT_SWITCH
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_WAIT_SYSINFO, start_recv_sysInfo(), "ST_IDLE_CELL_SEL -> ST_IDLE_WAIT_SYSINFO")
+					FSM_CASE_DEFAULT(ST_IDLE_CELL_SEL, st_cell_sel_default(), "ST_IDLE_CELL_SEL -> ST_IDLE_CELL_SEL")
+     f7e:	c7 05 5c 00 00 00 78 	movl   $0x678,0x5c
+     f85:	06 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_cell_sel_default(void)
+{
+	FIN(st_cell_sel_default());
+	fsm_printf("[rrc] [fsm] st_cell_sel_default().\n");
+     f88:	c7 04 24 a0 06 00 00 	movl   $0x6a0,(%esp)
+     f8f:	e8 fc ff ff ff       	call   f90 <rrc_main+0x500>
+
+	if(EVT_IOCTL_ARRIVAL)
+     f94:	e8 fc ff ff ff       	call   f95 <rrc_main+0x505>
+     f99:	83 f8 05             	cmp    $0x5,%eax
+     f9c:	0f 84 7e 02 00 00    	je     1220 <rrc_main+0x790>
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+     fa2:	e8 fc ff ff ff       	call   fa3 <rrc_main+0x513>
+     fa7:	83 f8 02             	cmp    $0x2,%eax
+     faa:	0f 84 ef 05 00 00    	je     159f <rrc_main+0xb0f>
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+     fb0:	e8 fc ff ff ff       	call   fb1 <rrc_main+0x521>
+     fb5:	83 f8 01             	cmp    $0x1,%eax
+     fb8:	0f 84 21 06 00 00    	je     15df <rrc_main+0xb4f>
+     fbe:	66 90                	xchg   %ax,%ax
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_upper(pkptr);
+	}
+	else
+	{
+		other_events_handler();
+     fc0:	e8 eb f3 ff ff       	call   3b0 <other_events_handler>
+				FSM_TEST_COND(EVT_BEGIN_RECV_SYSINFO)
+				FSM_COND_TEST_OUT("ST_IDLE_CELL_SEL")
+				FSM_TRANSIT_SWITCH
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_WAIT_SYSINFO, start_recv_sysInfo(), "ST_IDLE_CELL_SEL -> ST_IDLE_WAIT_SYSINFO")
+					FSM_CASE_DEFAULT(ST_IDLE_CELL_SEL, st_cell_sel_default(), "ST_IDLE_CELL_SEL -> ST_IDLE_CELL_SEL")
+     fc5:	c7 03 02 00 00 00    	movl   $0x2,(%ebx)
+	{
+		FSM_STATE_FORCED(ST_INIT, "ST_INIT", transit_to_idle_connecting(), st_init_exit())
+		{
+			FSM_TRANSIT_FORCE(ST_IDLE_CONNECTING, , "default", "", "ST_INIT -> ST_IDLE_CONNECTING");
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CELL_SEL, "ST_IDLE_CELL_SEL", st_cell_sel_enter(), st_cell_sel_exit())
+     fcb:	c7 05 5c 00 00 00 b5 	movl   $0xb5,0x5c
+     fd2:	00 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_cell_sel_enter(void)
+{
+	FIN(st_cell_sel_enter());
+	fsm_printf("[rrc] [fsm] rrc_cell_sel_enter().\n");
+     fd5:	c7 04 24 30 06 00 00 	movl   $0x630,(%esp)
+     fdc:	e8 fc ff ff ff       	call   fdd <rrc_main+0x54d>
+
+
+	static int flag_st_cell_sel = 0;
+	if(flag_st_cell_sel == 0)
+     fe1:	8b 15 38 00 00 00    	mov    0x38,%edx
+     fe7:	85 d2                	test   %edx,%edx
+     fe9:	75 10                	jne    ffb <rrc_main+0x56b>
+	{
+		fsm_schedule_self(0, CODE_BEGIN_RECV_SYSINFO); //test
+     feb:	31 d2                	xor    %edx,%edx
+     fed:	31 c0                	xor    %eax,%eax
+     fef:	e8 fc ff ff ff       	call   ff0 <rrc_main+0x560>
+		flag_st_cell_sel++;
+     ff4:	83 05 38 00 00 00 01 	addl   $0x1,0x38
+	{
+		FSM_STATE_FORCED(ST_INIT, "ST_INIT", transit_to_idle_connecting(), st_init_exit())
+		{
+			FSM_TRANSIT_FORCE(ST_IDLE_CONNECTING, , "default", "", "ST_INIT -> ST_IDLE_CONNECTING");
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CELL_SEL, "ST_IDLE_CELL_SEL", st_cell_sel_enter(), st_cell_sel_exit())
+     ffb:	c7 03 03 00 00 00    	movl   $0x3,(%ebx)
+    1001:	e9 b2 fa ff ff       	jmp    ab8 <rrc_main+0x28>
+    1006:	66 90                	xchg   %ax,%ax
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_RECONF, rcv_rrc_conn_reconf(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_RECONF")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_release(), "ST_CONNECTED_NORMALLY -> ST_IDLE_NORMALLY")
+				FSM_CASE_DEFAULT(ST_CONNECTED_NORMALLY, st_connect_normal_default(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_RECONF, "ST_CONNECTED_RECONF", st_connect_reconf_enter(),st_connect_reconf_exit())
+    1008:	c7 05 5c 00 00 00 57 	movl   $0x157,0x5c
+    100f:	01 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_connect_reconf_exit(void)
+{
+	FIN(st_connect_reconf_exit());
+	fsm_printf("[rrc] [fsm] st_connect_reconf_exit().\n");
+    1012:	c7 04 24 d0 0b 00 00 	movl   $0xbd0,(%esp)
+    1019:	e8 fc ff ff ff       	call   101a <rrc_main+0x58a>
+
+	if(RRC_CLOSE)
+    101e:	e8 fc ff ff ff       	call   101f <rrc_main+0x58f>
+    1023:	83 f8 05             	cmp    $0x5,%eax
+    1026:	0f 84 0f 04 00 00    	je     143b <rrc_main+0x9ab>
+    102c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_RECONF, "ST_CONNECTED_RECONF", st_connect_reconf_enter(),st_connect_reconf_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_RECONF")
+			FSM_TEST_COND(Evt_ReconfigSuccess)
+    1030:	e8 fc ff ff ff       	call   1031 <rrc_main+0x5a1>
+				FSM_CASE_DEFAULT(ST_CONNECTED_NORMALLY, st_connect_normal_default(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_RECONF, "ST_CONNECTED_RECONF", st_connect_reconf_enter(),st_connect_reconf_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_RECONF")
+    1035:	31 f6                	xor    %esi,%esi
+    1037:	bf ff ff ff ff       	mov    $0xffffffff,%edi
+			FSM_TEST_COND(Evt_ReconfigSuccess)
+    103c:	83 f8 03             	cmp    $0x3,%eax
+    103f:	0f 84 dd 03 00 00    	je     1422 <rrc_main+0x992>
+			FSM_TEST_COND(Evt_ReconfigFail)
+    1045:	e8 fc ff ff ff       	call   1046 <rrc_main+0x5b6>
+    104a:	83 f8 03             	cmp    $0x3,%eax
+    104d:	0f 84 a1 fd ff ff    	je     df4 <rrc_main+0x364>
+			FSM_COND_TEST_OUT("ST_CONNECTED_RECONF")
+    1053:	85 f6                	test   %esi,%esi
+    1055:	0f 84 cc fd ff ff    	je     e27 <rrc_main+0x397>
+			FSM_TRANSIT_SWITCH
+    105b:	85 ff                	test   %edi,%edi
+    105d:	8d 76 00             	lea    0x0(%esi),%esi
+    1060:	0f 84 fa 01 00 00    	je     1260 <rrc_main+0x7d0>
+    1066:	83 ff 01             	cmp    $0x1,%edi
+    1069:	0f 85 b8 fd ff ff    	jne    e27 <rrc_main+0x397>
+    106f:	90                   	nop
+    1070:	e9 be fe ff ff       	jmp    f33 <rrc_main+0x4a3>
+    1075:	8d 76 00             	lea    0x0(%esi),%esi
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, transit_to_idle(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_NORMALLY")
+					FSM_CASE_DEFAULT(ST_IDLE_WAIT_SYSINFO, st_wait_sysInfo_default(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_WAIT_SYSINFO")   //transit to idle state by default.
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_NORMALLY, "ST_IDLE_NORMALLY", st_idle_normal_enter(),st_idle_normal_exit())
+    1078:	c7 05 5c 00 00 00 db 	movl   $0xdb,0x5c
+    107f:	00 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_idle_normal_exit(void)
+{
+	FIN(st_idle_normal_exit());
+	fsm_printf("[rrc] [fsm] st_idle_normal_exit().\n");
+    1082:	c7 04 24 30 08 00 00 	movl   $0x830,(%esp)
+    1089:	e8 fc ff ff ff       	call   108a <rrc_main+0x5fa>
+
+
+	if(RRC_CLOSE)
+    108e:	e8 fc ff ff ff       	call   108f <rrc_main+0x5ff>
+    1093:	83 f8 05             	cmp    $0x5,%eax
+    1096:	0f 84 b9 02 00 00    	je     1355 <rrc_main+0x8c5>
+    109c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_NORMALLY, "ST_IDLE_NORMALLY", st_idle_normal_enter(),st_idle_normal_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_NORMALLY")
+			FSM_TEST_COND(Evt_RcvConnReqNAS)
+    10a0:	e8 fc ff ff ff       	call   10a1 <rrc_main+0x611>
+    10a5:	83 f8 03             	cmp    $0x3,%eax
+    10a8:	0f 84 4c 03 00 00    	je     13fa <rrc_main+0x96a>
+			FSM_COND_TEST_OUT("ST_IDLE_NORMALLY")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_CONNECTING, transit_to_idle_connecting(), "ST_IDLE_NORMALLY -> ST_IDLE_CONNECTING")
+				FSM_CASE_DEFAULT(ST_IDLE_NORMALLY, st_idle_normal_default(), "ST_IDLE_NORMALLY -> ST_IDLE_NORMALLY")   //transit to idle state by default.
+    10ae:	c7 05 5c 00 00 00 54 	movl   $0x854,0x5c
+    10b5:	08 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void st_idle_normal_default(void)
+{
+	FIN(st_idle_normal_default());
+	fsm_printf("[rrc] [fsm] st_idle_normal_default().\n");
+    10b8:	c7 04 24 7c 08 00 00 	movl   $0x87c,(%esp)
+    10bf:	e8 fc ff ff ff       	call   10c0 <rrc_main+0x630>
+
+	if(EVT_IOCTL_ARRIVAL)
+    10c4:	e8 fc ff ff ff       	call   10c5 <rrc_main+0x635>
+    10c9:	83 f8 05             	cmp    $0x5,%eax
+    10cc:	0f 84 6e 01 00 00    	je     1240 <rrc_main+0x7b0>
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+    10d2:	e8 fc ff ff ff       	call   10d3 <rrc_main+0x643>
+    10d7:	83 f8 02             	cmp    $0x2,%eax
+    10da:	0f 84 af 04 00 00    	je     158f <rrc_main+0xaff>
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+    10e0:	e8 fc ff ff ff       	call   10e1 <rrc_main+0x651>
+    10e5:	83 f8 01             	cmp    $0x1,%eax
+    10e8:	0f 84 e1 04 00 00    	je     15cf <rrc_main+0xb3f>
+    10ee:	66 90                	xchg   %ax,%ax
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_upper(pkptr);
+	}
+	else
+	{
+		other_events_handler();
+    10f0:	e8 bb f2 ff ff       	call   3b0 <other_events_handler>
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_NORMALLY, rcv_rrc_conn_reestablishment(), "ST_CONNECTED_REESTABLISH -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_reestablish_reject(), "ST_CONNECTED_REESTABLISH -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(2, ST_IDLE_NORMALLY, t301_timeout(), "ST_CONNECTED_REESTABLISH -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(3, ST_IDLE_NORMALLY, t311_timeout(), "ST_CONNECTED_REESTABLISH -> ST_IDLE_NORMALLY")
+    10f5:	c7 03 06 00 00 00    	movl   $0x6,(%ebx)
+    10fb:	e9 38 fb ff ff       	jmp    c38 <rrc_main+0x1a8>
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_reject(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(2, ST_CONNECTED_NORMALLY, rcv_rrc_conn_setup(), "ST_IDLE_CONNECTING -> ST_CONNECTED_NORMALLY")
+				FSM_CASE_DEFAULT(ST_IDLE_CONNECTING, st_idle_connecting_default(), "ST_IDLE_CONNECTING -> ST_IDLE_CONNECTING")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_NORMALLY, "ST_CONNECTED_NORMALLY", st_connect_normal_enter(),st_connect_normal_exit())
+    1100:	c7 05 5c 00 00 00 41 	movl   $0x141,0x5c
+    1107:	01 00 00 
+	FOUT;
+}
+static void st_connect_normal_exit(void)
+{
+	FIN(st_connect_normal_exit());
+	fsm_printf("[rrc] [fsm] st_connect_normal_exit().\n");
+    110a:	c7 04 24 18 0a 00 00 	movl   $0xa18,(%esp)
+    1111:	e8 fc ff ff ff       	call   1112 <rrc_main+0x682>
+
+	if(RRC_CLOSE)
+    1116:	e8 fc ff ff ff       	call   1117 <rrc_main+0x687>
+    111b:	83 f8 05             	cmp    $0x5,%eax
+    111e:	0f 84 49 02 00 00    	je     136d <rrc_main+0x8dd>
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_NORMALLY, "ST_CONNECTED_NORMALLY", st_connect_normal_enter(),st_connect_normal_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_NORMALLY")
+			FSM_TEST_COND(Evt_RcvRRCConnReconfig)
+    1124:	e8 fc ff ff ff       	call   1125 <rrc_main+0x695>
+				FSM_CASE_DEFAULT(ST_IDLE_CONNECTING, st_idle_connecting_default(), "ST_IDLE_CONNECTING -> ST_IDLE_CONNECTING")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_NORMALLY, "ST_CONNECTED_NORMALLY", st_connect_normal_enter(),st_connect_normal_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_NORMALLY")
+    1129:	31 f6                	xor    %esi,%esi
+    112b:	bf ff ff ff ff       	mov    $0xffffffff,%edi
+			FSM_TEST_COND(Evt_RcvRRCConnReconfig)
+    1130:	83 f8 03             	cmp    $0x3,%eax
+    1133:	0f 84 1c 03 00 00    	je     1455 <rrc_main+0x9c5>
+			FSM_TEST_COND(Evt_RcvRRCConnRelease)
+    1139:	e8 fc ff ff ff       	call   113a <rrc_main+0x6aa>
+    113e:	83 f8 03             	cmp    $0x3,%eax
+    1141:	0f 84 1a fb ff ff    	je     c61 <rrc_main+0x1d1>
+			FSM_COND_TEST_OUT("ST_CONNECTED_NORMALLY")
+    1147:	85 f6                	test   %esi,%esi
+    1149:	0f 84 45 fb ff ff    	je     c94 <rrc_main+0x204>
+			FSM_TRANSIT_SWITCH
+    114f:	85 ff                	test   %edi,%edi
+    1151:	0f 84 59 01 00 00    	je     12b0 <rrc_main+0x820>
+    1157:	83 ff 01             	cmp    $0x1,%edi
+    115a:	0f 85 34 fb ff ff    	jne    c94 <rrc_main+0x204>
+			{
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_RECONF, rcv_rrc_conn_reconf(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_RECONF")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_release(), "ST_CONNECTED_NORMALLY -> ST_IDLE_NORMALLY")
+    1160:	c7 05 5c 00 00 00 f8 	movl   $0xaf8,0x5c
+    1167:	0a 00 00 
+ ** Modified Date: 2014/10/1
+ ******************************************************************************/
+static void rcv_rrc_conn_release(void)
+{
+	FIN(rcv_rrc_conn_release());
+	fsm_printf("[rrc] [fsm] rcv_rrc_conn_release().\n");
+    116a:	c7 04 24 24 0b 00 00 	movl   $0xb24,(%esp)
+    1171:	e8 fc ff ff ff       	call   1172 <rrc_main+0x6e2>
+	//generator rrcConnectionRelease info testing
+//	rrcConnectionRelease = gen_release();
+
+	//if have cell_reselection_priority_info then stored cell_reselection_priority_info
+	cell_reselection_priority_info(rrcConnectionRelease);
+    1176:	a1 00 00 00 00       	mov    0x0,%eax
+    117b:	e8 fc ff ff ff       	call   117c <rrc_main+0x6ec>
+	//set the cell_reselection_priority_info valid time
+	set_t320(rrcConnectionRelease);
+    1180:	a1 00 00 00 00       	mov    0x0,%eax
+    1185:	e8 fc ff ff ff       	call   1186 <rrc_main+0x6f6>
+	//reset MAC
+	fsm_do_ioctrl(STRM_TO_RLCMAC,  IOCCMD_RRCTOMAC_RESET  , NULL, 0);
+    118a:	31 c9                	xor    %ecx,%ecx
+    118c:	ba 03 00 00 00       	mov    $0x3,%edx
+    1191:	b8 08 00 00 00       	mov    $0x8,%eax
+    1196:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+    119d:	e8 fc ff ff ff       	call   119e <rrc_main+0x70e>
+	//stop all timer except t320 
+	stop_timer();
+    11a2:	e8 fc ff ff ff       	call   11a3 <rrc_main+0x713>
+	//release all radio resource
+	release_radio_resource();
+    11a7:	e8 fc ff ff ff       	call   11a8 <rrc_main+0x718>
+	//fix me:report release cause information to up
+	//report_to_userspace();
+	fsm_mem_free(rrcConnectionRelease);
+    11ac:	a1 00 00 00 00       	mov    0x0,%eax
+    11b1:	e8 fc ff ff ff       	call   11b2 <rrc_main+0x722>
+	rrcConnectionRelease=NULL;
+    11b6:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+    11bd:	00 00 00 
+			FSM_TEST_COND(Evt_RcvRRCConnRelease)
+			FSM_COND_TEST_OUT("ST_CONNECTED_NORMALLY")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_RECONF, rcv_rrc_conn_reconf(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_RECONF")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_release(), "ST_CONNECTED_NORMALLY -> ST_IDLE_NORMALLY")
+    11c0:	c7 03 06 00 00 00    	movl   $0x6,(%ebx)
+    11c6:	e9 6d fa ff ff       	jmp    c38 <rrc_main+0x1a8>
+    11cb:	90                   	nop
+    11cc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+			FSM_COND_TEST_IN("ST_CONNECTED_REESTABLISH")
+			FSM_TEST_COND(Evt_RcvRRCConnReestablish)
+			FSM_TEST_COND(Evt_RcvRRCConnReestablishReject)
+			FSM_TEST_COND(Evt_TimeOut_T301)
+			FSM_TEST_COND(Evt_TimeOut_T311)
+			FSM_COND_TEST_OUT("ST_CONNECTED_REESTABLISH")
+    11d0:	85 f6                	test   %esi,%esi
+    11d2:	0f 84 5b fd ff ff    	je     f33 <rrc_main+0x4a3>
+			FSM_TRANSIT_SWITCH
+    11d8:	83 ff 01             	cmp    $0x1,%edi
+    11db:	0f 84 14 ff ff ff    	je     10f5 <rrc_main+0x665>
+    11e1:	0f 8e ee 04 00 00    	jle    16d5 <rrc_main+0xc45>
+    11e7:	83 ff 02             	cmp    $0x2,%edi
+    11ea:	0f 84 05 ff ff ff    	je     10f5 <rrc_main+0x665>
+    11f0:	83 ff 03             	cmp    $0x3,%edi
+    11f3:	0f 85 3a fd ff ff    	jne    f33 <rrc_main+0x4a3>
+    11f9:	e9 f7 fe ff ff       	jmp    10f5 <rrc_main+0x665>
+    11fe:	66 90                	xchg   %ax,%ax
+static void st_wait_sysInfo_default(void)
+{
+	FIN(st_wait_sysInfo_default());
+	fsm_printf("[rrc] [fsm] st_wait_sysInfo_default().\n");
+
+	if(EVT_IOCTL_ARRIVAL)
+    1200:	e8 fc ff ff ff       	call   1201 <rrc_main+0x771>
+    1205:	83 f8 02             	cmp    $0x2,%eax
+    1208:	0f 85 94 fb ff ff    	jne    da2 <rrc_main+0x312>
+    120e:	66 90                	xchg   %ax,%ax
+	{
+		rrc_ioctl_handler();
+    1210:	e8 0b f7 ff ff       	call   920 <rrc_ioctl_handler>
+    1215:	e9 ab fb ff ff       	jmp    dc5 <rrc_main+0x335>
+    121a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+static void st_cell_sel_default(void)
+{
+	FIN(st_cell_sel_default());
+	fsm_printf("[rrc] [fsm] st_cell_sel_default().\n");
+
+	if(EVT_IOCTL_ARRIVAL)
+    1220:	e8 fc ff ff ff       	call   1221 <rrc_main+0x791>
+    1225:	83 f8 02             	cmp    $0x2,%eax
+    1228:	0f 85 74 fd ff ff    	jne    fa2 <rrc_main+0x512>
+    122e:	66 90                	xchg   %ax,%ax
+	{
+		rrc_ioctl_handler();
+    1230:	e8 eb f6 ff ff       	call   920 <rrc_ioctl_handler>
+    1235:	e9 8b fd ff ff       	jmp    fc5 <rrc_main+0x535>
+    123a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+static void st_idle_normal_default(void)
+{
+	FIN(st_idle_normal_default());
+	fsm_printf("[rrc] [fsm] st_idle_normal_default().\n");
+
+	if(EVT_IOCTL_ARRIVAL)
+    1240:	e8 fc ff ff ff       	call   1241 <rrc_main+0x7b1>
+    1245:	83 f8 02             	cmp    $0x2,%eax
+    1248:	0f 85 84 fe ff ff    	jne    10d2 <rrc_main+0x642>
+    124e:	66 90                	xchg   %ax,%ax
+	{
+		rrc_ioctl_handler();
+    1250:	e8 cb f6 ff ff       	call   920 <rrc_ioctl_handler>
+    1255:	e9 9b fe ff ff       	jmp    10f5 <rrc_main+0x665>
+    125a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+			FSM_TEST_COND(Evt_ReconfigSuccess)
+			FSM_TEST_COND(Evt_ReconfigFail)
+			FSM_COND_TEST_OUT("ST_CONNECTED_RECONF")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_NORMALLY, reconfig_success(), "ST_CONNECTED_RECONF -> ST_CONNECTED_NORMALLY")
+    1260:	c7 05 5c 00 00 00 f8 	movl   $0xbf8,0x5c
+    1267:	0b 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void reconfig_success(void)
+{
+	FIN(reconfig_success());
+	fsm_printf("[rrc] [fsm] reconfig_success().\n");
+    126a:	c7 04 24 28 0c 00 00 	movl   $0xc28,(%esp)
+    1271:	e8 fc ff ff ff       	call   1272 <rrc_main+0x7e2>
+	struct RRCConnectionReconfigurationComplete msg2;
+	if(rrcConnectionReconfiguration != NULL)
+    1276:	a1 00 00 00 00       	mov    0x0,%eax
+    127b:	85 c0                	test   %eax,%eax
+    127d:	0f 84 1c 04 00 00    	je     169f <rrc_main+0xc0f>
+	{
+		msg2.rrcTransactionIdentifier = rrcConnectionReconfiguration->rrcTransactionIdentifier;
+    1283:	0f b6 00             	movzbl (%eax),%eax
+		DoSendRrcConnectionReconfigurationCompleted(msg2);
+    1286:	e8 fc ff ff ff       	call   1287 <rrc_main+0x7f7>
+
+		fsm_mem_free(rrcConnectionReconfiguration);
+    128b:	a1 00 00 00 00       	mov    0x0,%eax
+    1290:	e8 fc ff ff ff       	call   1291 <rrc_main+0x801>
+		rrcConnectionReconfiguration=NULL;
+    1295:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+    129c:	00 00 00 
+	else
+	{
+		fsm_printf("[rrc] rrcConnectionReconfiguration is NULL!\n");
+	}
+
+	fsm_printf("[rrc] [fsm] reconfig success.\n");//test
+    129f:	c7 04 24 7c 0c 00 00 	movl   $0xc7c,(%esp)
+    12a6:	e8 fc ff ff ff       	call   12a7 <rrc_main+0x817>
+    12ab:	e9 2b fa ff ff       	jmp    cdb <rrc_main+0x24b>
+			FSM_TEST_COND(Evt_RcvRRCConnReconfig)
+			FSM_TEST_COND(Evt_RcvRRCConnRelease)
+			FSM_COND_TEST_OUT("ST_CONNECTED_NORMALLY")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_CONNECTED_RECONF, rcv_rrc_conn_reconf(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_RECONF")
+    12b0:	c7 05 5c 00 00 00 40 	movl   $0xa40,0x5c
+    12b7:	0a 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void rcv_rrc_conn_reconf(void)
+{
+	FIN(rcv_rrc_conn_reconf());
+	fsm_printf("[rrc] [fsm] rcv_rrc_conn_reconf().\n");
+    12ba:	c7 04 24 70 0a 00 00 	movl   $0xa70,(%esp)
+    12c1:	e8 fc ff ff ff       	call   12c2 <rrc_main+0x832>
+
+	fsm_printf("[rrc] [fsm] DoRecvRrcConnectionReconfiguration().\n");
+    12c6:	c7 04 24 94 0a 00 00 	movl   $0xa94,(%esp)
+    12cd:	e8 fc ff ff ff       	call   12ce <rrc_main+0x83e>
+
+	//used for test
+//	rrcConnectionReconfiguration = SetRrcConnReconfigmessage();
+//	fsm_printf("[rrc] [fsm] rrcConnectionReconfiguration->rrcTransactionIdentifier=%d\n",rrcConnectionReconfiguration->rrcTransactionIdentifier);
+	if(rrcConnectionReconfiguration == NULL)
+    12d2:	a1 00 00 00 00       	mov    0x0,%eax
+    12d7:	85 c0                	test   %eax,%eax
+    12d9:	0f 84 d1 03 00 00    	je     16b0 <rrc_main+0xc20>
+	{
+		fsm_printf("[rrc] invalid rrcConnectionReconfiguration.\n");
+		FOUT;
+	}
+	DoRecvRrcConnectionReconfiguration(rrcConnectionReconfiguration);
+    12df:	e8 fc ff ff ff       	call   12e0 <rrc_main+0x850>
+    12e4:	e9 8c fb ff ff       	jmp    e75 <rrc_main+0x3e5>
+			FSM_COND_TEST_OUT("ST_IDLE_CONNECTING")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, t300_timeout(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_reject(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(2, ST_CONNECTED_NORMALLY, rcv_rrc_conn_setup(), "ST_IDLE_CONNECTING -> ST_CONNECTED_NORMALLY")
+    12e9:	c7 05 5c 00 00 00 6c 	movl   $0x96c,0x5c
+    12f0:	09 00 00 
+    12f3:	e8 28 f5 ff ff       	call   820 <rcv_rrc_conn_setup>
+    12f8:	c7 03 0a 00 00 00    	movl   $0xa,(%ebx)
+    12fe:	e9 de f9 ff ff       	jmp    ce1 <rrc_main+0x251>
+			FSM_TEST_COND(Evt_RcvRRCConnSetup)
+			FSM_COND_TEST_OUT("ST_IDLE_CONNECTING")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, t300_timeout(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_reject(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+    1303:	c7 05 5c 00 00 00 20 	movl   $0x920,0x5c
+    130a:	09 00 00 
+ ******************************************************************************/
+static void rcv_rrc_conn_reject(void)
+{
+	FIN(rcv_rrc_conn_reject());
+
+	fsm_printf("[rrc] [fsm] rcv_rrc_conn_reject().\n");
+    130d:	c7 04 24 48 09 00 00 	movl   $0x948,(%esp)
+    1314:	e8 fc ff ff ff       	call   1315 <rrc_main+0x885>
+	cancleTimer(TIMER_T300);
+    1319:	b8 2c 01 00 00       	mov    $0x12c,%eax
+    131e:	e8 fc ff ff ff       	call   131f <rrc_main+0x88f>
+	fsm_do_ioctrl(STRM_TO_RLCMAC,  IOCCMD_RRCTOMAC_RESET  , NULL, 0);
+    1323:	31 c9                	xor    %ecx,%ecx
+    1325:	ba 03 00 00 00       	mov    $0x3,%edx
+    132a:	b8 08 00 00 00       	mov    $0x8,%eax
+    132f:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+    1336:	e8 fc ff ff ff       	call   1337 <rrc_main+0x8a7>
+	setTimer(TIMER_T302, 2000);
+    133b:	ba d0 07 00 00       	mov    $0x7d0,%edx
+    1340:	b8 2e 01 00 00       	mov    $0x12e,%eax
+    1345:	e8 fc ff ff ff       	call   1346 <rrc_main+0x8b6>
+			FSM_TEST_COND(Evt_RcvRRCConnSetup)
+			FSM_COND_TEST_OUT("ST_IDLE_CONNECTING")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, t300_timeout(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+				FSM_CASE_TRANSIT(1, ST_IDLE_NORMALLY, rcv_rrc_conn_reject(), "ST_IDLE_CONNECTING -> ST_IDLE_NORMALLY")
+    134a:	c7 03 06 00 00 00    	movl   $0x6,(%ebx)
+    1350:	e9 e3 f8 ff ff       	jmp    c38 <rrc_main+0x1a8>
+{
+	FIN(st_idle_normal_exit());
+	fsm_printf("[rrc] [fsm] st_idle_normal_exit().\n");
+
+
+	if(RRC_CLOSE)
+    1355:	e8 fc ff ff ff       	call   1356 <rrc_main+0x8c6>
+    135a:	83 f8 01             	cmp    $0x1,%eax
+    135d:	0f 85 39 fd ff ff    	jne    109c <rrc_main+0x60c>
+	{
+		rrc_close();
+    1363:	e8 fc ff ff ff       	call   1364 <rrc_main+0x8d4>
+    1368:	e9 2f fd ff ff       	jmp    109c <rrc_main+0x60c>
+    136d:	8d 76 00             	lea    0x0(%esi),%esi
+static void st_connect_normal_exit(void)
+{
+	FIN(st_connect_normal_exit());
+	fsm_printf("[rrc] [fsm] st_connect_normal_exit().\n");
+
+	if(RRC_CLOSE)
+    1370:	e8 fc ff ff ff       	call   1371 <rrc_main+0x8e1>
+    1375:	83 f8 01             	cmp    $0x1,%eax
+    1378:	0f 85 a6 fd ff ff    	jne    1124 <rrc_main+0x694>
+    137e:	66 90                	xchg   %ax,%ax
+	{
+		rrc_close();
+    1380:	e8 fc ff ff ff       	call   1381 <rrc_main+0x8f1>
+    1385:	e9 9a fd ff ff       	jmp    1124 <rrc_main+0x694>
+    138a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_REESTABLISH")
+			FSM_TEST_COND(Evt_RcvRRCConnReestablish)
+			FSM_TEST_COND(Evt_RcvRRCConnReestablishReject)
+			FSM_TEST_COND(Evt_TimeOut_T301)
+			FSM_TEST_COND(Evt_TimeOut_T311)
+    1390:	e8 fc ff ff ff       	call   1391 <rrc_main+0x901>
+    1395:	83 f8 0d             	cmp    $0xd,%eax
+    1398:	0f 85 70 fb ff ff    	jne    f0e <rrc_main+0x47e>
+    139e:	83 c6 01             	add    $0x1,%esi
+    13a1:	bf 03 00 00 00       	mov    $0x3,%edi
+    13a6:	e9 63 fb ff ff       	jmp    f0e <rrc_main+0x47e>
+		FSM_STATE_UNFORCED(ST_CONNECTED_REESTABLISH, "ST_CONNECTED_REESTABLISH", st_connect_reest_enter(),st_connect_reest_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_REESTABLISH")
+			FSM_TEST_COND(Evt_RcvRRCConnReestablish)
+			FSM_TEST_COND(Evt_RcvRRCConnReestablishReject)
+			FSM_TEST_COND(Evt_TimeOut_T301)
+    13ab:	e8 fc ff ff ff       	call   13ac <rrc_main+0x91c>
+    13b0:	83 f8 0c             	cmp    $0xc,%eax
+    13b3:	0f 85 45 fb ff ff    	jne    efe <rrc_main+0x46e>
+    13b9:	83 c6 01             	add    $0x1,%esi
+    13bc:	bf 02 00 00 00       	mov    $0x2,%edi
+    13c1:	e9 38 fb ff ff       	jmp    efe <rrc_main+0x46e>
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_REESTABLISH, "ST_CONNECTED_REESTABLISH", st_connect_reest_enter(),st_connect_reest_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_REESTABLISH")
+			FSM_TEST_COND(Evt_RcvRRCConnReestablish)
+			FSM_TEST_COND(Evt_RcvRRCConnReestablishReject)
+    13c6:	e8 fc ff ff ff       	call   13c7 <rrc_main+0x937>
+    13cb:	83 f8 0b             	cmp    $0xb,%eax
+    13ce:	0f 85 19 fb ff ff    	jne    eed <rrc_main+0x45d>
+    13d4:	83 c6 01             	add    $0x1,%esi
+    13d7:	bf 01 00 00 00       	mov    $0x1,%edi
+    13dc:	e9 0c fb ff ff       	jmp    eed <rrc_main+0x45d>
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_REESTABLISH, "ST_CONNECTED_REESTABLISH", st_connect_reest_enter(),st_connect_reest_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_REESTABLISH")
+			FSM_TEST_COND(Evt_RcvRRCConnReestablish)
+    13e1:	e8 fc ff ff ff       	call   13e2 <rrc_main+0x952>
+				FSM_CASE_DEFAULT(ST_CONNECTED_RECONF, st_connect_reconf_default(), "ST_CONNECTED_RECONF -> ST_CONNECTED_RECONF")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_REESTABLISH, "ST_CONNECTED_REESTABLISH", st_connect_reest_enter(),st_connect_reest_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_REESTABLISH")
+    13e6:	83 f8 0a             	cmp    $0xa,%eax
+    13e9:	0f 94 c0             	sete   %al
+    13ec:	0f b6 f8             	movzbl %al,%edi
+    13ef:	0f b6 f0             	movzbl %al,%esi
+    13f2:	83 ef 01             	sub    $0x1,%edi
+    13f5:	e9 e5 fa ff ff       	jmp    edf <rrc_main+0x44f>
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_NORMALLY, "ST_IDLE_NORMALLY", st_idle_normal_enter(),st_idle_normal_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_NORMALLY")
+			FSM_TEST_COND(Evt_RcvConnReqNAS)
+    13fa:	e8 fc ff ff ff       	call   13fb <rrc_main+0x96b>
+    13ff:	83 f8 02             	cmp    $0x2,%eax
+    1402:	0f 85 a6 fc ff ff    	jne    10ae <rrc_main+0x61e>
+			FSM_COND_TEST_OUT("ST_IDLE_NORMALLY")
+			FSM_TRANSIT_SWITCH
+			{
+				FSM_CASE_TRANSIT(0, ST_IDLE_CONNECTING, transit_to_idle_connecting(), "ST_IDLE_NORMALLY -> ST_IDLE_CONNECTING")
+    1408:	c7 05 5c 00 00 00 a4 	movl   $0x8a4,0x5c
+    140f:	08 00 00 
+    1412:	e8 f9 f2 ff ff       	call   710 <transit_to_idle_connecting>
+    1417:	c7 03 08 00 00 00    	movl   $0x8,(%ebx)
+    141d:	e9 86 f7 ff ff       	jmp    ba8 <rrc_main+0x118>
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_RECONF, "ST_CONNECTED_RECONF", st_connect_reconf_enter(),st_connect_reconf_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_RECONF")
+			FSM_TEST_COND(Evt_ReconfigSuccess)
+    1422:	e8 fc ff ff ff       	call   1423 <rrc_main+0x993>
+				FSM_CASE_DEFAULT(ST_CONNECTED_NORMALLY, st_connect_normal_default(), "ST_CONNECTED_NORMALLY -> ST_CONNECTED_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_RECONF, "ST_CONNECTED_RECONF", st_connect_reconf_enter(),st_connect_reconf_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_RECONF")
+    1427:	83 f8 08             	cmp    $0x8,%eax
+    142a:	0f 94 c0             	sete   %al
+    142d:	0f b6 f8             	movzbl %al,%edi
+    1430:	0f b6 f0             	movzbl %al,%esi
+    1433:	83 ef 01             	sub    $0x1,%edi
+    1436:	e9 0a fc ff ff       	jmp    1045 <rrc_main+0x5b5>
+static void st_connect_reconf_exit(void)
+{
+	FIN(st_connect_reconf_exit());
+	fsm_printf("[rrc] [fsm] st_connect_reconf_exit().\n");
+
+	if(RRC_CLOSE)
+    143b:	e8 fc ff ff ff       	call   143c <rrc_main+0x9ac>
+    1440:	83 f8 01             	cmp    $0x1,%eax
+    1443:	0f 85 e3 fb ff ff    	jne    102c <rrc_main+0x59c>
+	{
+		rrc_close();
+    1449:	e8 fc ff ff ff       	call   144a <rrc_main+0x9ba>
+    144e:	66 90                	xchg   %ax,%ax
+    1450:	e9 d7 fb ff ff       	jmp    102c <rrc_main+0x59c>
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_NORMALLY, "ST_CONNECTED_NORMALLY", st_connect_normal_enter(),st_connect_normal_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_NORMALLY")
+			FSM_TEST_COND(Evt_RcvRRCConnReconfig)
+    1455:	e8 fc ff ff ff       	call   1456 <rrc_main+0x9c6>
+				FSM_CASE_DEFAULT(ST_IDLE_CONNECTING, st_idle_connecting_default(), "ST_IDLE_CONNECTING -> ST_IDLE_CONNECTING")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_CONNECTED_NORMALLY, "ST_CONNECTED_NORMALLY", st_connect_normal_enter(),st_connect_normal_exit())
+		{
+			FSM_COND_TEST_IN("ST_CONNECTED_NORMALLY")
+    145a:	83 f8 06             	cmp    $0x6,%eax
+    145d:	0f 94 c0             	sete   %al
+    1460:	0f b6 f8             	movzbl %al,%edi
+    1463:	0f b6 f0             	movzbl %al,%esi
+    1466:	83 ef 01             	sub    $0x1,%edi
+    1469:	e9 cb fc ff ff       	jmp    1139 <rrc_main+0x6a9>
+			FSM_TRANSIT_FORCE(ST_IDLE_CONNECTING, , "default", "", "ST_INIT -> ST_IDLE_CONNECTING");
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CELL_SEL, "ST_IDLE_CELL_SEL", st_cell_sel_enter(), st_cell_sel_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_CELL_SEL")
+				FSM_TEST_COND(EVT_BEGIN_RECV_SYSINFO)
+    146e:	e8 fc ff ff ff       	call   146f <rrc_main+0x9df>
+    1473:	85 c0                	test   %eax,%eax
+    1475:	0f 85 03 fb ff ff    	jne    f7e <rrc_main+0x4ee>
+				FSM_COND_TEST_OUT("ST_IDLE_CELL_SEL")
+				FSM_TRANSIT_SWITCH
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_WAIT_SYSINFO, start_recv_sysInfo(), "ST_IDLE_CELL_SEL -> ST_IDLE_WAIT_SYSINFO")
+    147b:	c7 05 5c 00 00 00 c4 	movl   $0x6c4,0x5c
+    1482:	06 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void start_recv_sysInfo(void)
+{
+	FIN(start_recv_sysInfo());
+	fsm_printf("[rrc] [fsm] start_recv_sysInfo().\n");
+    1485:	c7 04 24 f0 06 00 00 	movl   $0x6f0,(%esp)
+    148c:	e8 fc ff ff ff       	call   148d <rrc_main+0x9fd>
+	//Begin_recv_sysinfo();
+	fsm_schedule_self(0, CODE_END_RECV_SYSINFO);
+    1491:	ba 01 00 00 00       	mov    $0x1,%edx
+    1496:	31 c0                	xor    %eax,%eax
+    1498:	e8 fc ff ff ff       	call   1499 <rrc_main+0xa09>
+			FSM_COND_TEST_IN("ST_IDLE_CELL_SEL")
+				FSM_TEST_COND(EVT_BEGIN_RECV_SYSINFO)
+				FSM_COND_TEST_OUT("ST_IDLE_CELL_SEL")
+				FSM_TRANSIT_SWITCH
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_WAIT_SYSINFO, start_recv_sysInfo(), "ST_IDLE_CELL_SEL -> ST_IDLE_WAIT_SYSINFO")
+    149d:	c7 03 04 00 00 00    	movl   $0x4,(%ebx)
+    14a3:	e9 23 f9 ff ff       	jmp    dcb <rrc_main+0x33b>
+	FIN(st_cell_sel_exit());
+	fsm_printf("[rrc] [fsm] st_cell_sel_exit().\n");
+
+	//test_send_msg_to_us();
+
+	if(RRC_CLOSE)
+    14a8:	e8 fc ff ff ff       	call   14a9 <rrc_main+0xa19>
+    14ad:	83 f8 01             	cmp    $0x1,%eax
+    14b0:	0f 85 b6 fa ff ff    	jne    f6c <rrc_main+0x4dc>
+	{
+		rrc_close();
+    14b6:	e8 fc ff ff ff       	call   14b7 <rrc_main+0xa27>
+    14bb:	90                   	nop
+    14bc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+    14c0:	e9 a7 fa ff ff       	jmp    f6c <rrc_main+0x4dc>
+		FSM_STATE_UNFORCED(ST_IDLE_CONNECTING, "ST_IDLE_CONNECTING", st_idle_connecting_enter(),st_idle_connecting_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_CONNECTING")
+			FSM_TEST_COND(Evt_TimeOut_T300)
+			FSM_TEST_COND(Evt_RcvRRCConnReject)
+			FSM_TEST_COND(Evt_RcvRRCConnSetup)
+    14c5:	e8 fc ff ff ff       	call   14c6 <rrc_main+0xa36>
+    14ca:	83 f8 05             	cmp    $0x5,%eax
+    14cd:	8d 76 00             	lea    0x0(%esi),%esi
+    14d0:	0f 85 5b f6 ff ff    	jne    b31 <rrc_main+0xa1>
+    14d6:	83 c6 01             	add    $0x1,%esi
+    14d9:	bf 02 00 00 00       	mov    $0x2,%edi
+    14de:	e9 4e f6 ff ff       	jmp    b31 <rrc_main+0xa1>
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CONNECTING, "ST_IDLE_CONNECTING", st_idle_connecting_enter(),st_idle_connecting_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_CONNECTING")
+			FSM_TEST_COND(Evt_TimeOut_T300)
+			FSM_TEST_COND(Evt_RcvRRCConnReject)
+    14e3:	e8 fc ff ff ff       	call   14e4 <rrc_main+0xa54>
+    14e8:	83 f8 04             	cmp    $0x4,%eax
+    14eb:	0f 85 32 f6 ff ff    	jne    b23 <rrc_main+0x93>
+    14f1:	83 c6 01             	add    $0x1,%esi
+    14f4:	bf 01 00 00 00       	mov    $0x1,%edi
+    14f9:	e9 25 f6 ff ff       	jmp    b23 <rrc_main+0x93>
+			}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CONNECTING, "ST_IDLE_CONNECTING", st_idle_connecting_enter(),st_idle_connecting_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_CONNECTING")
+			FSM_TEST_COND(Evt_TimeOut_T300)
+    14fe:	e8 fc ff ff ff       	call   14ff <rrc_main+0xa6f>
+				FSM_CASE_DEFAULT(ST_IDLE_NORMALLY, st_idle_normal_default(), "ST_IDLE_NORMALLY -> ST_IDLE_NORMALLY")   //transit to idle state by default.
+			}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_CONNECTING, "ST_IDLE_CONNECTING", st_idle_connecting_enter(),st_idle_connecting_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_CONNECTING")
+    1503:	83 f8 03             	cmp    $0x3,%eax
+    1506:	0f 94 c0             	sete   %al
+    1509:	0f b6 f8             	movzbl %al,%edi
+    150c:	0f b6 f0             	movzbl %al,%esi
+    150f:	83 ef 01             	sub    $0x1,%edi
+    1512:	e9 fe f5 ff ff       	jmp    b15 <rrc_main+0x85>
+static void st_idle_connecting_exit(void)
+{
+	FIN(st_idle_connecting_exit());
+	fsm_printf("[rrc] [fsm] st_idle_connecting_exit().\n");
+
+	if(RRC_CLOSE)
+    1517:	e8 fc ff ff ff       	call   1518 <rrc_main+0xa88>
+    151c:	83 f8 01             	cmp    $0x1,%eax
+    151f:	0f 85 d7 f5 ff ff    	jne    afc <rrc_main+0x6c>
+	{
+		rrc_close();
+    1525:	e8 fc ff ff ff       	call   1526 <rrc_main+0xa96>
+    152a:	e9 cd f5 ff ff       	jmp    afc <rrc_main+0x6c>
+    152f:	90                   	nop
+				}
+		}
+		FSM_STATE_UNFORCED(ST_IDLE_WAIT_SYSINFO, "ST_IDLE_WAIT_SYSINFO", st_wait_sysInfo_enter(),st_wait_sysInfo_exit())
+		{
+			FSM_COND_TEST_IN("ST_IDLE_WAIT_SYSINFO")
+				FSM_TEST_COND(EVT_END_RECV_SYSINFO)
+    1530:	e8 fc ff ff ff       	call   1531 <rrc_main+0xaa1>
+    1535:	83 f8 01             	cmp    $0x1,%eax
+    1538:	0f 85 40 f8 ff ff    	jne    d7e <rrc_main+0x2ee>
+				FSM_COND_TEST_OUT("ST_IDLE_WAIT_SYSINFO")
+				FSM_TRANSIT_SWITCH
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, transit_to_idle(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_NORMALLY")
+    153e:	c7 05 5c 00 00 00 bc 	movl   $0x7bc,0x5c
+    1545:	07 00 00 
+ ** Modified Date: 
+ ******************************************************************************/
+static void transit_to_idle(void)
+{
+	FIN(transit_to_idle());
+	fsm_printf("[rrc] [fsm] transit_to_idle().\n");
+    1548:	c7 04 24 e8 07 00 00 	movl   $0x7e8,(%esp)
+    154f:	e8 fc ff ff ff       	call   1550 <rrc_main+0xac0>
+	fsm_do_ioctrl(STRM_TO_RLCMAC, TEST_RECV_PADING, NULL, 0);
+    1554:	31 c9                	xor    %ecx,%ecx
+    1556:	ba 45 00 00 00       	mov    $0x45,%edx
+    155b:	b8 08 00 00 00       	mov    $0x8,%eax
+    1560:	c7 04 24 00 00 00 00 	movl   $0x0,(%esp)
+    1567:	e8 fc ff ff ff       	call   1568 <rrc_main+0xad8>
+			FSM_COND_TEST_IN("ST_IDLE_WAIT_SYSINFO")
+				FSM_TEST_COND(EVT_END_RECV_SYSINFO)
+				FSM_COND_TEST_OUT("ST_IDLE_WAIT_SYSINFO")
+				FSM_TRANSIT_SWITCH
+				{
+					FSM_CASE_TRANSIT(0, ST_IDLE_NORMALLY, transit_to_idle(), "ST_IDLE_WAIT_SYSINFO -> ST_IDLE_NORMALLY")
+    156c:	c7 03 06 00 00 00    	movl   $0x6,(%ebx)
+    1572:	e9 c1 f6 ff ff       	jmp    c38 <rrc_main+0x1a8>
+static void st_wait_sysInfo_exit(void)
+{
+	FIN(st_wait_sysInfo_exit());
+	fsm_printf("[rrc] [fsm] st_wait_sysInfo_exit().\n");
+
+	if(RRC_CLOSE)
+    1577:	e8 fc ff ff ff       	call   1578 <rrc_main+0xae8>
+    157c:	83 f8 01             	cmp    $0x1,%eax
+    157f:	0f 85 e7 f7 ff ff    	jne    d6c <rrc_main+0x2dc>
+	{
+		rrc_close();
+    1585:	e8 fc ff ff ff       	call   1586 <rrc_main+0xaf6>
+    158a:	e9 dd f7 ff ff       	jmp    d6c <rrc_main+0x2dc>
+    158f:	90                   	nop
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    1590:	e8 fc ff ff ff       	call   1591 <rrc_main+0xb01>
+		rrc_messege_handler_rlc(pkptr);
+    1595:	e8 66 ea ff ff       	call   0 <rrc_messege_handler_rlc>
+    159a:	e9 56 fb ff ff       	jmp    10f5 <rrc_main+0x665>
+    159f:	90                   	nop
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    15a0:	e8 fc ff ff ff       	call   15a1 <rrc_main+0xb11>
+		rrc_messege_handler_rlc(pkptr);
+    15a5:	e8 56 ea ff ff       	call   0 <rrc_messege_handler_rlc>
+    15aa:	e9 16 fa ff ff       	jmp    fc5 <rrc_main+0x535>
+    15af:	90                   	nop
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    15b0:	e8 fc ff ff ff       	call   15b1 <rrc_main+0xb21>
+		rrc_messege_handler_rlc(pkptr);
+    15b5:	e8 46 ea ff ff       	call   0 <rrc_messege_handler_rlc>
+    15ba:	e9 06 f8 ff ff       	jmp    dc5 <rrc_main+0x335>
+    15bf:	90                   	nop
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    15c0:	e8 fc ff ff ff       	call   15c1 <rrc_main+0xb31>
+		rrc_messege_handler_upper(pkptr);
+    15c5:	e8 b6 ed ff ff       	call   380 <rrc_messege_handler_upper>
+    15ca:	e9 f6 f7 ff ff       	jmp    dc5 <rrc_main+0x335>
+    15cf:	90                   	nop
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    15d0:	e8 fc ff ff ff       	call   15d1 <rrc_main+0xb41>
+		rrc_messege_handler_upper(pkptr);
+    15d5:	e8 a6 ed ff ff       	call   380 <rrc_messege_handler_upper>
+    15da:	e9 16 fb ff ff       	jmp    10f5 <rrc_main+0x665>
+    15df:	90                   	nop
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    15e0:	e8 fc ff ff ff       	call   15e1 <rrc_main+0xb51>
+		rrc_messege_handler_upper(pkptr);
+    15e5:	e8 96 ed ff ff       	call   380 <rrc_messege_handler_upper>
+    15ea:	e9 d6 f9 ff ff       	jmp    fc5 <rrc_main+0x535>
+    15ef:	90                   	nop
+static void st_connect_normal_default(void)
+{
+	FIN(st_connect_normal_default());
+	fsm_printf("[rrc] [fsm] st_connect_normal_default().\n");
+
+	if(EVT_IOCTL_ARRIVAL)
+    15f0:	e8 fc ff ff ff       	call   15f1 <rrc_main+0xb61>
+    15f5:	83 f8 02             	cmp    $0x2,%eax
+    15f8:	0f 85 ba f6 ff ff    	jne    cb8 <rrc_main+0x228>
+    15fe:	66 90                	xchg   %ax,%ax
+	{
+		rrc_ioctl_handler();
+    1600:	e8 1b f3 ff ff       	call   920 <rrc_ioctl_handler>
+    1605:	e9 d1 f6 ff ff       	jmp    cdb <rrc_main+0x24b>
+    160a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+static void st_connect_reconf_default(void)
+{
+	FIN(st_connect_reconf_default());
+	fsm_printf("[rrc] [fsm] st_connect_reconf_default().\n");
+
+	if(EVT_IOCTL_ARRIVAL)
+    1610:	e8 fc ff ff ff       	call   1611 <rrc_main+0xb81>
+    1615:	83 f8 02             	cmp    $0x2,%eax
+    1618:	0f 85 2d f8 ff ff    	jne    e4b <rrc_main+0x3bb>
+    161e:	66 90                	xchg   %ax,%ax
+	{
+		rrc_ioctl_handler();
+    1620:	e8 fb f2 ff ff       	call   920 <rrc_ioctl_handler>
+    1625:	e9 4b f8 ff ff       	jmp    e75 <rrc_main+0x3e5>
+    162a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    1630:	e8 fc ff ff ff       	call   1631 <rrc_main+0xba1>
+		rrc_messege_handler_rlc(pkptr);
+    1635:	e8 c6 e9 ff ff       	call   0 <rrc_messege_handler_rlc>
+    163a:	e9 9c f6 ff ff       	jmp    cdb <rrc_main+0x24b>
+    163f:	90                   	nop
+	{
+		rrc_ioctl_handler();
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    1640:	e8 fc ff ff ff       	call   1641 <rrc_main+0xbb1>
+		rrc_messege_handler_rlc(pkptr);
+    1645:	e8 b6 e9 ff ff       	call   0 <rrc_messege_handler_rlc>
+    164a:	e9 26 f8 ff ff       	jmp    e75 <rrc_main+0x3e5>
+    164f:	90                   	nop
+static void st_idle_connecting_default(void)
+{
+	FIN(st_idle_connecting_default());
+	fsm_printf("[rrc] [fsm] st_idle_connecting_default().\n");
+
+	if(EVT_IOCTL_ARRIVAL)
+    1650:	e8 fc ff ff ff       	call   1651 <rrc_main+0xbc1>
+    1655:	83 f8 02             	cmp    $0x2,%eax
+    1658:	0f 85 1c f5 ff ff    	jne    b7a <rrc_main+0xea>
+    165e:	66 90                	xchg   %ax,%ax
+	{
+		rrc_ioctl_handler();
+    1660:	e8 bb f2 ff ff       	call   920 <rrc_ioctl_handler>
+    1665:	e9 31 f5 ff ff       	jmp    b9b <rrc_main+0x10b>
+    166a:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+	}
+	else if(EVT_RRC_PK_FROM_LOWER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    1670:	e8 fc ff ff ff       	call   1671 <rrc_main+0xbe1>
+		rrc_messege_handler_rlc(pkptr);
+    1675:	e8 86 e9 ff ff       	call   0 <rrc_messege_handler_rlc>
+    167a:	e9 1c f5 ff ff       	jmp    b9b <rrc_main+0x10b>
+    167f:	90                   	nop
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    1680:	e8 fc ff ff ff       	call   1681 <rrc_main+0xbf1>
+		rrc_messege_handler_upper(pkptr);
+    1685:	e8 f6 ec ff ff       	call   380 <rrc_messege_handler_upper>
+    168a:	e9 4c f6 ff ff       	jmp    cdb <rrc_main+0x24b>
+    168f:	90                   	nop
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    1690:	e8 fc ff ff ff       	call   1691 <rrc_main+0xc01>
+		rrc_messege_handler_upper(pkptr);
+    1695:	e8 e6 ec ff ff       	call   380 <rrc_messege_handler_upper>
+    169a:	e9 d6 f7 ff ff       	jmp    e75 <rrc_main+0x3e5>
+		fsm_mem_free(rrcConnectionReconfiguration);
+		rrcConnectionReconfiguration=NULL;
+	}
+	else
+	{
+		fsm_printf("[rrc] rrcConnectionReconfiguration is NULL!\n");
+    169f:	c7 04 24 4c 0c 00 00 	movl   $0xc4c,(%esp)
+    16a6:	e8 fc ff ff ff       	call   16a7 <rrc_main+0xc17>
+    16ab:	e9 ef fb ff ff       	jmp    129f <rrc_main+0x80f>
+	//used for test
+//	rrcConnectionReconfiguration = SetRrcConnReconfigmessage();
+//	fsm_printf("[rrc] [fsm] rrcConnectionReconfiguration->rrcTransactionIdentifier=%d\n",rrcConnectionReconfiguration->rrcTransactionIdentifier);
+	if(rrcConnectionReconfiguration == NULL)
+	{
+		fsm_printf("[rrc] invalid rrcConnectionReconfiguration.\n");
+    16b0:	c7 04 24 c8 0a 00 00 	movl   $0xac8,(%esp)
+    16b7:	e8 fc ff ff ff       	call   16b8 <rrc_main+0xc28>
+    16bc:	e9 b4 f7 ff ff       	jmp    e75 <rrc_main+0x3e5>
+		FSM_PKT* pkptr = fsm_pkt_get();
+		rrc_messege_handler_rlc(pkptr);
+	}
+	else if(EVT_RRC_PK_FROM_UPPER)
+	{
+		FSM_PKT* pkptr = fsm_pkt_get();
+    16c1:	e8 fc ff ff ff       	call   16c2 <rrc_main+0xc32>
+		rrc_messege_handler_upper(pkptr);
+    16c6:	e8 b5 ec ff ff       	call   380 <rrc_messege_handler_upper>
+    16cb:	90                   	nop
+    16cc:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+    16d0:	e9 c6 f4 ff ff       	jmp    b9b <rrc_main+0x10b>
+			FSM_TEST_COND(Evt_RcvRRCConnReestablish)
+			FSM_TEST_COND(Evt_RcvRRCConnReestablishReject)
+			FSM_TEST_COND(Evt_TimeOut_T301)
+			FSM_TEST_COND(Evt_TimeOut_T311)
+			FSM_COND_TEST_OUT("ST_CONNECTED_REESTABLISH")
+			FSM_TRANSIT_SWITCH
+    16d5:	85 ff                	test   %edi,%edi
+    16d7:	0f 84 fe f5 ff ff    	je     cdb <rrc_main+0x24b>
+    16dd:	8d 76 00             	lea    0x0(%esi),%esi
+    16e0:	e9 4e f8 ff ff       	jmp    f33 <rrc_main+0x4a3>
+    16e5:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+    16e9:	8d bc 27 00 00 00 00 	lea    0x0(%edi,%eiz,1),%edi
+
+000016f0 <test_recv_pkt_from_rlc>:
+ **-------------------------------------- --------------------
+ ** Modified by:
+ ** Modified Date: 
+ ******************************************************************************/
+void test_recv_pkt_from_rlc()
+{
+    16f0:	55                   	push   %ebp
+    16f1:	89 e5                	mov    %esp,%ebp
+    16f3:	53                   	push   %ebx
+    16f4:	83 ec 10             	sub    $0x10,%esp
+    16f7:	e8 fc ff ff ff       	call   16f8 <test_recv_pkt_from_rlc+0x8>
+	int msg_len = sizeof(bcch_bch_msg);
+	int message_type = 1;
+
+	FSM_PKT* pkptr;
+	struct lte_rrc_head* sh_ptr;
+	pkptr = fsm_pkt_create(msg_len + sizeof(struct lte_rrc_head));
+    16fc:	b8 14 00 00 00       	mov    $0x14,%eax
+{
+	struct MasterInformationBlock mib;
+	mib.dl_Bandwidth = n25;
+	mib.systemFrameNumber = (u8)120;
+	struct BCCH_BCH_Message bcch_bch_msg;
+	bcch_bch_msg.mib = mib;
+    1701:	c7 45 ec 19 00 00 00 	movl   $0x19,-0x14(%ebp)
+    1708:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+    170f:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+    1716:	c6 45 f8 78          	movb   $0x78,-0x8(%ebp)
+	int msg_len = sizeof(bcch_bch_msg);
+	int message_type = 1;
+
+	FSM_PKT* pkptr;
+	struct lte_rrc_head* sh_ptr;
+	pkptr = fsm_pkt_create(msg_len + sizeof(struct lte_rrc_head));
+    171a:	e8 fc ff ff ff       	call   171b <test_recv_pkt_from_rlc+0x2b>
+	fsm_skb_put(pkptr, msg_len);
+    171f:	ba 10 00 00 00       	mov    $0x10,%edx
+	int msg_len = sizeof(bcch_bch_msg);
+	int message_type = 1;
+
+	FSM_PKT* pkptr;
+	struct lte_rrc_head* sh_ptr;
+	pkptr = fsm_pkt_create(msg_len + sizeof(struct lte_rrc_head));
+    1724:	89 c3                	mov    %eax,%ebx
+	fsm_skb_put(pkptr, msg_len);
+    1726:	e8 fc ff ff ff       	call   1727 <test_recv_pkt_from_rlc+0x37>
+	fsm_mem_cpy(pkptr->data, msg, msg_len);
+    172b:	8b 83 ac 00 00 00    	mov    0xac(%ebx),%eax
+    1731:	b9 10 00 00 00       	mov    $0x10,%ecx
+    1736:	8d 55 ec             	lea    -0x14(%ebp),%edx
+    1739:	e8 fc ff ff ff       	call   173a <test_recv_pkt_from_rlc+0x4a>
+
+	if(fsm_skb_headroom(pkptr) < sizeof(struct lte_rrc_head))
+    173e:	89 d8                	mov    %ebx,%eax
+    1740:	e8 fc ff ff ff       	call   1741 <test_recv_pkt_from_rlc+0x51>
+    1745:	83 f8 03             	cmp    $0x3,%eax
+    1748:	77 12                	ja     175c <test_recv_pkt_from_rlc+0x6c>
+	{
+		pkptr = fsm_skb_realloc_headeroom(pkptr,sizeof(struct lte_rrc_head));
+    174a:	89 d8                	mov    %ebx,%eax
+    174c:	ba 04 00 00 00       	mov    $0x4,%edx
+    1751:	e8 fc ff ff ff       	call   1752 <test_recv_pkt_from_rlc+0x62>
+		if(pkptr == NULL)
+    1756:	85 c0                	test   %eax,%eax
+	fsm_skb_put(pkptr, msg_len);
+	fsm_mem_cpy(pkptr->data, msg, msg_len);
+
+	if(fsm_skb_headroom(pkptr) < sizeof(struct lte_rrc_head))
+	{
+		pkptr = fsm_skb_realloc_headeroom(pkptr,sizeof(struct lte_rrc_head));
+    1758:	89 c3                	mov    %eax,%ebx
+		if(pkptr == NULL)
+    175a:	74 1f                	je     177b <test_recv_pkt_from_rlc+0x8b>
+			return;
+	}
+	fsm_skb_push(pkptr, sizeof(struct lte_rrc_head));
+    175c:	ba 04 00 00 00       	mov    $0x4,%edx
+    1761:	89 d8                	mov    %ebx,%eax
+    1763:	e8 fc ff ff ff       	call   1764 <test_recv_pkt_from_rlc+0x74>
+	sh_ptr = (struct lte_rrc_head*)pkptr->data;
+    1768:	8b 83 ac 00 00 00    	mov    0xac(%ebx),%eax
+	sh_ptr->message_type = message_type;
+    176e:	c7 00 01 00 00 00    	movl   $0x1,(%eax)
+
+	rrc_messege_handler_rlc(pkptr);
+    1774:	89 d8                	mov    %ebx,%eax
+    1776:	e8 85 e8 ff ff       	call   0 <rrc_messege_handler_rlc>
+
+}
+    177b:	83 c4 10             	add    $0x10,%esp
+    177e:	5b                   	pop    %ebx
+    177f:	5d                   	pop    %ebp
+    1780:	c3                   	ret    
+    1781:	eb 0d                	jmp    1790 <test_send_pkt_to_rlc>
+    1783:	90                   	nop
+    1784:	90                   	nop
+    1785:	90                   	nop
+    1786:	90                   	nop
+    1787:	90                   	nop
+    1788:	90                   	nop
+    1789:	90                   	nop
+    178a:	90                   	nop
+    178b:	90                   	nop
+    178c:	90                   	nop
+    178d:	90                   	nop
+    178e:	90                   	nop
+    178f:	90                   	nop
+
+00001790 <test_send_pkt_to_rlc>:
+ **-------------------------------------- --------------------
+ ** Modified by:
+ ** Modified Date: 
+ ******************************************************************************/
+void test_send_pkt_to_rlc()
+{
+    1790:	55                   	push   %ebp
+    1791:	89 e5                	mov    %esp,%ebp
+    1793:	83 ec 10             	sub    $0x10,%esp
+    1796:	e8 fc ff ff ff       	call   1797 <test_send_pkt_to_rlc+0x7>
+	struct BCCH_BCH_Message bcch_bch_msg;
+	bcch_bch_msg.mib = mib;
+	char *msg = (char *)&bcch_bch_msg;
+	int msg_len = sizeof(bcch_bch_msg);
+	int message_type = 1;
+	packet_send_to_rlc(msg, msg_len, message_type);
+    179b:	b9 01 00 00 00       	mov    $0x1,%ecx
+    17a0:	ba 10 00 00 00       	mov    $0x10,%edx
+    17a5:	8d 45 f0             	lea    -0x10(%ebp),%eax
+{
+	struct MasterInformationBlock mib;
+	mib.dl_Bandwidth = n25;
+	mib.systemFrameNumber = (u8)120;
+	struct BCCH_BCH_Message bcch_bch_msg;
+	bcch_bch_msg.mib = mib;
+    17a8:	c7 45 f0 19 00 00 00 	movl   $0x19,-0x10(%ebp)
+    17af:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+    17b6:	c7 45 f8 00 00 00 00 	movl   $0x0,-0x8(%ebp)
+    17bd:	c6 45 fc 78          	movb   $0x78,-0x4(%ebp)
+	char *msg = (char *)&bcch_bch_msg;
+	int msg_len = sizeof(bcch_bch_msg);
+	int message_type = 1;
+	packet_send_to_rlc(msg, msg_len, message_type);
+    17c1:	e8 fc ff ff ff       	call   17c2 <test_send_pkt_to_rlc+0x32>
+}
+    17c6:	c9                   	leave  
+    17c7:	c3                   	ret    
+    17c8:	90                   	nop
+    17c9:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+
+000017d0 <test_send_msg_to_us>:
+ **-------------------------------------- --------------------
+ ** Modified by:
+ ** Modified Date: 
+ ******************************************************************************/
+void test_send_msg_to_us()
+{
+    17d0:	55                   	push   %ebp
+    17d1:	89 e5                	mov    %esp,%ebp
+    17d3:	83 ec 04             	sub    $0x4,%esp
+    17d6:	e8 fc ff ff ff       	call   17d7 <test_send_msg_to_us+0x7>
+	//test send message to user space
+	fsm_printf("********test send message to us.\n");
+    17db:	c7 04 24 f4 0c 00 00 	movl   $0xcf4,(%esp)
+    17e2:	e8 fc ff ff ff       	call   17e3 <test_send_msg_to_us+0x13>
+	char *data = "a test message from rrcfsm.c";
+	//send_to_user(data, strlen(data)+1);
+}
+    17e7:	c9                   	leave  
+    17e8:	c3                   	ret    
+    17e9:	8d b4 26 00 00 00 00 	lea    0x0(%esi,%eiz,1),%esi
+
+000017f0 <test_paging>:
+
+void test_paging()
+{
+    17f0:	55                   	push   %ebp
+    17f1:	89 e5                	mov    %esp,%ebp
+    17f3:	e8 fc ff ff ff       	call   17f4 <test_paging+0x4>
+	FSM_PKT* pkptr=gen_paging();
+    17f8:	e8 fc ff ff ff       	call   17f9 <test_paging+0x9>
+	rrc_messege_handler_rlc(pkptr);
+    17fd:	e8 fe e7 ff ff       	call   0 <rrc_messege_handler_rlc>
+}
+    1802:	5d                   	pop    %ebp
+    1803:	c3                   	ret    
+    1804:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+    180a:	8d bf 00 00 00 00    	lea    0x0(%edi),%edi
+
+00001810 <test_sib1>:
+void test_sib1()
+{
+    1810:	55                   	push   %ebp
+    1811:	89 e5                	mov    %esp,%ebp
+    1813:	e8 fc ff ff ff       	call   1814 <test_sib1+0x4>
+	FSM_PKT* pkptr=gen_sib1();
+    1818:	e8 fc ff ff ff       	call   1819 <test_sib1+0x9>
+	rrc_messege_handler_rlc(pkptr);
+    181d:	e8 de e7 ff ff       	call   0 <rrc_messege_handler_rlc>
+}
+    1822:	5d                   	pop    %ebp
+    1823:	c3                   	ret    
+    1824:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+    182a:	8d bf 00 00 00 00    	lea    0x0(%edi),%edi
+
+00001830 <test_mib>:
+void test_mib()
+{
+    1830:	55                   	push   %ebp
+    1831:	89 e5                	mov    %esp,%ebp
+    1833:	e8 fc ff ff ff       	call   1834 <test_mib+0x4>
+	FSM_PKT* pkptr=gen_mib();
+    1838:	e8 fc ff ff ff       	call   1839 <test_mib+0x9>
+	rrc_messege_handler_rlc(pkptr);
+    183d:	e8 be e7 ff ff       	call   0 <rrc_messege_handler_rlc>
+}
+    1842:	5d                   	pop    %ebp
+    1843:	c3                   	ret    
+    1844:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+    184a:	8d bf 00 00 00 00    	lea    0x0(%edi),%edi
+
+00001850 <test_si>:
+void test_si()
+{
+    1850:	55                   	push   %ebp
+    1851:	89 e5                	mov    %esp,%ebp
+    1853:	e8 fc ff ff ff       	call   1854 <test_si+0x4>
+	FSM_PKT* pkptr=gen_si();
+    1858:	e8 fc ff ff ff       	call   1859 <test_si+0x9>
+	rrc_messege_handler_rlc(pkptr);
+    185d:	e8 9e e7 ff ff       	call   0 <rrc_messege_handler_rlc>
+}
+    1862:	5d                   	pop    %ebp
+    1863:	c3                   	ret    
+    1864:	8d b6 00 00 00 00    	lea    0x0(%esi),%esi
+    186a:	8d bf 00 00 00 00    	lea    0x0(%edi),%edi
+
+00001870 <test>:
+
+void test()
+{
+    1870:	55                   	push   %ebp
+    1871:	89 e5                	mov    %esp,%ebp
+    1873:	53                   	push   %ebx
+    1874:	83 ec 1c             	sub    $0x1c,%esp
+    1877:	e8 fc ff ff ff       	call   1878 <test+0x8>
+	//receive packet test
+	test_recv_pkt_from_rlc();
+    187c:	e8 fc ff ff ff       	call   187d <test+0xd>
+	if (mib != NULL)
+    1881:	a1 00 00 00 00       	mov    0x0,%eax
+    1886:	85 c0                	test   %eax,%eax
+    1888:	0f 84 a2 00 00 00    	je     1930 <test+0xc0>
+	{
+		fsm_printf("bcch_bch_msg.mib.dl_Bandwidth:%d\n", mib->dl_Bandwidth);
+    188e:	8b 00                	mov    (%eax),%eax
+    1890:	c7 04 24 18 0d 00 00 	movl   $0xd18,(%esp)
+    1897:	89 44 24 04          	mov    %eax,0x4(%esp)
+    189b:	e8 fc ff ff ff       	call   189c <test+0x2c>
+		fsm_printf("bcch_bch_msg.mib.systemFrameNumber:%d\n", mib->systemFrameNumber);
+    18a0:	a1 00 00 00 00       	mov    0x0,%eax
+    18a5:	0f b6 40 0c          	movzbl 0xc(%eax),%eax
+    18a9:	c7 04 24 3c 0d 00 00 	movl   $0xd3c,(%esp)
+    18b0:	89 44 24 04          	mov    %eax,0x4(%esp)
+    18b4:	e8 fc ff ff ff       	call   18b5 <test+0x45>
+		fsm_mem_free(mib);
+    18b9:	a1 00 00 00 00       	mov    0x0,%eax
+    18be:	e8 fc ff ff ff       	call   18bf <test+0x4f>
+		mib = NULL;
+    18c3:	c7 05 00 00 00 00 00 	movl   $0x0,0x0
+    18ca:	00 00 00 
+	u16 tmp_crnti = (u16)32;
+	struct MasterInformationBlock tmp_mib;
+	tmp_mib.dl_Bandwidth = n25;
+	tmp_mib.systemFrameNumber = (u8)120;
+	int data_size = sizeof(u16) + sizeof(struct MasterInformationBlock);
+	char * data = (char *)fsm_mem_alloc(data_size);
+    18cd:	b8 12 00 00 00       	mov    $0x12,%eax
+	}
+	else
+		fsm_printf("mib is null\n");
+
+	//test: ioctl with crnti
+	u16 tmp_crnti = (u16)32;
+    18d2:	66 c7 45 fa 20 00    	movw   $0x20,-0x6(%ebp)
+	struct MasterInformationBlock tmp_mib;
+	tmp_mib.dl_Bandwidth = n25;
+    18d8:	c7 45 e8 19 00 00 00 	movl   $0x19,-0x18(%ebp)
+	tmp_mib.systemFrameNumber = (u8)120;
+    18df:	c6 45 f4 78          	movb   $0x78,-0xc(%ebp)
+	int data_size = sizeof(u16) + sizeof(struct MasterInformationBlock);
+	char * data = (char *)fsm_mem_alloc(data_size);
+    18e3:	e8 fc ff ff ff       	call   18e4 <test+0x74>
+	fsm_mem_cpy(data, &tmp_crnti, sizeof(u16));
+    18e8:	8d 55 fa             	lea    -0x6(%ebp),%edx
+    18eb:	b9 02 00 00 00       	mov    $0x2,%ecx
+	u16 tmp_crnti = (u16)32;
+	struct MasterInformationBlock tmp_mib;
+	tmp_mib.dl_Bandwidth = n25;
+	tmp_mib.systemFrameNumber = (u8)120;
+	int data_size = sizeof(u16) + sizeof(struct MasterInformationBlock);
+	char * data = (char *)fsm_mem_alloc(data_size);
+    18f0:	89 c3                	mov    %eax,%ebx
+	fsm_mem_cpy(data, &tmp_crnti, sizeof(u16));
+    18f2:	e8 fc ff ff ff       	call   18f3 <test+0x83>
+	fsm_mem_cpy(data+sizeof(u16), &tmp_mib, sizeof(struct MasterInformationBlock));
+    18f7:	8d 55 e8             	lea    -0x18(%ebp),%edx
+    18fa:	b9 10 00 00 00       	mov    $0x10,%ecx
+    18ff:	8d 43 02             	lea    0x2(%ebx),%eax
+    1902:	e8 fc ff ff ff       	call   1903 <test+0x93>
+	fsm_do_ioctrl(STRM_TO_RLCMAC, IOCCMD_RRCTOMAC_BEGIN_RECV_SYSINFO, (void*)data, data_size);
+    1907:	89 d9                	mov    %ebx,%ecx
+    1909:	ba 01 00 00 00       	mov    $0x1,%edx
+    190e:	b8 08 00 00 00       	mov    $0x8,%eax
+    1913:	c7 04 24 12 00 00 00 	movl   $0x12,(%esp)
+    191a:	e8 fc ff ff ff       	call   191b <test+0xab>
+	fsm_mem_free(data);
+    191f:	89 d8                	mov    %ebx,%eax
+    1921:	e8 fc ff ff ff       	call   1922 <test+0xb2>
+}
+    1926:	83 c4 1c             	add    $0x1c,%esp
+    1929:	5b                   	pop    %ebx
+    192a:	5d                   	pop    %ebp
+    192b:	c3                   	ret    
+    192c:	8d 74 26 00          	lea    0x0(%esi,%eiz,1),%esi
+		fsm_printf("bcch_bch_msg.mib.systemFrameNumber:%d\n", mib->systemFrameNumber);
+		fsm_mem_free(mib);
+		mib = NULL;
+	}
+	else
+		fsm_printf("mib is null\n");
+    1930:	c7 04 24 84 01 00 00 	movl   $0x184,(%esp)
+    1937:	e8 fc ff ff ff       	call   1938 <test+0xc8>
+    193c:	eb 8f                	jmp    18cd <test+0x5d>

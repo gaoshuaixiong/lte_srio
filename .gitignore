@@ -1,0 +1,10 @@
+*.o 
+*.ko 
+.*.cmd 
+.*.flags 
+*.mod.c
+.tags
+.tags_sorted_by_file
+*module.mod
+Module.symvers
+modules.order

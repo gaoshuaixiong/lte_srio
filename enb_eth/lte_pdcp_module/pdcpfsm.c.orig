@@ -1,0 +1,162 @@
+#include <linux/if_ether.h>
+#include "pdcpfsm.h"
+#include "../lte_system.h"
+#include "../pkfmt.h"
+#include "Rlctypes.h"
+
+#define ST_INIT 0
+#define  ST_IDLE 1
+#define ST_SEND	2
+#define ST_RECV	3
+
+
+/* IOCTL command  */
+#define  SAY_HELLO 			0x04
+
+static void init_enter(void);
+static void pdcp_sv_init(void);
+static void pdcp_close(void);
+static void do_ioctl_period(void);
+static void pdcp_send_to_rlc(unsigned char rbid);
+static void  packet_recv_from_rlc(void);
+static void pdcp_interupt(void);
+static void ioctl_handler(void);
+
+void pdcp_main(void)
+{
+    FSM_ENTER(pdcp_main);
+    FSM_BLOCK_SWITCH
+    {
+        FSM_STATE_UNFORCED(ST_INIT, "INIT", init_enter(), )
+        {
+            FSM_COND_TEST_IN("INIT")
+            FSM_TEST_COND(START_WORK)
+            FSM_COND_TEST_OUT("INIT")
+            FSM_TRANSIT_SWITCH
+            {
+                FSM_CASE_TRANSIT(0, ST_IDLE,, "INIT -> IDLE")
+                FSM_CASE_DEFAULT(ST_INIT, , "INIT->INIT")
+            }
+        }
+        FSM_STATE_UNFORCED(ST_IDLE, "IDLE",  ,pdcp_interupt())
+        {
+            FSM_COND_TEST_IN("IDLE")
+            FSM_TEST_COND(PDCP_CLOSE)
+            FSM_COND_TEST_OUT("IDLE")
+            FSM_TRANSIT_SWITCH
+            {
+                FSM_CASE_TRANSIT(0, ST_INIT, , "IDLE -> INIT")
+                FSM_CASE_DEFAULT(ST_IDLE, , "IDLE->IDLE")	//transit to idle state	by default.
+            }
+        }
+    }
+    FSM_EXIT(0)
+}
+
+static void init_enter(void)
+{
+    FIN(init_enter());
+    SV_PTR_GET(pdcp_sv);
+    if(PDCP_OPEN)
+    {
+    fsm_printf("pdcp has opened\n ");
+    	SV(psn) = 0;
+        fsm_schedule_self(0, _START_WORK);
+    }
+    FOUT;
+}
+
+
+
+static void pdcp_sv_init(void)
+{
+    FIN(pdcp_sv_init());
+    SV_PTR_GET(pdcp_sv);
+    FOUT;
+}
+
+static void pdcp_close(void)
+{
+    FIN(pdcp_close());
+    SV_PTR_GET(pdcp_sv);
+    fsm_printf("PDCP is realasing.\n");
+    FOUT;
+}
+
+static void do_ioctl_period()
+{
+//pdcp_send_to_rlc();
+  //   suspendAmIns();
+ 
+//resumeAmIns(); 
+	//deactAmIns();
+    FOUT;
+}
+
+
+
+static void pdcp_send_to_rlc(unsigned char rbid)
+{
+    FSM_PKT* pkptr;
+    URLC_IciMsg *icimsg;
+    char* data = "packet from pdcp.\n";
+    FIN(pdcp_send_to_rlc());
+    SV_PTR_GET(pdcp_sv);
+    pkptr = fsm_pkt_create(20+sizeof(URLC_IciMsg));
+    fsm_skb_reserve(pkptr, sizeof(URLC_IciMsg));
+    fsm_mem_cmp(pkptr->data, data, 20);
+    fsm_skb_put(pkptr, 20);
+    icimsg = (URLC_IciMsg *)pkptr->head;
+    icimsg->pbCh = 0;
+    icimsg->rbId = rbid;
+    icimsg->rnti = 0;
+	icimsg->psn = SV(psn)++;
+	SV(psn) %= MAX_PSN;
+    fsm_pkt_send(pkptr,STRM_TO_RLC);
+    fsm_printf("the icimsg are %d, %d, %d\n",icimsg->pbCh, icimsg->rbId,icimsg->rnti);
+    //  fsm_printf("the distance between head and data is %d\n",pkptr->head - pkptr->data);
+    fsm_printf("pdcp has send packet to rlc\n");
+    FOUT;
+}
+
+static void packet_recv_from_rlc(void)
+{
+    FSM_PKT* pkptr;
+    FIN(packet_recv_from_rlc());
+    pkptr = fsm_pkt_get();
+    fsm_printf("pdcp has received pkt from rlc\n");
+   fsm_pkt_destroy(pkptr);
+    FOUT;
+}
+
+static void pdcp_interupt(void)
+{
+    FIN(pdcp_interupt());
+    if(PDCP_CLOSE)
+    {
+        pdcp_close();
+    }
+    else if(IOCTL_ARRIVAL)
+    {
+        ioctl_handler();
+    }
+    FOUT;
+}
+
+static void ioctl_handler(void)
+{
+	config* conf;
+    FIN(ioctl_handler());
+    SV_PTR_GET(pdcp_sv);
+    if(fsm_ev_ioctrl_cmd() == SENDPDCP)
+    {
+        conf = (config*)fsm_ev_data();
+		pdcp_send_to_rlc(conf->rbid);
+    }
+    FOUT;
+}
+
+
+
+
+

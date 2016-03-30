@@ -1,0 +1,5 @@
+test:
+	cc -o test -g test.c
+clean:
+	rm test
+

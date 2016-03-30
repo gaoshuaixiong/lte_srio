@@ -1,0 +1,20 @@
+[    4.147182] sd 32:0:0:0: [sda] Assuming drive cache: write through
+[    4.149740] sd 32:0:0:0: [sda] Assuming drive cache: write through
+[    4.183078] sd 32:0:0:0: [sda] Assuming drive cache: write through
+[    7.962626] piix4_smbus 0000:00:07.3: Host SMBus controller not enabled!
+fsck from util-linux-ng 2.17.2
+/dev/sda1: clean, 241994/1253376 files, 2441514/5012992 blocks
+   Checking acpi hot plug[71G done
+Starting VMware Tools services in the virtual machine:
+   Switching to guest configuration:[71G done
+   Paravirtual SCSI module:[71G done
+   Guest memory manager:[71G done
+   Guest vmxnet fast network device:[71G done
+   VM communication interface:[71G done
+   VM communication interface socket family:[71G done
+   Guest filesystem driver:[  107.368465] end_request: I/O error, dev fd0, sector 0
+[  107.495589] end_request: I/O error, dev fd0, sector 0
+[  201.644357] protocol f7f4 is buggy, dev eth3
+[  201.657515] protocol f7f4 is buggy, dev eth3
+[  201.666960] protocol f7f4 is buggy, dev eth3
+[  201.671222] protocol f7f4 is buggy, dev eth3
