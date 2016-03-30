@@ -69,6 +69,7 @@
 #define IOCCMD_ULSCHEDULE						0x12
 #define IOCCMD_SEND_MSG3						0x76
 #define IOCCMD_SEND_SF						0x77
+#define IOCTL_GET_ENB_ADDR	                0x78  //get the enb mac addr  from cfg file
 /****************************************modified end ******************/
 
 

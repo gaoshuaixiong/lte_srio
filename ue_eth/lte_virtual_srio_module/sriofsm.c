@@ -62,7 +62,7 @@
 /***********20141108 mf modified**************************/
 #define IOCCMD_PDCCHtoMAC_ULGRANT			 0x0D
 #define IOCCMD_PHYtoMAC_SYSFRAME            0x0E
-
+#define IOCTL_GET_ENB_ADDR	                0x78  
 
 /************end modify************************/
 
@@ -327,24 +327,12 @@ static void packet_send_to_eth(void)
 
 	if(pkptrcopy != NULL)
 	{
-	/*
-		if(fsm_skb_headroom(pkptr) < (ETH_HLEN + sizeof(struct lte_test_srio_head)))
-			{
-			pkptr = fsm_skb_realloc_headeroom(pkptr,ETH_HLEN + sizeof(struct lte_test_srio_head));
-			if(pkptr == NULL)
-				return;
-			}
-			*/
-		//fsm_printf("pkptrcopy headroom before = %d\n",(pkptrcopy->data-pkptrcopy->head));
 		if(fsm_skb_headroom(pkptrcopy) < (ETH_HLEN + sizeof(struct lte_test_srio_head)))
 		{
 			pkptrcopy = fsm_skb_realloc_headeroom(pkptr,ETH_HLEN + sizeof(struct lte_test_srio_head));
 			if(pkptrcopy == NULL)
 				return;
 		}
-		//fsm_printf("ETH_HLEN+sizeof(struct lte_test_srio_head) = %d\n",(ETH_HLEN+sizeof(struct lte_test_srio_head)));
-		//fsm_printf("pkptrcopy headroom = %d\n",(pkptrcopy->data-pkptrcopy->head));
-
 		fsm_skb_push(pkptrcopy, sizeof(struct lte_test_srio_head));
 		sh_ptr = (struct lte_test_srio_head*)pkptrcopy->data;
 		sh_ptr->type = fsm_htonl(2);
@@ -428,16 +416,13 @@ static void packet_send_to_upperlayer(void)
 	FIN(packet_send_to_upperlayer());
 	SV_PTR_GET(srio_sv);//
 	char dst_addr[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-	fsm_printf("[UE SRIO] ENTER packet_send_to_upperlayer()\n");
+	//fsm_printf("[UE SRIO] ENTER packet_send_to_upperlayer()\n");
 	pkptr = fsm_pkt_get();
 	fsm_skb_push(pkptr,sizeof(struct ethhdr));
-	fsm_octets_print(pkptr->data, pkptr->len);
 	head_ptr = (struct ethhdr*)pkptr->data;
-	fsm_octets_print(SV(enb_mac_addr),6);
-	fsm_octets_print(head_ptr->h_source,6);
-	fsm_octets_print(head_ptr->h_dest,6);
-	
-	printk("the strcmp(SV(enb_mac_addr),dst_addr)) is %d\n,and 0==(strcmp(head_ptr->h_dest,dst_addr)) is %d\n",(true==compare_mac_addr(SV(enb_mac_addr),dst_addr,6)),(true==(compare_mac_addr(head_ptr->h_dest,dst_addr,6))));
+	// fsm_octets_print(SV(enb_mac_addr),6);
+	// fsm_octets_print(head_ptr->h_source,6);
+	// fsm_octets_print(head_ptr->h_dest,6);
 	if((true==compare_mac_addr(SV(enb_mac_addr),dst_addr,6))&&(true==(compare_mac_addr(head_ptr->h_dest,dst_addr,6))))
 	{
 		fsm_mem_cpy(SV(enb_mac_addr),head_ptr->h_source,ETH_ALEN);
@@ -448,29 +433,10 @@ static void packet_send_to_upperlayer(void)
 		FOUT;
 	}
 	fsm_skb_pull(pkptr,sizeof(struct ethhdr));
-	fsm_printf("********************fsm_skb pull backed**************************************\n");
-/***ici dispose****///////
-
 	sh_ptr = (struct lte_test_srio_head*)pkptr->data;
 	fsm_skb_pull(pkptr, sizeof(struct lte_test_srio_head));
-//	ici_to_phyadapter=(MACtoPHYadapter_IciMsg *)fsm_skb_pull(pkptr,sizeof(MACtoPHYadapter_IciMsg));
-
-//	ici_to_mac = (PHYadaptertoMAC_IciMsg*)pkptr->head;
-//	ici_to_mac->tcid=ici_to_phyadapter->tcid;
-//	ici_to_mac->MessageType =ici_to_phyadapter->MessageType; 
-//	ici_to_mac->rnti=ici_to_phyadapter->rnti; 
-//	fsm_skb_put( pkptr,sizeof(struct PHYadaptertoMAC_IciMsg)); //20140719
-//	fsm_mem_cpy(pkptr->head,ici_to_mac,sizeof(struct PHYadaptertoMAC_IciMsg));//20140719
-
 	int i,j;
-	//fsm_printf("[UE SRIO]ue rnti:%d\n",fsm_ntohs(sh_ptr->rnti));
 	SV(recv_count)++;
-	//fsm_printf("[UE SRIO] SV(recv_count)=%d\n",SV(recv_count));
-	/*if(SV(recv_count)>3)
-	{
-		fsm_pkt_destroy(pkptr);
-		FOUT;
-	}*/
 	if(fsm_ntohs(sh_ptr->rnti) >= 81)
 	{
 		printk("[UE SRIO]RNTI = %d,destroy\n",fsm_ntohs(sh_ptr->rnti));
@@ -478,11 +444,8 @@ static void packet_send_to_upperlayer(void)
 	}
 	else
 	{
-
 		if(fsm_ntohl(sh_ptr->type) == 2)
 		{
-			//fsm_printf((char*)pkptr->data);
-			//fsm_printf("\n");
 			ici_to_mac=(PHYadaptertoMAC_IciMsg*)fsm_mem_alloc(sizeof(PHYadaptertoMAC_IciMsg));
 			ici_to_mac->tcid=2;
 			ici_to_mac->rnti=fsm_ntohs(sh_ptr->rnti);
@@ -491,21 +454,13 @@ static void packet_send_to_upperlayer(void)
 			fsm_printf("[UE SRIO]The rnti of the packet is %u, sending to MAC\n", ici_to_mac->rnti);
 			fsm_mem_cpy(pkptr->head,ici_to_mac,sizeof(PHYadaptertoMAC_IciMsg));
 			fsm_mem_free(ici_to_mac);
-			//fsm_printf("[HEXI]TYPE IN SRIO:%c\n",*((char*)pkptr->data)+65);
-			
-			//for test 
 			sn = *(u32*)pkptr->data;
 			fsm_skb_pull(pkptr,4);
-		//	printk("[SRIO][packet_send_to_upperlayer] SN=%d\n",sn);
-			
 			fsm_pkt_send(pkptr, STRM_TO_RLCMAC);
 			fsm_printf("[srio][send to mac]data->len:%d\n",pkptr->len);
-			//fsm_octets_print(pkptr->data,pkptr->len);
-			
 		}
 		else if(fsm_ntohl(sh_ptr->type) == 1)
 		{
-			//fsm_skb_pull(pkptr, sizeof(struct lte_test_srio_head));
 			fsm_printf((char*)pkptr->data);
 			fsm_printf("\n");
 			fsm_pkt_destroy(pkptr);
@@ -513,19 +468,9 @@ static void packet_send_to_upperlayer(void)
 		else if(fsm_ntohl(sh_ptr->type) == 3)
 		{
 			i=pkptr->tail-pkptr->data;
-			//fsm_printf("[DAFANGZI]LENGTH:%d\n",i);
-			/*for(j=0;j<i;j++){
-				fsm_printf("%d ",*((u32*)pkptr->data+j*sizeof(u32)));
-			}
-			fsm_printf("\n");*/
-
-
-			//fsm_printf("[UE SRIO]uldci u32 %d\n", *((u32*)pkptr->data));
 			uldci_to_mac = (struct Regular_ULgrant *)pkptr->data;
 			u32 uld = 0;
 			fsm_mem_cpy(&uld, uldci_to_mac, sizeof(u32));
-			//fsm_printf("[UE SRIO] uld = %d\n", uld);
-			//fsm_printf("[UE SRIO] uldci riv = %d\n", uldci_to_mac->RIV);
 			ulgrand_to_mac = fsm_mem_alloc(sizeof(UEPHY_TO_MAC_ULgrant));
 			ulgrand_to_mac->m_rnti = fsm_ntohs(sh_ptr->rnti);
 			ulgrand_to_mac->frameNo = fsm_ntohs(sh_ptr->sfn);
@@ -534,7 +479,6 @@ static void packet_send_to_upperlayer(void)
 			fsm_do_ioctrl(STRM_TO_RLCMAC,IOCCMD_PDCCHtoMAC_ULGRANT,(void *)ulgrand_to_mac,sizeof(UEPHY_TO_MAC_ULgrant));
 			fsm_mem_free(ulgrand_to_mac);
 			fsm_pkt_destroy(pkptr);
-			//printk("[UE SRIO]UL_GRANT send to MAC\n");
 		}
 		else 
 			fsm_pkt_destroy(pkptr);
@@ -580,9 +524,6 @@ static void idle_exit(void)
 static void send_packet_period(void)
 {
 	FSM_PKT* pkptr;
-	//struct lte_test_srio_head* sh_ptr;
-	//struct MACtoPHYadapter_IciMsg * ici_to_phyadapter;
-	//struct PHYadaptertoMAC_IciMsg * ici_to_mac;
 	struct ethhdr* head_ptr;
 	
 	char* data = "send_packet_period says hello world!";
@@ -595,41 +536,18 @@ static void send_packet_period(void)
 		pkptr = fsm_pkt_create(128);
 		fsm_skb_put(pkptr, 64);
 		fsm_mem_cpy(pkptr->data, data, 24);
-	/*
-		if(fsm_skb_headroom(pkptr) < (ETH_HLEN + sizeof(struct lte_test_srio_head))+sizeof(struct MACtoPHYadapter_IciMsg))
-		{
-			pkptr = fsm_skb_realloc_headeroom(pkptr,ETH_HLEN + sizeof(struct lte_test_srio_head)+sizeof(struct MACtoPHYadapter_IciMsg));
-			if(pkptr == NULL)
-				return;
-		}
-		*/
 		if(fsm_skb_headroom(pkptr) < ETH_HLEN)
 		{
 			pkptr = fsm_skb_realloc_headeroom(pkptr,ETH_HLEN);
 			if(pkptr == NULL)
 				return;
 		}
-		/*
-		fsm_skb_push(pkptr, sizeof(struct MACtoPHYadapter_IciMsg));
-		ici_to_phyadapter=(struct MACtoPHYadapter_IciMsg *)pkptr->data;
-		ici_to_phyadapter->frameNo=1;
-		ici_to_phyadapter->MessageType=1;
-		ici_to_phyadapter->rnti=1;
-		ici_to_phyadapter->subframeNo=1;
-		ici_to_phyadapter->tcid=1;
-		fsm_skb_push(pkptr, sizeof(struct lte_test_srio_head));
-		sh_ptr = (struct lte_test_srio_head*)pkptr->data;
-		sh_ptr->type = fsm_htonl(0);
-		sh_ptr->len = fsm_htonl(pkptr->len - sizeof(struct lte_test_srio_head));
-		*/
 		skb_reset_network_header(pkptr);
 		fsm_skb_push(pkptr, ETH_HLEN);
 		head_ptr = (struct ethhdr*)pkptr->data;
 		fsm_mem_cpy(head_ptr->h_dest, dst_addr, ETH_ALEN);
 		fsm_mem_cpy(head_ptr->h_source, fsm_intf_addr_get(STRM_TO_ETH), ETH_ALEN);
 		head_ptr->h_proto = fsm_htons(DEV_PROTO_SRIO);
-		//fsm_printf("set new timer\n");
-		//fsm_printf("timer event is added\n");
 		SV(psend_handle) = fsm_schedule_self(SV(interval), _PACKET_SEND_PERIOD);
 		fsm_pkt_send(pkptr,STRM_TO_ETH);
 		//fsm_pkt_destroy(pkptr);
@@ -657,9 +575,7 @@ static void idle_ioctl_handler(void)
 	char* rec_data_ptr;
 	u32 *interval_ptr;
 	void* ioctl_data;
-
 	const char* data_ptr = "Hello MAC,I AM SRIO\n"; 
-	
 	FIN(ioctl_handler());
 	SV_PTR_GET(srio_sv);
 	if(IOCTL_ARRIVAL)
@@ -672,6 +588,10 @@ static void idle_ioctl_handler(void)
 					SV(psend_handle) = fsm_schedule_self(SV(interval), _PACKET_SEND_PERIOD);
 				}
 			FOUT;
+			case IOCTL_GET_ENB_ADDR:
+				{
+
+				}
 			case IOCCMD_PSEND_STOP:
 				if(SV(psend_handle))
 				{
@@ -700,21 +620,8 @@ static void idle_ioctl_handler(void)
 				fsm_data_destroy(rec_data_ptr);
 				fsm_do_ioctrl(STRM_TO_RLCMAC, IOCCMD_SAY_HELLO, (void*)data_ptr, 22);	
 			FOUT;
-			//20140715 mf
-			/*
-			case IOCCMD_TEST_SEND_MSG3:
-				fsm_printf("SRIO:IOCCMD_TEST_SEND_MSG3.\n");
-				if(SV(psend_handle) == 0)
-				{
-					SV(psend_handle) = fsm_schedule_self(SV(interval), _MSG3_FROM_UPPER);
-				}
-				FOUT;
-				*/
 			case IOCCMD_MACtoPHY_RNTI_Indicate:
 				fsm_printf("SRIO:IOCCMD_MACtoPHY_RNTI_Indicate.\n");
-				//void *data;
-			//≤‚ ‘RA«Î«Û
-				//data=fsm_data_get();
 				if(SV(psend_handle) == 0)
 				{
 					SV(psend_handle) = fsm_schedule_self(0, _MSG3_FROM_UPPER);
@@ -731,15 +638,10 @@ static void idle_ioctl_handler(void)
 			case IOCCMD_MACtoPHY_Preamble_Indicate:
 				fsm_printf("SRIO:IOCCMD_MACtoPHY_Preamble_Indicate.\n");
 				test_send_msg1();
-				//send_rar();
 				FOUT;
-			/*************20141013 MF modified**************To receive type1 ioctl from RRC*************/
 			case IOCCMD_RRCtoPHY_Type1_Indicate:
-				//ioctl_data = fsm_data_get();
-				//send_type1();
 				FOUT;
 				break;
-			/**************20141017 mf modified for test****************/
 			case IOCCMD_TEST_SEND_TO_ETH:
 				test_send_to_eth();
 				FOUT;
@@ -770,10 +672,7 @@ static void test_send_sf(void)
 static void test_send_to_eth(void)
 {
 	FSM_PKT* pkptr;
-
 	pkptr = fsm_pkt_create(2048);
-	//packet_send_to_eth(pkptr);
-
 }
 
 /**************20141103 mf For TEST*************************/
